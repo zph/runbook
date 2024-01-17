@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "runbook"
+version = "0.1.0"
+description = "Runbook lib and cli"
+authors = ["Zander Hill <zander@xargs.io>"]
+license = "MIT"
+readme = "README.md"
+packages = [
+    { include = "src" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+shx = "^0.4.2"
+papermill = "^2.5.0"
+jupyter = "^1.0.0"
+click = "^8.1.7"
+bash-kernel = "^0.9.3"
+jupyterlab-execute-time = "^3.1.0"
+jupytext = "^1.16.1"
+nbformat = "^5.9.2"
+nbconvert = "^7.14.1"
+notebook = "^7.0.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+runbook = "runbook.cli:cli"
