@@ -20,8 +20,16 @@ jupyterlab-execute-time = "^3.1.0"
 jupytext = "^1.16.1"
 nbformat = "^5.9.2"
 nbconvert = "^7.14.1"
-notebook = "^7.0.6"
+pyyaml = "^6.0.1"
+traitlets = "^5.14.1"
+ipywidgets = "^8.1.1"
+setuptools = "^69.0.3"
 
+
+[tool.poetry.group.dev.dependencies]
+pandas = "^2.1.4"
+pyarrow = "^14.0.2"
+matplotlib = "^3.8.2"
 
 [build-system]
 requires = ["poetry-core"]
