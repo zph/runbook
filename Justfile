@@ -27,7 +27,7 @@ template-update:
   set -eou pipefail
   set -x
   f="./runbooks/binder/_template.ipynb"
-  d="src/runbook/template.py"
+  d="./runbook/template.py"
   echo 'TEMPLATE = """' > $d
-  cat "$f" >> "$d"
+  base64 < "$f" >> "$d"
   echo '"""' >> "$d"

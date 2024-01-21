@@ -5,9 +5,6 @@ description = "Runbook lib and cli"
 authors = ["Zander Hill <zander@xargs.io>"]
 license = "MIT"
 readme = "README.md"
-packages = [
-    { include = "src" },
-]
 
 [tool.poetry.dependencies]
 python = "^3.11"

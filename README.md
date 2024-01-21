@@ -34,6 +34,10 @@ runbook run TITLE
 
 # TODO
 
+- [ ] Fix tag key getting stripped out of planned runbooks b/c it breaks papermill
+- [ ] Setup a watcher for auto-exporting html or other formats
+- [ ] Setup tagging in the notebooks to auto-set those values
+
 - Setup different folder from runbooks for execution files?
 - Only allow for executing runbooks that are pre-processed
 - Should I follow the tf convention of `plan | apply`
