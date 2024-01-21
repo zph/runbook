@@ -1,0 +1,22 @@
+{% extends 'markdown/index.md.j2' %}
+
+
+{% block execute_result %}
+
+Timestamps
+```yaml
+---
+start:    {{ cell.metadata.execution['iopub.execute_input'] }}
+end:      {{ cell.metadata.execution['shell.execute_reply'] }}
+```
+
+{% block data_priority scoped %}
+{{ super() }}
+{% endblock %}
+
+{#
+Note: only works for notebooks executed through web gui
+        NOT for papermill.
+#}
+
+{% endblock execute_result %}
