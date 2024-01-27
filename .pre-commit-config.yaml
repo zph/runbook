@@ -38,5 +38,5 @@ repos:
         name: Updates template file if it has changed
         entry: just template-update
         language: system
-        files: '.*/_template.ipynb$'
+        files: '.*$'
         pass_filenames: false
