@@ -13,10 +13,28 @@ repos:
     - id: black
       language_version: python3
 
+- repo: https://github.com/pycqa/isort
+  rev: 5.13.2
+  hooks:
+    - id: isort
+      name: isort (python)
+      args: ["--profile", "black", "--filter-files"]
+
+- repo: https://github.com/PyCQA/autoflake
+  rev: v2.2.1
+  hooks:
+    - id: autoflake
+      args: ['--in-place', '--remove-all-unused-imports', '--remove-unused-variables', '--ignore-init-module-imports']
+
 -   repo: local
     hooks:
+    -   id: tests
+        name: Runs tests
+        entry: just test
+        language: system
+        files: '.*$'
     -   id: update-template
         name: Updates template file if it has changed
         entry: just template-update
-        language: script
+        language: system
         files: '.*/_template.ipynb$'

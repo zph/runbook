@@ -1,3 +1,9 @@
+test:
+  pytest --disable-warnings -s
+
+test-watch:
+  watchexec -- pytest --disable-warnings -s
+
 open NOTEBOOK:
   poetry run runbook edit {{NOTEBOOK}}
 
