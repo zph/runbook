@@ -1,10 +1,11 @@
-from shlex import quote as Q
-from shx.shx import SHX, gather
-from shx.shx import _CVAR as cv
 from asyncio.subprocess import Process
 from datetime import datetime
+from shlex import quote as Q
+
 import click
-from click import confirm, style, echo
+from click import echo, style
+from shx.shx import _CVAR as cv
+from shx.shx import SHX
 
 
 class ShellProcess(Process):

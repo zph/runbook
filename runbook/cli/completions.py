@@ -1,6 +1,7 @@
+from glob import glob
+
 import click
 from click.shell_completion import CompletionItem
-from glob import glob
 
 
 def runnable_shell_complete(self, ctx, param, incomplete):

@@ -1,7 +1,9 @@
-import click
 from os import path
-from runbook.cli.validators import validate_runbook_file_path
+
+import click
+
 from runbook.cli.completions import EditableNotebook
+from runbook.cli.validators import validate_runbook_file_path
 
 
 @click.command()

@@ -1,10 +1,11 @@
+import json
+from pathlib import Path
+
+import nbformat
 from click.testing import CliRunner
+
 from runbook import cli
 from runbook.cli.lib import sha256sum
-from IPython import embed
-import nbformat
-from pathlib import Path
-import json
 
 
 def invoker(runner, argv, working_dir, prog_name="runbook"):

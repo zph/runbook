@@ -1,8 +1,10 @@
-import click
-from pathlib import Path
-from importlib import metadata
-from runbook.template import TEMPLATE
 import json
+from importlib import metadata
+from pathlib import Path
+
+import click
+
+from runbook.template import TEMPLATE
 
 RUNBOOK_CONFIG = {"version": 1, "library_version": None, "directory": None}
 

@@ -1,8 +1,10 @@
-from os import path
-from datetime import datetime
 import os
-from nbconvert.nbconvertapp import NbConvertApp
+from datetime import datetime
+from os import path
+
 import click
+from nbconvert.nbconvertapp import NbConvertApp
+
 from runbook.cli.validators import validate_template
 
 

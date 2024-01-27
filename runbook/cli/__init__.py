@@ -1,6 +1,8 @@
-import click
 import os
-from runbook.cli.commands import plan, run, init, edit, create, review, export
+
+import click
+
+from runbook.cli.commands import create, edit, export, init, plan, review, run
 
 # TODO: not working, needs a custom underlying class to handle the auto-env
 CONTEXT_SETTINGS = dict(auto_envvar_prefix="RUNBOOK")

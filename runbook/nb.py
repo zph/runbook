@@ -1,10 +1,10 @@
-import nbformat
-from nbformat import NotebookNode
-from nbclient import NotebookClient
 import sys
-import click
-from click import echo, confirm, style
+
+import nbformat
+from click import confirm, echo, style
 from IPython import embed
+from nbclient import NotebookClient
+from nbformat import NotebookNode
 
 
 def hook_on_notebook_start(notebook):

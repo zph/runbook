@@ -1,8 +1,9 @@
 import glob
-from os import path
-import click
 import json
+from os import path
 from pathlib import Path
+
+import click
 
 
 def validate_template(ctx, param, value):
