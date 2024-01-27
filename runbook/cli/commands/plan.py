@@ -31,7 +31,7 @@ def plan(ctx, input, embed, params={}):
     output = "-".join([str(date), basename_without_ext])
     # Output to folder to allow for embedding other files in same folder
     output_folder = f"./runbooks/runs/{output}"
-    full_output = f"{output_folder}/{basename_without_ext}-{hash}.ipynb"
+    full_output = f"{output_folder}/{basename_without_ext}.ipynb"
 
     runbook_param_injection = {
         "__RUNBOOK_METADATA__": {
