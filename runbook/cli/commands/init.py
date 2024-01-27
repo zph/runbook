@@ -1,12 +1,12 @@
 import json
-from importlib import metadata
 from pathlib import Path
 
 import click
 
 from runbook.template import TEMPLATE
+from runbook.version import VERSION
 
-RUNBOOK_CONFIG = {"version": 1, "library_version": None, "directory": None}
+RUNBOOK_CONFIG = {"version": 1, "library_version": VERSION, "directory": None}
 
 
 @click.command()
@@ -36,11 +36,10 @@ def init(ctx, directory):
     """
     )
 
-    version = metadata.version("runbook")
     click.confirm(click.style("Proceed?", fg="red", bold=True))
     Path(f"./{directory}/binder").mkdir(parents=True, exist_ok=True)
     Path(f"./{directory}/runs").mkdir(parents=True, exist_ok=True)
-    cfg = {**RUNBOOK_CONFIG, **{"library_version": version, "directory": directory}}
+    cfg = {**RUNBOOK_CONFIG, **{"directory": directory}}
     with open(f"./{directory}/.runbook.json", "w") as f:
         f.write(json.dumps(cfg))
     with open(f"./{directory}/binder/_template.ipynb", "w") as f:

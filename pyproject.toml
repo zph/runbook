@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "runbook"
-version = "0.1.0"
+version = "0.0.1"
 description = "Runbook lib and cli"
 authors = ["Zander Hill <zander@xargs.io>"]
 license = "MIT"
@@ -20,9 +20,7 @@ nbconvert = "^7.14.1"
 pyyaml = "^6.0.1"
 traitlets = "^5.14.1"
 ipywidgets = "^8.1.1"
-setuptools = "^69.0.3"
 pre-commit = "^3.6.0"
-importlib = "^1.0.4"
 python-ulid = "^2.2.0"
 slack-sdk = "^3.26.2"
 
