@@ -33,8 +33,10 @@ repos:
         entry: just test
         language: system
         files: '.*$'
+        pass_filenames: false
     -   id: update-template
         name: Updates template file if it has changed
         entry: just template-update
         language: system
         files: '.*/_template.ipynb$'
+        pass_filenames: false
