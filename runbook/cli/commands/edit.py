@@ -1,11 +1,14 @@
 import click
 from os import path
 from runbook.cli.validators import validate_runbook_file_path
+from runbook.cli.completions import EditableNotebook
 
 
 @click.command()
 @click.argument(
-    "filename", type=click.Path(file_okay=True), callback=validate_runbook_file_path
+    "filename",
+    type=EditableNotebook(file_okay=True),
+    callback=validate_runbook_file_path,
 )
 @click.pass_context
 def edit(ctx, filename):

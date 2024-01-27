@@ -56,7 +56,7 @@ operations (ie grafana and notifications)
 
 # TODO
 ## P0
-- [ ] Fix tag key getting stripped out of planned runbooks b/c it breaks papermill
+- [x] Fix tag key getting stripped out of planned runbooks b/c it breaks papermill
 - [ ] Setup a watcher for auto-exporting html or other formats
 - [ ] Setup tagging in the notebooks to auto-set those values
 - [ ] Setup git to autoclear cell outputs for a given folder's notebooks (ie templates) https://stackoverflow.com/a/58004619
@@ -69,11 +69,12 @@ operations (ie grafana and notifications)
 - [ ] Install pre-commit.yml or git integration during `init`
 
 ## P2
+- [ ] Setup addition of .pre-commit-config.yaml during init phase
 - [x] Setup different folder from runbooks for execution files?
 - [x] Only allow for executing runbooks that are pre-processed
 - [x] Should I follow the tf convention of `plan | apply`
-- [ ] (won't do yet) Allow for executing cell by cell from commandline in a repl?
 - [x] Setup decorator to embed dry_run into shell command
+- [ ] (won't do yet) Allow for executing cell by cell from commandline in a repl?
 - [ ] Running cell by cell: https://github.com/odewahn/ipynb-examples/blob/master/Importing%20Notebooks.ipynb
 - [ ] figure out how to store and replay individual cells
 - [ ] ~~Textualize gui for tui?~~
@@ -94,6 +95,7 @@ operations (ie grafana and notifications)
 - [x] (NA it's in modern jupyter) Bundle in the timing nbextension jupyter-contrib-nbextensions.readthedocs.io/en/latest/nbextensions/execute_time/readme.html
 - [x] (won't do) Freeze dangerous cells as a safegurad? https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/nbextensions/freeze/readme.html
 - [x] (won't do) Cell filtering https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/nbextensions/cell_filter/README.html
+- [ ] Setup addition of .pre-commit-config.yaml during init phase
 
 ## How To
 How to connect to existing running notebook from different interface:

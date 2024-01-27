@@ -1,0 +1,22 @@
+repos:
+-   repo: https://github.com/mwouts/jupytext
+    rev: v1.14.7  # CURRENT_TAG/COMMIT_HASH
+    hooks:
+    - id: jupytext
+      args: [--sync, --pipe, black]
+      additional_dependencies:
+        - black==23.3.0 # Matches hook
+
+-   repo: https://github.com/psf/black
+    rev: 23.3.0
+    hooks:
+    - id: black
+      language_version: python3
+
+-   repo: local
+    hooks:
+    -   id: update-template
+        name: Updates template file if it has changed
+        entry: just template-update
+        language: script
+        files: '.*/_template.ipynb$'

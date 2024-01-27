@@ -7,6 +7,12 @@ clear-binder-output:
 clear-output *FILES:
   jupyter nbconvert --clear-output --inplace {{FILES}}
 
+lint:
+  pre-commit run
+
+lint-all:
+  pre-commit run --all-files
+
 template-update:
   #!/usr/bin/env bash
 
