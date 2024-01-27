@@ -1,5 +1,26 @@
 # Runbook
 
+## Summary
+
+Runbook is a commandline tool that guides users in an opinionated approach to creating dynamic runbooks.
+
+In this context, a runbook is a mixture of markdown and executable code that contains the steps needed for successful operational executions such as server maintenance, database management, or creating a weekly report.
+
+### When would you use this?
+1. When you want quick to write tools that can't be entirely automated, but want the safey of auditable tools.
+2. When your tooling needs to adjust rapidly and contain prepared rollback procedures.
+3. When this is a semi-custom situation that doesn't warrant building dedicated and expensive tooling
+4. When you've grown out of shell scripts but aren't ready to build it in Golang or Rust
+
+### Runbook Best Practices
+1. Include a Summary/Purpose, Step descriptions, Warning signs, Verification Steps and Execution Steps in their natural order
+2. Non-mutative actions can be included anyhere
+3. Mutative actions (destroy a server or force a failover) must use the `confirm` flag
+4. Write pre-check steps before mutation steps in order to increase safety of the procedure
+5. Runbooks for critical operations should be run by pairs of staff members
+   1. One to execute the book
+   2. A second to validate and perform safety checks
+
 ## CLI
 
 ```sh
@@ -11,17 +32,17 @@ runbook create [--template=TEMPLATE] TITLE
 
 # Create an instance of a runbook for execution by filling in parameterization
 # Adds metadata indicating that runbook is ready to execute
-runbook plan TITLE
+runbook plan RUNBOOK_PATH
 
 # Edit a notebook server in browser (starts jupyter server and opens page)
-runbook edit FILENAME
-
-# Review a runbook which inserts metadata to allow a type of execution
-runbook review TITLE
+runbook edit RUNBOOK_PATH
 
 # Execute a runbook where default is --interactive=true
 # Note can only find runbooks that have been prepared
 runbook run TITLE
+
+# Review a runbook which inserts metadata to allow a type of execution
+runbook review TITLE
 ```
 
 # Decisions
@@ -39,6 +60,8 @@ operations (ie grafana and notifications)
 - [ ] Setup a watcher for auto-exporting html or other formats
 - [ ] Setup tagging in the notebooks to auto-set those values
 - [ ] Setup git to autoclear cell outputs for a given folder's notebooks (ie templates) https://stackoverflow.com/a/58004619
+- [ ] Assess if we need shell completions
+   - [ ] Yes, very nice and use https://click.palletsprojects.com/en/8.1.x/shell-completion/#custom-type-completion to define for custom types, ie only find ipynb files for edit, create, etc
 
 ## P1
 - [ ] Immutably store everything with bookstore https://github.com/nteract/bookstore
