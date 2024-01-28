@@ -22,7 +22,13 @@ jobs:
 
       - name: initialize folders
         run: poetry run runbook init --skip-confirmation=true
-      - uses: pre-commit/action@v3.0.0
+      - name: Black formatting
+        run: pre-commit run black
+      - name: jupytext hook
+        run: pre-commit run jupytext
+      - name: isort hook
+        run: pre-commit run isort
+      - name: autoflake hook
+        run: pre-commit run autoflake
       - run: just test
-      - run: just lint
       - run: echo "🍏 This job's status is ${{ job.status }}."
