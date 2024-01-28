@@ -7,11 +7,12 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - run: source ./.hermit/bin/activate-hermit
+      - run: export PATH=./.hermit/bin:$PATH
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-  
+
       - name: Install Requirements
         run: |
           sudo apt-get update &&
