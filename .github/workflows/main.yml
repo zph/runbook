@@ -6,6 +6,9 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
+      - uses: cashapp/activate-hermit@v1
+        with:
+          cache: "true"
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
