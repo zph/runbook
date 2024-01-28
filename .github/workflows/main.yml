@@ -22,7 +22,9 @@ jobs:
 
       - name: Setup command runner
         uses: extractions/setup-just@v1
+      - name: initialize folders
+        run: poetry run runbook init
       - uses: pre-commit/action@v3.0.0
-      - run: ./.hermit/bin/just test
-      - run: ./.hermit/bin/just lint
+      - run: just test
+      - run: just lint
       - run: echo "🍏 This job's status is ${{ job.status }}."
