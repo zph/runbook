@@ -5,6 +5,18 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Requirements
+        run: |
+          sudo apt-get update &&
+          pip install poetry &&
+          poetry lock &&
+          poetry install
+
       - name: Setup command runner
         uses: extractions/setup-just@v1
       - name: Check out repository code
@@ -12,4 +24,3 @@ jobs:
       - run: just test
       - run: just lint
       - run: echo "🍏 This job's status is ${{ job.status }}."
-

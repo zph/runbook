@@ -1,5 +1,5 @@
 test:
-  pytest --disable-warnings -s
+  poetry run pytest --disable-warnings -s
 
 test-watch:
   watchexec -- pytest --disable-warnings -s
