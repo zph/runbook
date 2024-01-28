@@ -1,5 +1,3 @@
-import os
-from datetime import datetime
 from os import path
 
 import click
@@ -27,7 +25,7 @@ def create(ctx, filename, template):
             "Supplied filename included more than a basename, should look like 'maintenance-operation.ipynb'"
         )
     # TODO: remove hardcoding of folder outer name and rely on config file
-    full_output = path.join("runbooks", "binder", filename)
+    path.join("runbooks", "binder", filename)
     # TODO: hide the nbconvert verbose output?
     argv = [
         "--ClearOutputPreprocessor.enabled=True",
@@ -43,16 +41,6 @@ def create(ctx, filename, template):
     ]
 
     NbConvertApp().launch_instance(argv=argv)
-
-    runbook_param_injection = {
-        "__RUNBOOK_METADATA__": {
-            "RUNBOOK_FOLDER": "./runbooks/binder",
-            "RUNBOOK_FILE": full_output,
-            "RUNBOOK_SOURCE": template,
-            "CREATED_AT": str(datetime.utcnow()),
-            "CREATED_BY": os.environ["USER"],
-        }
-    }
 
     click.echo(
         click.style(

@@ -1,0 +1,15 @@
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup command runner
+        uses: extractions/setup-just@v1
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: just test
+      - run: just lint
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+

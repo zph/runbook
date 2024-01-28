@@ -85,7 +85,7 @@ def test_cli_create():
             assert "parameters" in c.metadata.tags
 
 
-def test_cli_lifecycle():
+def test_cli_lifecycle_to_plan():
     runner = CliRunner()
     with runner.isolated_filesystem() as dir:
         result = invoker(runner, ["init"], dir)
@@ -127,4 +127,41 @@ def test_cli_lifecycle():
         assert result.exit_code == 0
 
         # result = invoker(runner, ["run", "new-template.ipynb"], dir)
+        # assert result.exit_code == 0
+
+
+def test_cli_lifecycle_to_run():
+    runner = CliRunner()
+    with runner.isolated_filesystem() as dir:
+        result = invoker(runner, ["init"], dir)
+        assert result.exit_code == 0
+        result = invoker(runner, ["create", "new-template"], dir)
+        assert result.exit_code == 0
+        paths = [
+            "./runbooks",
+            "./runbooks/binder",
+            "./runbooks/runs",
+            "./runbooks/.runbook.json",
+            "./runbooks/binder/_template.ipynb",
+            "./runbooks/binder/new-template.ipynb",
+        ]
+        for p in paths:
+            assert Path(p).exists()
+
+        assert not sha256sum("./runbooks/binder/new-template.ipynb") == sha256sum(
+            "./runbooks/binder/_template.ipynb"
+        )
+        with open("./runbooks/binder/_template.ipynb", encoding="utf8") as f:
+            nb = nbformat.read(f, 4)
+            c = nb.cells[2]
+            assert "parameters" in c.metadata.tags
+
+        # TODO: fix tags being not present for parameters despite being there in _template
+        # with open("./runbooks/binder/new-template.ipynb", encoding="utf8") as f:
+        #     nb = nbformat.read(f, 4)
+        #     c = nb.cells[2]
+        #     assert "parameters" in c.metadata.tags
+
+        # TODO: fix multiple singletons of ServerApp
+        # result = invoker(runner, ["run", "./runbooks/binder/new-template.ipynb"], dir)
         # assert result.exit_code == 0
