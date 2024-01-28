@@ -9,7 +9,7 @@ jobs:
       # Export env vars for later steps, normal export doesn't work
       - run: echo PATH=./.hermit/bin:$PATH >> $GITHUB_ENV
       # Setup the working dir to run runbook commands
-      - run: echo WORKING_DIR="$(mktemp -d -t runbook)" >> $GITHUB_ENV
+      - run: echo WORKING_DIR="$(mktemp -d -t runbook-XXXX)" >> $GITHUB_ENV
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
