@@ -6,9 +6,10 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      - run: export PATH=./.hermit/bin:$PATH
+      # Export env vars for later steps, normal export doesn't work
+      - run: echo PATH=./.hermit/bin:$PATH >> $GITHUB_ENV
       # Setup the working dir to run runbook commands
-      - run: export WORKING_DIR="$(mktemp -d -t runbook)"
+      - run: echo WORKING_DIR="$(mktemp -d -t runbook)" >> $GITHUB_ENV
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
