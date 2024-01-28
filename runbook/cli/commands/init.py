@@ -17,8 +17,15 @@ RUNBOOK_CONFIG = {"version": 1, "library_version": VERSION, "directory": None}
     default="runbooks",
     type=click.Path(exists=False, dir_okay=True),
 )
+@click.option(
+    "-s",
+    "--skip-confirmation",
+    envvar="SKIP_CONFIRMATION",
+    default=False,
+    type=click.BOOL,
+)
 @click.pass_context
-def init(ctx, directory):
+def init(ctx, directory, skip_confirmation):
     """Initialize a folder as a runbook repository"""
 
     click.echo(
@@ -36,7 +43,8 @@ def init(ctx, directory):
     """
     )
 
-    click.confirm(click.style("Proceed?", fg="red", bold=True))
+    if not skip_confirmation:
+        click.confirm(click.style("Proceed?", fg="red", bold=True))
     Path(f"./{directory}/binder").mkdir(parents=True, exist_ok=True)
     Path(f"./{directory}/runs").mkdir(parents=True, exist_ok=True)
     cfg = {**RUNBOOK_CONFIG, **{"directory": directory}}

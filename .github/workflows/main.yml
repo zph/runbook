@@ -6,13 +6,13 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      - run: source ./.hermit/bin/activate-hermit
       - run: export PATH=./.hermit/bin:$PATH
+      # Setup the working dir to run runbook commands
+      - run: export WORKING_DIR="$(mktemp -d -t runbook)"
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-
       - name: Install Requirements
         run: |
           sudo apt-get update &&
@@ -20,10 +20,8 @@ jobs:
           poetry lock &&
           poetry install
 
-      - name: Setup command runner
-        uses: extractions/setup-just@v1
       - name: initialize folders
-        run: poetry run runbook init
+        run: poetry run runbook init --skip-confirmation=true
       - uses: pre-commit/action@v3.0.0
       - run: just test
       - run: just lint
