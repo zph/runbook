@@ -3,6 +3,8 @@ from datetime import datetime
 from shlex import quote as Q
 
 import click
+
+# Confirm is kept for usage as an interface for notebooks
 from click import echo, style
 from shx.shx import _CVAR as cv
 from shx.shx import SHX

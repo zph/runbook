@@ -1,5 +1,6 @@
 # TODO
 ## P0
+- [ ] Setup versioning and bumper (using versioner from npm ecosystem @release-it and @release-it/bumper)
 - [x] Fix tag key getting stripped out of planned runbooks b/c it breaks papermill
 - [ ] Setup a watcher for auto-exporting html or other formats
 - [ ] Setup tagging in the notebooks to auto-set those values
@@ -10,6 +11,8 @@
   - [ ] ie poll for values over N period and if exceeding Y or Z then throw error and suggest rollbacks
 
 ## P1
+- [ ] Include safe way to retry when APIs fail but with confirmation
+    - for handling the case when infrastructure API calls fail when made in large async batch
 - [ ] Immutably store everything with bookstore https://github.com/nteract/bookstore
 - [x] Use slack notify for posting execution steps: https://github.com/keitakurita/jupyter-slack-notify
 - [ ] Install pre-commit.yml or git integration during `init`
