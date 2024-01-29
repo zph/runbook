@@ -3,8 +3,8 @@ from pathlib import Path
 
 import click
 
+from runbook import __version__ as VERSION
 from runbook.template import TEMPLATE
-from runbook.version import VERSION
 
 RUNBOOK_CONFIG = {"version": 1, "library_version": VERSION, "directory": None}
 

@@ -1,6 +1,7 @@
 [tool.poetry]
 name = "runbook"
-version = "0.0.1"
+# Managed via runbook.__version__ and https://pypi.org/project/poetry-version-plugin/
+version = "0"
 description = "Runbook lib and cli"
 authors = ["Zander Hill <zander@xargs.io>"]
 license = "MIT"
@@ -37,3 +38,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 runbook = "runbook.cli:cli"
+
+[tool.poetry-version-plugin]
+source = "init"

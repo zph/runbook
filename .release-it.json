@@ -1,0 +1,11 @@
+{
+  "plugins": {
+    "@release-it/bumper": {
+      "in": "runbook/__init__.py",
+      "out": "runbook/__init__.py"
+    }
+  },
+  "npm": {
+    "publish": false
+  }
+}

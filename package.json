@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@release-it/bumper": "^6.0.1",
+    "release-it": "^17.0.3"
+  }
+}
