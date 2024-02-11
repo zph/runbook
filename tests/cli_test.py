@@ -27,12 +27,13 @@ Options:
   --help      Show this message and exit.
 
 Commands:
-  create  Create a new runbook from [template]
-  edit    Edit an existing runbook
-  init    Initialize a folder as a runbook repository
-  plan    Prepares the runbook for execution by injecting parameters.
-  review  [Unimplemented] Entrypoint for reviewing runbook
-  run     Run a notebook
+  create   Create a new runbook from [template]
+  edit     Edit an existing runbook
+  init     Initialize a folder as a runbook repository
+  plan     Prepares the runbook for execution by injecting parameters.
+  review   [Unimplemented] Entrypoint for reviewing runbook
+  run      Run a notebook
+  version  Display version information about runbook
 """
         assert result.output == output
 
