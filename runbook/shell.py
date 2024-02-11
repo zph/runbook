@@ -5,9 +5,17 @@ from shlex import quote as Q
 import click
 
 # Confirm is kept for usage as an interface for notebooks
-from click import echo, style
+from click import confirm, echo, style
 from shx.shx import _CVAR as cv
-from shx.shx import SHX
+from shx.shx import SHX, gather
+
+
+def __retain_imports_via_noop():
+    gather
+    confirm
+    style
+    echo
+    style
 
 
 class ShellProcess(Process):
