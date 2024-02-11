@@ -32,3 +32,12 @@ template-update:
 
 profile:
   poetry run python3 -m cProfile runbook/cli/__init__.py
+
+release:
+  release-it
+
+clean:
+  rm -rf ./dist
+
+build:
+  poetry build

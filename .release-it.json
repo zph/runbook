@@ -5,7 +5,20 @@
       "out": "runbook/__init__.py"
     }
   },
+  "hooks": {
+    "after:bump": "npx auto-changelog -p",
+    "before:init": "just clean",
+    "after:github:release": "just clean",
+    "before:release": "just build"
+  }
   "npm": {
     "publish": false
+  },
+  "github": {
+    "release": true,
+    "assets": [
+      "dist/*.gz",
+      "dist/*.whl"
+    ]
   }
 }
