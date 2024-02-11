@@ -3,7 +3,7 @@ from os import path
 import click
 from nbconvert.nbconvertapp import NbConvertApp
 
-from runbook.cli.validators import validate_template
+from runbook.cli.validators import validate_create_language, validate_template
 
 
 @click.command()
@@ -20,8 +20,8 @@ from runbook.cli.validators import validate_template
     "-l",
     "--language",
     envvar="LANGUAGE",
-    type=click.Path(exists=True, file_okay=True),
-    default=None,
+    default="./runbooks/binder/_template-python.ipynb",
+    callback=validate_create_language,
 )
 @click.pass_context
 def create(ctx, filename, template, language):
@@ -30,7 +30,7 @@ def create(ctx, filename, template, language):
     # Allow override for alternate language default
     # TODO: allow reading from project config file
     if language:
-        template = f"./runbooks/binder/_template-{language}.ipynb"
+        template = language
     if path.basename(filename) != filename:
         raise click.UsageError(
             "Supplied filename included more than a basename, should look like 'maintenance-operation.ipynb'"
@@ -40,7 +40,9 @@ def create(ctx, filename, template, language):
     # TODO: hide the nbconvert verbose output?
     argv = [
         "--ClearOutputPreprocessor.enabled=True",
+        # Removes tags as well as everything else
         # "--ClearMetadataPreprocessor.enabled=True",
+        # "--ClearMetadataPreprocessor.clear_notebook_metadata=False",
         # """--ClearMetadataPreprocessor.preserve_cell_metadata_mask='[("tags")]'""",
         template,
         "--to",

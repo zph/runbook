@@ -60,11 +60,15 @@ def plan(ctx, input, embed, params={}):
 
     argv = [
         "--ClearOutputPreprocessor.enabled=True",
-        "--ClearMetadataPreprocessor.enabled=True",
-        """--ClearMetadataPreprocessor.preserve_cell_metadata_mask='[("tags"), ("metadata"), ("nbformat"), ("nbformat_minor")]'""",
+        # "--ClearMetadataPreprocessor.enabled=True",
+        # "--ClearMetadataPreprocessor.clear_notebook_metadata=False",
+        # """--ClearMetadataPreprocessor.preserve_cell_metadata_mask='[("tags")]'""",
         "--inplace",
         full_output,
     ]
+
+    # TODO: write customer parser to remove data
+    # TODO: join the unified logic of create and plan
 
     # TODO: hide the nbconvert verbose output?
     from nbconvert.nbconvertapp import NbConvertApp

@@ -6,6 +6,7 @@ from pathlib import Path
 import click
 
 
+# TODO: ensure no duplicate extension here
 def validate_template(ctx, param, value):
     try:
         ext = path.splitext(value)[-1].lower()
@@ -19,6 +20,15 @@ def validate_template(ctx, param, value):
         raise click.BadOptionUsage(
             param, "format for param is not an notebook ending with ipynb"
         )
+
+
+def validate_create_language(ctx, param, value):
+    if value == "./runbooks/binder/_template-python.ipynb":
+        return value
+    if value in ["python", "deno"]:
+        return f"./runbooks/binder/_template-{value}"
+    else:
+        raise click.BadOptionUsage("--language", "options are python or deno")
 
 
 def validate_plan_params(ctx, param, value):
