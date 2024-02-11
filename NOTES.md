@@ -1,4 +1,15 @@
 # TODO
+
+## Triage
+- [ ] Consider how to set off the 'proceed' output as a dedicated code block in jupyter
+- [ ] Read `runbook plan ...` support reading params from file
+- [ ] Re-export confirm(style) and gather from sh lib
+- [ ] Make sure we can run directly fully through cli
+- [ ] If no argument included for RUNBOOK TITLE in edit/plan/run then prompt with options
+- [ ] Include field 'embeds' in the metadata to help with referencing them
+- [ ] --- Add helper for referencing the embeds?
+- [ ] Use execute and upload output to S3 for non-interactive: https://github.com/nteract/papermill/tree/main?tab=readme-ov-file#execute-via-cli
+
 ## P0
 - [ ] Setup versioning and bumper (using versioner from npm ecosystem @release-it and @release-it/bumper)
 - [x] Fix tag key getting stripped out of planned runbooks b/c it breaks papermill

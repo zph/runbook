@@ -3,15 +3,20 @@ repos:
     rev: v1.14.7  # CURRENT_TAG/COMMIT_HASH
     hooks:
     - id: jupytext
-      args: [--sync, --pipe, black]
+      args: [--pipe, black]
+      exclude: runbooks/binder/_template-deno.ipynb|.*\.md
       additional_dependencies:
         - black==23.3.0 # Matches hook
+
+    # - id: jupytext
+    #   args: [--sync]
 
 -   repo: https://github.com/psf/black
     rev: 23.3.0
     hooks:
     - id: black
       language_version: python3
+      exclude: runbooks/binder/_template-deno.ipynb
 
 - repo: https://github.com/pycqa/isort
   rev: 5.13.2
@@ -31,12 +36,6 @@ repos:
     -   id: tests
         name: Runs tests
         entry: just test
-        language: system
-        files: '.*$'
-        pass_filenames: false
-    -   id: update-template
-        name: Updates template file if it has changed
-        entry: just template-update
         language: system
         files: '.*$'
         pass_filenames: false

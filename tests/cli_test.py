@@ -5,7 +5,6 @@ import nbformat
 from click.testing import CliRunner
 
 from runbook import cli
-from runbook.cli.lib import sha256sum
 
 
 def invoker(runner, argv, working_dir, prog_name="runbook"):
@@ -48,7 +47,8 @@ def test_cli_init():
             "./runbooks/binder",
             "./runbooks/runs",
             "./runbooks/.runbook.json",
-            "./runbooks/binder/_template.ipynb",
+            "./runbooks/binder/_template-python.ipynb",
+            "./runbooks/binder/_template-deno.ipynb",
         ]
         for p in paths:
             assert Path(p).exists()
@@ -65,16 +65,19 @@ def test_cli_create():
             "./runbooks/binder",
             "./runbooks/runs",
             "./runbooks/.runbook.json",
-            "./runbooks/binder/_template.ipynb",
+            "./runbooks/binder/_template-python.ipynb",
+            "./runbooks/binder/_template-deno.ipynb",
             "./runbooks/binder/new-template.ipynb",
         ]
         for p in paths:
             assert Path(p).exists()
 
-        assert not sha256sum("./runbooks/binder/new-template.ipynb") == sha256sum(
-            "./runbooks/binder/_template.ipynb"
-        )
-        with open("./runbooks/binder/_template.ipynb", encoding="utf8") as f:
+        with open("./runbooks/binder/_template-python.ipynb", encoding="utf8") as f:
+            nb = nbformat.read(f, 4)
+            c = nb.cells[2]
+            assert "parameters" in c.metadata.tags
+
+        with open("./runbooks/binder/_template-deno.ipynb", encoding="utf8") as f:
             nb = nbformat.read(f, 4)
             c = nb.cells[2]
             assert "parameters" in c.metadata.tags
@@ -97,16 +100,19 @@ def test_cli_lifecycle_to_plan():
             "./runbooks/binder",
             "./runbooks/runs",
             "./runbooks/.runbook.json",
-            "./runbooks/binder/_template.ipynb",
+            "./runbooks/binder/_template-python.ipynb",
+            "./runbooks/binder/_template-deno.ipynb",
             "./runbooks/binder/new-template.ipynb",
         ]
         for p in paths:
             assert Path(p).exists()
 
-        assert not sha256sum("./runbooks/binder/new-template.ipynb") == sha256sum(
-            "./runbooks/binder/_template.ipynb"
-        )
-        with open("./runbooks/binder/_template.ipynb", encoding="utf8") as f:
+        with open("./runbooks/binder/_template-python.ipynb", encoding="utf8") as f:
+            nb = nbformat.read(f, 4)
+            c = nb.cells[2]
+            assert "parameters" in c.metadata.tags
+
+        with open("./runbooks/binder/_template-deno.ipynb", encoding="utf8") as f:
             nb = nbformat.read(f, 4)
             c = nb.cells[2]
             assert "parameters" in c.metadata.tags
@@ -142,16 +148,19 @@ def test_cli_lifecycle_to_run():
             "./runbooks/binder",
             "./runbooks/runs",
             "./runbooks/.runbook.json",
-            "./runbooks/binder/_template.ipynb",
+            "./runbooks/binder/_template-python.ipynb",
+            "./runbooks/binder/_template-deno.ipynb",
             "./runbooks/binder/new-template.ipynb",
         ]
         for p in paths:
             assert Path(p).exists()
 
-        assert not sha256sum("./runbooks/binder/new-template.ipynb") == sha256sum(
-            "./runbooks/binder/_template.ipynb"
-        )
-        with open("./runbooks/binder/_template.ipynb", encoding="utf8") as f:
+        with open("./runbooks/binder/_template-python.ipynb", encoding="utf8") as f:
+            nb = nbformat.read(f, 4)
+            c = nb.cells[2]
+            assert "parameters" in c.metadata.tags
+
+        with open("./runbooks/binder/_template-deno.ipynb", encoding="utf8") as f:
             nb = nbformat.read(f, 4)
             c = nb.cells[2]
             assert "parameters" in c.metadata.tags

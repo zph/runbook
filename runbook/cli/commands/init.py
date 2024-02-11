@@ -1,10 +1,11 @@
+import base64
 import json
 from pathlib import Path
 
 import click
 
 from runbook import __version__ as VERSION
-from runbook.template import TEMPLATE
+from runbook.template import TEMPLATES
 
 RUNBOOK_CONFIG = {"version": 1, "library_version": VERSION, "directory": None}
 
@@ -39,7 +40,8 @@ def init(ctx, directory, skip_confirmation):
     mkdir ./{directory}/binder
     mkdir ./{directory}/runs
     touch ./{directory}/.runbook.json
-    touch ./{directory}/_template.ipynb
+    touch ./{directory}/_template-python.ipynb
+    touch ./{directory}/_template-deno.ipynb
     """
     )
 
@@ -50,8 +52,12 @@ def init(ctx, directory, skip_confirmation):
     cfg = {**RUNBOOK_CONFIG, **{"directory": directory}}
     with open(f"./{directory}/.runbook.json", "w") as f:
         f.write(json.dumps(cfg))
-    with open(f"./{directory}/binder/_template.ipynb", "w") as f:
-        import base64
+    with open(f"./{directory}/binder/_template-python.ipynb", "w") as f:
+        fmt = "python"
+        js = base64.b64decode(TEMPLATES[fmt]).decode("utf-8")
+        f.write(js)
 
-        js = base64.b64decode(TEMPLATE).decode("utf-8")
+    with open(f"./{directory}/binder/_template-deno.ipynb", "w") as f:
+        fmt = "deno"
+        js = base64.b64decode(TEMPLATES[fmt]).decode("utf-8")
         f.write(js)

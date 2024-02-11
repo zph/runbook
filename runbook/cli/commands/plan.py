@@ -60,8 +60,8 @@ def plan(ctx, input, embed, params={}):
 
     argv = [
         "--ClearOutputPreprocessor.enabled=True",
-        """--ClearMetadataPreprocessor.enabled=True""",
-        """--ClearMetadataPreprocessor.preserve_cell_metadata_mask='["tags"]'""",
+        "--ClearMetadataPreprocessor.enabled=True",
+        """--ClearMetadataPreprocessor.preserve_cell_metadata_mask='[("tags"), ("metadata"), ("nbformat"), ("nbformat_minor")]'""",
         "--inplace",
         full_output,
     ]

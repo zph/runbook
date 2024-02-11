@@ -68,14 +68,15 @@ _RUNBOOK_COMPLETE=fish_source runbook | source
 
 For advanced completion setup see [docs](https://click.palletsprojects.com/en/8.1.x/shell-completion/#enabling-completion)
 
-# Decisions
+# Principles
 
 - Use python for interop with ipynb and the supporting libraries
     - But allow for other kernels (deno) as secondary option, via compatible libraries
 - Make `runbook` batteries included for interfacing with shell commands and common runbook
 operations (ie grafana and notifications)
 - Use modern standard for python dependency management aka poetry.
-- Sets up necessary requirements to ensure cell executions are timed and displayed
+- Sets up necessary requirements to ensure cell executions are timed and displayed as
+long as executions run through `runbook run ...` command
 
 # Caveats
 
@@ -85,3 +86,12 @@ operations (ie grafana and notifications)
    1. Recommendation: if requiring consistency, write your own pre-processor to standardize on an id format
 1. Builting shell package requires a shell environment and is only expected to run on Linux or Mac not Windows.
    1. Recommendation: suggest fixes in PR or Issues on Github
+
+## Deno / Typescript
+1. Parameter cells should use `var` declarations to allow for param overriding
+    - This is required to correctly support executing the ts version of notebooks
+        which are stricter than jupyter notebooks in enforcing variable non-reuse
+        when using `let` or `const`
+1. Confirm/prompt functions always return false in notebooks due to lack of support
+    in deno kernel. We may invest in upstreaming a patch to support this as it has support
+    in python notebooks

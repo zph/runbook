@@ -12,14 +12,25 @@ from runbook.cli.validators import validate_template
     "-t",
     "--template",
     envvar="TEMPLATE",
-    default="./runbooks/binder/_template.ipynb",
+    default="./runbooks/binder/_template-python.ipynb",
     type=click.Path(exists=True, file_okay=True),
     callback=validate_template,
 )
+@click.option(
+    "-l",
+    "--language",
+    envvar="LANGUAGE",
+    type=click.Path(exists=True, file_okay=True),
+    default=None,
+)
 @click.pass_context
-def create(ctx, filename, template):
+def create(ctx, filename, template, language):
     """Create a new runbook from [template]"""
     # TODO: guard against anything other than a bare name
+    # Allow override for alternate language default
+    # TODO: allow reading from project config file
+    if language:
+        template = f"./runbooks/binder/_template-{language}.ipynb"
     if path.basename(filename) != filename:
         raise click.UsageError(
             "Supplied filename included more than a basename, should look like 'maintenance-operation.ipynb'"
@@ -29,8 +40,8 @@ def create(ctx, filename, template):
     # TODO: hide the nbconvert verbose output?
     argv = [
         "--ClearOutputPreprocessor.enabled=True",
-        # Do not use this to clear metadata for cells
-        # """--ClearMetadataPreprocessor.preserve_cell_metadata_mask='["tags"]'""",
+        # "--ClearMetadataPreprocessor.enabled=True",
+        # """--ClearMetadataPreprocessor.preserve_cell_metadata_mask='[("tags")]'""",
         template,
         "--to",
         "notebook",

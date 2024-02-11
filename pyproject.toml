@@ -10,7 +10,9 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 shx = "^0.4.2"
-papermill = "^2.5.0"
+# papermill = "^2.5.0"
+# Used until upstreaming typescript into papermill
+papermill = { git = "https://github.com/zph/papermill", branch = "main" }
 jupyter = "^1.0.0"
 click = "^8.1.7"
 bash-kernel = "^0.9.3"
@@ -41,3 +43,7 @@ runbook = "runbook.cli:cli"
 
 [tool.poetry-version-plugin]
 source = "init"
+
+# https://github.com/python-poetry/poetry/issues/927
+# [tool.poetry.plugins."papermill.translators"]
+# "typescript" = "translators:runbook.translators.TypescriptTranslator"
