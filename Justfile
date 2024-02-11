@@ -41,3 +41,6 @@ clean:
 
 build:
   poetry build
+
+benchmark:
+  hyperfine --export-markdown=PERFORMANCE.md -- runbook
