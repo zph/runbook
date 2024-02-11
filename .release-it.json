@@ -10,7 +10,7 @@
     "before:init": "just clean",
     "after:github:release": "just clean",
     "before:release": "just build"
-  }
+  },
   "npm": {
     "publish": false
   },
