@@ -1,6 +1,6 @@
 from asyncio.subprocess import Process
 from datetime import datetime
-from shlex import quote as Q
+from shlex import quote
 
 import click
 
@@ -16,6 +16,7 @@ def __retain_imports_via_noop():
     style
     echo
     style
+    quote
 
 
 class ShellProcess(Process):
