@@ -82,7 +82,7 @@ async def shell(cmd: str, dry_run, tags={}, confirm=False, **kwargs):
         confirm = confirm or confirm_default
 
     if dry_run:
-        cmd_mod = f"echo {Q(cmd)}"
+        cmd_mod = f"echo {quote(cmd)}"
     else:
         cmd_mod = cmd
 
