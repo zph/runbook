@@ -20,18 +20,22 @@ from runbook.cli.validators import validate_plan_params, validate_runbook_file_p
 @click.option(
     "-p", "--params", default={}, type=click.UNPROCESSED, callback=validate_plan_params
 )
+@click.option(
+    "-i", "--identifier", default="", type=click.STRING
+)
 @click.pass_context
-def plan(ctx, input, embed, params={}):
+def plan(ctx, input, embed, identifier="", params={}):
     """Prepares the runbook for execution by injecting parameters. Doesn't run runbook."""
     import shutil
 
     date = datetime.now().date()
     basename = path.basename(input)
     basename_without_ext = basename[0:-6]
+    output_basename_without_ext = basename_without_ext + "-" + identifier
     output = "-".join([str(date), basename_without_ext])
     # Output to folder to allow for embedding other files in same folder
     output_folder = f"./runbooks/runs/{output}"
-    full_output = f"{output_folder}/{basename_without_ext}.ipynb"
+    full_output = f"{output_folder}/{output_basename_without_ext}.ipynb"
 
     runbook_param_injection = {
         "__RUNBOOK_METADATA__": {
@@ -46,7 +50,7 @@ def plan(ctx, input, embed, params={}):
     injection_params = {**runbook_param_injection, **params}
 
     if not Path(output_folder).exists():
-        os.mkdir(path=output_folder)
+        os.makedirs(output_folder, exist_ok=True)
 
     # TODO: safety check if we already have one with this SHA in folder, in which case prompt
     # and offer to skip.
@@ -67,7 +71,6 @@ def plan(ctx, input, embed, params={}):
         full_output,
     ]
 
-    # TODO: write customer parser to remove data
     # TODO: join the unified logic of create and plan
 
     # TODO: hide the nbconvert verbose output?
