@@ -2256,7 +2256,7 @@ test = ["attrs (>=17.4.0)", "azure-datalake-store (>=0.0.30)", "azure-identity (
 type = "git"
 url = "https://github.com/zph/papermill"
 reference = "main"
-resolved_reference = "be381a0f55cc175fe1598560505e6ac7cf88ec06"
+resolved_reference = "ca974a74752f6c719a14fb7ea9c521dfc67beb0f"
 
 [[package]]
 name = "parso"
