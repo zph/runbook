@@ -4,7 +4,7 @@ repos:
     hooks:
     - id: jupytext
       args: [--pipe, black]
-      exclude: runbooks/binder/_template-deno.ipynb|.*\.md
+      exclude: runbooks/binder/_template-deno.ipynb|.*\.md|tests/.*
       additional_dependencies:
         - black==23.3.0 # Matches hook
 
