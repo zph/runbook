@@ -4,9 +4,9 @@ from os import path
 from pathlib import Path
 
 import click
-import papermill as pm
-
 from runbook.cli.validators import validate_plan_params, validate_runbook_file_path
+
+import papermill as pm
 
 
 # TODO: standardize ids in output files through custom processor
@@ -20,9 +20,7 @@ from runbook.cli.validators import validate_plan_params, validate_runbook_file_p
 @click.option(
     "-p", "--params", default={}, type=click.UNPROCESSED, callback=validate_plan_params
 )
-@click.option(
-    "-i", "--identifier", default="", type=click.STRING
-)
+@click.option("-i", "--identifier", default="", type=click.STRING)
 @click.pass_context
 def plan(ctx, input, embed, identifier="", params={}):
     """Prepares the runbook for execution by injecting parameters. Doesn't run runbook."""

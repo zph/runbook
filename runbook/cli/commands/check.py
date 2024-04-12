@@ -1,12 +1,12 @@
 # metadata.kernelspec.name = deno || python3
 
+import json
 from os import path
 
 import click
-import json
-
 from runbook.cli.completions import EditableNotebook
 from runbook.cli.validators import validate_runbook_file_path
+
 
 @click.command()
 @click.argument(
@@ -14,7 +14,6 @@ from runbook.cli.validators import validate_runbook_file_path
     type=EditableNotebook(file_okay=True),
     callback=validate_runbook_file_path,
 )
-
 @click.option(
     "-c",
     "--command",
@@ -24,7 +23,6 @@ from runbook.cli.validators import validate_runbook_file_path
 @click.pass_context
 def check(ctx, filename, command):
     """Check language validity and formatting of a notebook."""
-    # jupytext --check 'deno check {}' notebook.ipynb
     full_path = path.abspath(filename)
     content = None
     with open(full_path, "r") as f:
@@ -34,11 +32,11 @@ def check(ctx, filename, command):
     # Default
     language_specific_tool = "black --diff {}"
     if command:
-       language_specific_tool = command
+        language_specific_tool = command
     else:
-      kernel_name = content["metadata"]["kernelspec"]["name"]
-      if kernel_name == "deno":
-        language_specific_tool = "deno check {}"
+        kernel_name = content["metadata"]["kernelspec"]["name"]
+        if kernel_name == "deno":
+            language_specific_tool = "deno check {}"
 
     argv = ["--check", language_specific_tool, full_path]
     # Lazily loaded for performance

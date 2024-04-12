@@ -2,7 +2,6 @@ from os import path
 
 import click
 from nbconvert.nbconvertapp import NbConvertApp
-
 from runbook.cli.validators import validate_create_language, validate_template
 
 

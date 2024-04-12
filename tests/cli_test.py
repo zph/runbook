@@ -27,6 +27,7 @@ Options:
   --help      Show this message and exit.
 
 Commands:
+  check    Check language validity and formatting of a notebook.
   convert  Convert an existing runbook to different format
   create   Create a new runbook from [template]
   edit     Edit an existing runbook
