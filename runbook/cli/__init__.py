@@ -2,7 +2,7 @@ import os
 
 import click
 
-from runbook.cli.commands import create, edit, export, convert, init, plan, review, run, version
+from runbook.cli.commands import create, edit, export, convert, check, init, plan, review, run, version
 
 # TODO: not working, needs a custom underlying class to handle the auto-env
 CONTEXT_SETTINGS = dict(auto_envvar_prefix="RUNBOOK")
@@ -28,6 +28,7 @@ cli.add_command(plan)
 cli.add_command(edit)
 cli.add_command(create)
 cli.add_command(convert)
+cli.add_command(check)
 cli.add_command(run)
 cli.add_command(review)
 cli.add_command(version)

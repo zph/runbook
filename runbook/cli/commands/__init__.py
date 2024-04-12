@@ -6,3 +6,4 @@ from runbook.cli.commands.review import review
 from runbook.cli.commands.run import run
 from runbook.cli.commands.version import version
 from runbook.cli.commands.convert import convert
+from runbook.cli.commands.check import check
