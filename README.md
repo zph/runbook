@@ -70,11 +70,10 @@ For advanced completion setup see [docs](https://click.palletsprojects.com/en/8.
 
 # Principles
 
-- Use python for interop with ipynb and the supporting libraries
-    - But allow for other kernels (deno) as secondary option, via compatible libraries
+- Prefer deno for better package management and developer ergonomics
+    - But allow for other kernels (python) as secondary option, via compatible libraries
 - Make `runbook` batteries included for interfacing with shell commands and common runbook
 operations (ie grafana and notifications)
-- Use modern standard for python dependency management aka poetry.
 - Sets up necessary requirements to ensure cell executions are timed and displayed as
 long as executions run through `runbook run ...` command
 
@@ -88,10 +87,8 @@ long as executions run through `runbook run ...` command
    1. Recommendation: suggest fixes in PR or Issues on Github
 
 ## Deno / Typescript
-1. Parameter cells should use `var` declarations to allow for param overriding
-    - This is required to correctly support executing the ts version of notebooks
-        which are stricter than jupyter notebooks in enforcing variable non-reuse
-        when using `let` or `const`
+1. Parameter cells should use `let` declarations to allow for param overriding
+    - This is required to correctly support executing the ts version of notebooks.
 1. Confirm/prompt functions always return false in notebooks due to lack of support
     in deno kernel. We may invest in upstreaming a patch to support this as it has support
     in python notebooks
