@@ -5,6 +5,7 @@ from runbook.cli.commands import (
     check,
     convert,
     create,
+    diff,
     edit,
     export,
     init,
@@ -39,6 +40,7 @@ cli.add_command(edit)
 cli.add_command(create)
 cli.add_command(convert)
 cli.add_command(check)
+cli.add_command(diff)
 cli.add_command(run)
 cli.add_command(review)
 cli.add_command(version)
