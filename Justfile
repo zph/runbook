@@ -49,3 +49,6 @@ template-update:
       --ClearMetadataPreprocessor.preserve_cell_metadata_mask='[("tags")]' "--ClearMetadataPreprocessor.clear_notebook_metadata=False"  | grep -E -v "^poetry-version-plugin" | base64)"
   export TEMPLATE_PYTHON
   envsubst < runbook/template_builder.py | tee runbook/template.py
+
+readme:
+  .config/templating.sh

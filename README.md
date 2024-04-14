@@ -86,3 +86,7 @@ long as executions run through `runbook run ...` command
 1. Confirm/prompt functions always return false in notebooks due to lack of support
     in deno kernel. We may invest in upstreaming a patch to support this as it has support
     in python notebooks
+
+# Readme Changes
+
+README.md is generated from .config/README.md.template and should be updated there.
