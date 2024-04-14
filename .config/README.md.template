@@ -24,24 +24,7 @@ In this context, a runbook is a mixture of markdown and executable code that con
 ## CLI
 
 ```sh
-Usage: runbook [OPTIONS] COMMAND [ARGS]...
-
-Options:
-  --cwd PATH  Directory for operations (normally at root above runbooks, ie
-              ../.runbook.yaml)
-  --help      Show this message and exit.
-
-Commands:
-  check    Check language validity and formatting of a notebook.
-  convert  Convert an existing runbook to different format
-  create   Create a new runbook from [template]
-  diff     Diff two notebooks
-  edit     Edit an existing runbook
-  init     Initialize a folder as a runbook repository
-  plan     Prepares the runbook for execution by injecting parameters.
-  review   [Unimplemented] Entrypoint for reviewing runbook
-  run      Run a notebook
-  version  Display version information about runbook
+$RUNBOOK_HELP
 ```
 
 Shell completion is included via click library and enabled as follows [link](https://click.palletsprojects.com/en/8.1.x/shell-completion/#enabling-completion)
