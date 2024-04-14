@@ -30,6 +30,7 @@ Commands:
   check    Check language validity and formatting of a notebook.
   convert  Convert an existing runbook to different format
   create   Create a new runbook from [template]
+  diff     Diff two notebooks
   edit     Edit an existing runbook
   init     Initialize a folder as a runbook repository
   plan     Prepares the runbook for execution by injecting parameters.

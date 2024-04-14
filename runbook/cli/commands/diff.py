@@ -4,6 +4,7 @@ import click
 from runbook.cli.completions import EditableNotebook
 from runbook.cli.validators import validate_runbook_file_path
 
+
 @click.command()
 @click.argument(
     "notebook_1",
@@ -15,10 +16,9 @@ from runbook.cli.validators import validate_runbook_file_path
     type=EditableNotebook(file_okay=True),
     callback=validate_runbook_file_path,
 )
-
 @click.pass_context
 def diff(ctx, notebook_1, notebook_2):
-    """Convert an existing runbook to different format"""
+    """Diff two notebooks"""
     argv = [path.abspath(notebook_1), path.abspath(notebook_2)]
     from nbdime import nbdiffapp
 
