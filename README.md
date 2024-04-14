@@ -21,6 +21,13 @@ In this context, a runbook is a mixture of markdown and executable code that con
    1. One to execute the book
    2. A second to validate and perform safety checks
 
+## Workflow
+
+1. Initialize a new folder project with `runbook init...`
+1. Create a new runbook with `runbook create -l deno runbook-name.ipynb`
+1. Plan that runbook for a specific run `runbook plan runbook-name.ipynb --embed file.json --parameters '{"arg": 1, "foo": "baz"}'
+1. Run the instance of a runbook with either `runbook run runbook-name.ipynb` or use VSCode to run it `code runbooks/run/runbook-name.ipynb`
+
 ## CLI
 
 ```sh
