@@ -4,6 +4,7 @@ from os import path
 from pathlib import Path
 
 import click
+import questionary
 
 
 # TODO: ensure no duplicate extension here
@@ -61,20 +62,34 @@ def validate_runbook_file_path(ctx, param, value):
         raise click.BadOptionUsage("FILENAME", "unable to find file")
 
 
+def process_glob_matches(options):
+    options = sorted(options)
+    options.reverse()
+    if len(options) == 1:
+        return options[0]
+    elif len(options) > 1:
+        return questionary.select("Which file?", choices=options).ask()
+    else:
+        raise click.BadOptionUsage("FILENAME", f"unable to find {value} file")
+
+
 def validate_planned_runbook_file_path(ctx, param, value):
-    base_name = path.basename(value)
     ext = path.splitext(value)[-1].lower()
     if not ext == ".ipynb":
-        raise click.BadOptionUsage(
-            param, "format for param is not an notebook ending with ipynb"
-        )
+        ext = ".ipynb"
+        value = value + ".ipynb"
+    base_name = path.basename(value)
     try:
         if Path(value).exists():
             return value
         elif glob.glob(f"./runbooks/runs/**/{value}", recursive=True):
-            return glob.glob(f"./runbooks/runs/**/{value}", recursive=True)[0]
+            return process_glob_matches(
+                glob.glob(f"./runbooks/runs/**/{value}", recursive=True)
+            )
         elif glob.glob(f"./runbooks/runs/**/{base_name}", recursive=True):
-            return glob.glob(f"./runbooks/runs/**/{base_name}", recursive=True)[0]
+            return process_glob_matches(
+                glob.glob(f"./runbooks/runs/**/{base_name}", recursive=True)
+            )
         else:
             raise click.BadOptionUsage(
                 "FILENAME", f"unable to find {value} file", value

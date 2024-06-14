@@ -28,6 +28,7 @@ python-ulid = "^2.2.0"
 slack-sdk = "^3.26.2"
 jupyterlab = "^4.1.5"
 nbdime = "^4.0.1"
+questionary = "^2.0.1"
 
 
 [tool.poetry.group.dev.dependencies]
