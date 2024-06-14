@@ -39,10 +39,6 @@ def create(ctx, filename, template, language):
     # TODO: hide the nbconvert verbose output?
     argv = [
         "--ClearOutputPreprocessor.enabled=True",
-        # Removes tags as well as everything else
-        # "--ClearMetadataPreprocessor.enabled=True",
-        # "--ClearMetadataPreprocessor.clear_notebook_metadata=False",
-        # """--ClearMetadataPreprocessor.preserve_cell_metadata_mask='[("tags")]'""",
         template,
         "--to",
         "notebook",

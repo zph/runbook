@@ -29,9 +29,12 @@ def plan(ctx, input, embed, identifier="", params={}):
     date = datetime.now().date()
     basename = path.basename(input)
     basename_without_ext = basename[0:-6]
-    output_basename_without_ext = basename_without_ext + "-" + identifier
+    output_basename_without_ext = basename_without_ext
+    if len(identifier) > 0:
+        output_basename_without_ext = "-".join(
+            [output_basename_without_ext, identifier]
+        )
     output = "-".join([str(date), basename_without_ext])
-    # Output to folder to allow for embedding other files in same folder
     output_folder = f"./runbooks/runs/{output}"
     full_output = f"{output_folder}/{output_basename_without_ext}.ipynb"
 
@@ -62,9 +65,6 @@ def plan(ctx, input, embed, identifier="", params={}):
 
     argv = [
         "--ClearOutputPreprocessor.enabled=True",
-        # "--ClearMetadataPreprocessor.enabled=True",
-        # "--ClearMetadataPreprocessor.clear_notebook_metadata=False",
-        # """--ClearMetadataPreprocessor.preserve_cell_metadata_mask='[("tags")]'""",
         "--inplace",
         full_output,
     ]
@@ -79,7 +79,5 @@ def plan(ctx, input, embed, identifier="", params={}):
     for f in embed:
         shutil.copyfile(src=f, dst=f"{output_folder}/{path.basename(f)}")
 
-    cmd = click.style(
-        f"$> runbook run {path.basename(full_output)}", fg="green", bold=True
-    )
+    cmd = click.style(f"$> runbook run {full_output}", fg="green", bold=True)
     click.echo(click.style(f"Run your new runbook instance with:\n\t{cmd}"))
