@@ -34,7 +34,7 @@ def plan(ctx, input, embed, identifier="", params={}):
         output_basename_without_ext = "-".join(
             [output_basename_without_ext, identifier]
         )
-    output = "-".join([str(date), basename_without_ext])
+    output = "-".join([str(date), output_basename_without_ext])
     output_folder = f"./runbooks/runs/{output}"
     full_output = f"{output_folder}/{output_basename_without_ext}.ipynb"
 
