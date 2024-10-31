@@ -21,6 +21,11 @@ In this context, a runbook is a mixture of markdown and executable code that con
    1. One to execute the book
    2. A second to validate and perform safety checks
 
+## Installation
+
+Use [pipx](https://github.com/pypa/pipx)
+`pipx install git+https://github.com/zph/runbook.git@main`
+
 ## Workflow
 
 1. Initialize a new folder project with `runbook init...`
