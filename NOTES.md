@@ -11,10 +11,10 @@
 - [ ] Use execute and upload output to S3 for non-interactive: https://github.com/nteract/papermill/tree/main?tab=readme-ov-file#execute-via-cli
 
 ## P0
-- [ ] Setup versioning and bumper (using versioner from npm ecosystem @release-it and @release-it/bumper)
+- [x] Setup versioning and bumper (using versioner from npm ecosystem @release-it and @release-it/bumper)
 - [x] Fix tag key getting stripped out of planned runbooks b/c it breaks papermill
 - [ ] Setup a watcher for auto-exporting html or other formats
-- [ ] Setup tagging in the notebooks to auto-set those values
+- [x] Setup tagging in the notebooks to auto-set those values
 - [ ] Setup git to autoclear cell outputs for a given folder's notebooks (ie templates) https://stackoverflow.com/a/58004619
 - [x] Assess if we need shell completions
    - [x] Yes, very nice and use https://click.palletsprojects.com/en/8.1.x/shell-completion/#custom-type-completion to define for custom types, ie only find ipynb files for edit, create, etc
