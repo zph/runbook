@@ -5,6 +5,7 @@ from os import path
 from pathlib import Path
 
 import click
+from runbook.cli.lib import nbconvert_launch_instance
 from runbook.cli.validators import validate_plan_params, validate_runbook_file_path
 from runbook.constants import RUNBOOK_METADATA
 
@@ -96,9 +97,8 @@ def plan(ctx, input, embed, identifier="", params={}):
     # TODO: join the unified logic of create and plan
 
     # TODO: hide the nbconvert verbose output?
-    from nbconvert.nbconvertapp import NbConvertApp
 
-    NbConvertApp().launch_instance(argv=argv)
+    nbconvert_launch_instance(argv)
 
     for f in embed:
         shutil.copyfile(src=f, dst=f"{output_folder}/{path.basename(f)}")

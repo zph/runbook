@@ -1,7 +1,7 @@
 from os import path
 
 import click
-from nbconvert.nbconvertapp import NbConvertApp
+from runbook.cli.lib import nbconvert_launch_instance
 from runbook.cli.validators import validate_create_language, validate_template
 
 
@@ -48,7 +48,7 @@ def create(ctx, filename, template, language):
         path.join("runbooks", "binder"),
     ]
 
-    NbConvertApp().launch_instance(argv=argv)
+    nbconvert_launch_instance(argv)
 
     click.echo(
         click.style(
