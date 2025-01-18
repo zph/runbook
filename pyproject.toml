@@ -1,9 +1,12 @@
-[tool.poetry]
+[project]
 name = "runbook"
 # Managed via runbook.__version__ and https://pypi.org/project/poetry-version-plugin/
 version = "0"
 description = "Runbook lib and cli"
-authors = ["Zander Hill <zander@xargs.io>"]
+requires-python = ">=3.11"
+authors = [
+  { name = "Zander Hill", email = "zander@xargs.io" },
+]
 license = "MIT"
 readme = "README.md"
 
@@ -40,6 +43,11 @@ pytest = "^7.4.4"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.4",
+]
 
 [tool.poetry.scripts]
 runbook = "runbook.cli:cli"

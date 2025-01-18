@@ -109,6 +109,16 @@ long as executions run through `runbook run ...` command
 1. Parameter cells should use `let` declarations to allow for param overriding
     - This is required to correctly support executing the ts version of notebooks.
 
+# Developing runbook cli
+
+We use [hermit](https://hermit.dev/) to manage developement dependencies.
+
+Use [uv](https://docs.astral.sh/uv/) as the package manager/execution environment.
+
+Necessary deps can be seen in [pyproject.toml](pyproject.toml) and .hermit/bin
+
+Use .hermit/bin/activate-hermit to activate the environment.
+
 # Readme Changes
 
 README.md is generated from .config/README.md.template and should be updated there.
