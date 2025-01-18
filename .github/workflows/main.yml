@@ -16,7 +16,8 @@ jobs:
           python-version: '3.11'
 
       - name: initialize folders
-        run: poetry run runbook init --skip-confirmation=true
+        # Runbook command comes from .hermit/bin/runbook
+        run: runbook init --skip-confirmation=true
       - name: Black formatting
         run: pre-commit run black
       - name: jupytext hook
