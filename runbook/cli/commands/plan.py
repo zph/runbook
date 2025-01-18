@@ -5,11 +5,50 @@ from os import path
 from pathlib import Path
 
 import click
+import nbformat
 from runbook.cli.lib import nbconvert_launch_instance
 from runbook.cli.validators import validate_plan_params, validate_runbook_file_path
 from runbook.constants import RUNBOOK_METADATA
 
 import papermill as pm
+
+
+def get_notebook_language(notebook_path: str) -> str:
+    """
+    Determine the language of the notebook by checking the first code cell's metadata.
+    Returns 'python', 'typescript', or 'unknown'
+    """
+    nb = nbformat.read(notebook_path, as_version=4)
+    for cell in nb.cells:
+        if cell.cell_type == "code":
+            # Check kernel info
+            if "kernelspec" in nb.metadata:
+                kernel_name = nb.metadata.kernelspec.name.lower()
+                if "python" in kernel_name:
+                    return "python"
+                elif "typescript" in kernel_name or "ts" in kernel_name:
+                    return "typescript"
+            # Check language info
+            if "language_info" in nb.metadata:
+                language = nb.metadata.language_info.name.lower()
+                if "python" in language:
+                    return "python"
+                elif "typescript" in language or "ts" in language:
+                    return "typescript"
+    return "unknown"
+
+
+import ast
+
+
+def get_parser_by_language(language: str):
+    if language == "typescript":
+        return json.loads
+    elif language == "python":
+        return ast.literal_eval
+    else:
+        # Default to json.loads for unknown languages
+        return json.loads
 
 
 @click.command()
@@ -49,10 +88,13 @@ def plan(ctx, input, embed, identifier="", params={}):
         }
     }
 
+    # TODO: add test cases for auto-planning
+    # As of 2025 Jan it's manual regression testing
     if len(params) == 0:
         inferred_params = pm.inspect_notebook(input)
+        notebook_language = get_notebook_language(input)
+        value_parser = get_parser_by_language(notebook_language)
         # Inferred_type_name is language specific
-        # we make the simplifying assumption to show user and then treat inputs as potentially json
         for key, value in inferred_params.items():
             if key != RUNBOOK_METADATA:
                 default = value["default"].rstrip(";")
@@ -67,7 +109,7 @@ def plan(ctx, input, embed, identifier="", params={}):
                 raw_value = click.prompt(
                     f"""Enter value for {key}{type_hint}{help_hint}""",
                     default=default,
-                    value_proc=json.loads,
+                    value_proc=value_parser,
                 )
                 params[key] = raw_value
 
