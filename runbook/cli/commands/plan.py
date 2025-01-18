@@ -1,16 +1,56 @@
+import json
 import os
 from datetime import datetime
 from os import path
 from pathlib import Path
 
 import click
+import nbformat
+from runbook.cli.lib import nbconvert_launch_instance
 from runbook.cli.validators import validate_plan_params, validate_runbook_file_path
+from runbook.constants import RUNBOOK_METADATA
 
 import papermill as pm
 
 
-# TODO: standardize ids in output files through custom processor
-# use something like ulid, we don't need full UUIDs
+def get_notebook_language(notebook_path: str) -> str:
+    """
+    Determine the language of the notebook by checking the first code cell's metadata.
+    Returns 'python', 'typescript', or 'unknown'
+    """
+    nb = nbformat.read(notebook_path, as_version=4)
+    for cell in nb.cells:
+        if cell.cell_type == "code":
+            # Check kernel info
+            if "kernelspec" in nb.metadata:
+                kernel_name = nb.metadata.kernelspec.name.lower()
+                if "python" in kernel_name:
+                    return "python"
+                elif "typescript" in kernel_name or "ts" in kernel_name:
+                    return "typescript"
+            # Check language info
+            if "language_info" in nb.metadata:
+                language = nb.metadata.language_info.name.lower()
+                if "python" in language:
+                    return "python"
+                elif "typescript" in language or "ts" in language:
+                    return "typescript"
+    return "unknown"
+
+
+import ast
+
+
+def get_parser_by_language(language: str):
+    if language == "typescript":
+        return json.loads
+    elif language == "python":
+        return ast.literal_eval
+    else:
+        # Default to json.loads for unknown languages
+        return json.loads
+
+
 @click.command()
 @click.argument(
     "input", type=click.Path(file_okay=True), callback=validate_runbook_file_path
@@ -39,7 +79,7 @@ def plan(ctx, input, embed, identifier="", params={}):
     full_output = f"{output_folder}/{output_basename_without_ext}.ipynb"
 
     runbook_param_injection = {
-        "__RUNBOOK_METADATA__": {
+        RUNBOOK_METADATA: {
             "RUNBOOK_FOLDER": output_folder,
             "RUNBOOK_FILE": full_output,
             "RUNBOOK_SOURCE": input,
@@ -47,6 +87,31 @@ def plan(ctx, input, embed, identifier="", params={}):
             "CREATED_BY": os.environ["USER"],
         }
     }
+
+    # TODO: add test cases for auto-planning
+    # As of 2025 Jan it's manual regression testing
+    if len(params) == 0:
+        inferred_params = pm.inspect_notebook(input)
+        notebook_language = get_notebook_language(input)
+        value_parser = get_parser_by_language(notebook_language)
+        # Inferred_type_name is language specific
+        for key, value in inferred_params.items():
+            if key != RUNBOOK_METADATA:
+                default = value["default"].rstrip(";")
+                typing = value["inferred_type_name"]
+                type_hint = ""
+                help_hint = ""
+                if typing:
+                    type_hint = f" ({typing})"
+                if value["help"]:
+                    help_hint = f"(hint: {value['help']})"
+
+                raw_value = click.prompt(
+                    f"""Enter value for {key}{type_hint}{help_hint}""",
+                    default=default,
+                    value_proc=value_parser,
+                )
+                params[key] = raw_value
 
     injection_params = {**runbook_param_injection, **params}
 
@@ -64,17 +129,13 @@ def plan(ctx, input, embed, identifier="", params={}):
     )
 
     argv = [
-        "--ClearOutputPreprocessor.enabled=True",
         "--inplace",
         full_output,
     ]
 
     # TODO: join the unified logic of create and plan
 
-    # TODO: hide the nbconvert verbose output?
-    from nbconvert.nbconvertapp import NbConvertApp
-
-    NbConvertApp().launch_instance(argv=argv)
+    nbconvert_launch_instance(argv, clear_output=True)
 
     for f in embed:
         shutil.copyfile(src=f, dst=f"{output_folder}/{path.basename(f)}")

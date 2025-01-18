@@ -1,7 +1,7 @@
 from os import path
 
 import click
-from nbconvert.nbconvertapp import NbConvertApp
+from runbook.cli.lib import nbconvert_launch_instance
 from runbook.cli.validators import validate_create_language, validate_template
 
 
@@ -11,15 +11,18 @@ from runbook.cli.validators import validate_create_language, validate_template
     "-t",
     "--template",
     envvar="TEMPLATE",
-    default="./runbooks/binder/_template-python.ipynb",
+    default="./runbooks/binder/_template-deno.ipynb",
     type=click.Path(exists=True, file_okay=True),
     callback=validate_template,
 )
+
+# TODO: switch to language and template defaulting to Deno
+# based on operational experience at work
 @click.option(
     "-l",
     "--language",
     envvar="LANGUAGE",
-    default="./runbooks/binder/_template-python.ipynb",
+    default="deno",
     callback=validate_create_language,
 )
 @click.pass_context
@@ -36,9 +39,7 @@ def create(ctx, filename, template, language):
         )
     # TODO: remove hardcoding of folder outer name and rely on config file
     path.join("runbooks", "binder", filename)
-    # TODO: hide the nbconvert verbose output?
     argv = [
-        "--ClearOutputPreprocessor.enabled=True",
         template,
         "--to",
         "notebook",
@@ -48,7 +49,7 @@ def create(ctx, filename, template, language):
         path.join("runbooks", "binder"),
     ]
 
-    NbConvertApp().launch_instance(argv=argv)
+    nbconvert_launch_instance(argv, clear_output=True)
 
     click.echo(
         click.style(

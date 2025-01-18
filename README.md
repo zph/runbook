@@ -33,6 +33,24 @@ Use [pipx](https://github.com/pypa/pipx)
 1. Plan that runbook for a specific run `runbook plan runbook-name.ipynb --embed file.json --parameters '{"arg": 1, "foo": "baz"}'
 1. Run the instance of a runbook with either `runbook run runbook-name.ipynb` or use VSCode to run it `code runbooks/run/runbook-name.ipynb`
 
+## Installation
+
+We recommend using [uv](https://docs.astral.sh/uv/) or [pipx](https://pypi.org/project/pipx/) for installing runbook as a cli tool.
+
+```sh
+uv tool install git+https://github.com/zph/runbook.git
+# or
+pipx install git+https://github.com/zph/runbook.git
+```
+
+Or pin to a version
+
+```sh
+uv tool install git+https://github.com/zph/runbook.git@v0.0.1
+
+pipx install git+https://github.com/zph/runbook.git@v0.0.1
+```
+
 ## CLI
 
 ```sh
@@ -95,9 +113,6 @@ long as executions run through `runbook run ...` command
 ## Deno / Typescript
 1. Parameter cells should use `let` declarations to allow for param overriding
     - This is required to correctly support executing the ts version of notebooks.
-1. Confirm/prompt functions always return false in notebooks due to lack of support
-    in deno kernel. We may invest in upstreaming a patch to support this as it has support
-    in python notebooks
 
 # Readme Changes
 
