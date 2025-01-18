@@ -20,8 +20,9 @@ def ts_id(length=10):
 
 
 # Suppresses nbconvert output
-def nbconvert_launch_instance(argv):
-    # Temporarily redirect stdout/stderr to suppress nbconvert output
+def nbconvert_launch_instance(argv, clear_output=True):
+    if clear_output:
+        argv.insert(0, "--ClearOutputPreprocessor.enabled=True")
     stdout = sys.stdout
     stderr = sys.stderr
     sys.stdout = StringIO()

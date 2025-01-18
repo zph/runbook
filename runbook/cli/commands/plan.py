@@ -12,8 +12,6 @@ from runbook.constants import RUNBOOK_METADATA
 import papermill as pm
 
 
-# TODO: standardize ids in output files through custom processor
-# use something like ulid, we don't need full UUIDs
 @click.command()
 @click.argument(
     "input", type=click.Path(file_okay=True), callback=validate_runbook_file_path
@@ -57,7 +55,7 @@ def plan(ctx, input, embed, identifier="", params={}):
         # we make the simplifying assumption to show user and then treat inputs as potentially json
         for key, value in inferred_params.items():
             if key != RUNBOOK_METADATA:
-                default = value["default"].strip(";")
+                default = value["default"].rstrip(";")
                 typing = value["inferred_type_name"]
                 type_hint = ""
                 help_hint = ""
@@ -89,16 +87,13 @@ def plan(ctx, input, embed, identifier="", params={}):
     )
 
     argv = [
-        "--ClearOutputPreprocessor.enabled=True",
         "--inplace",
         full_output,
     ]
 
     # TODO: join the unified logic of create and plan
 
-    # TODO: hide the nbconvert verbose output?
-
-    nbconvert_launch_instance(argv)
+    nbconvert_launch_instance(argv, clear_output=True)
 
     for f in embed:
         shutil.copyfile(src=f, dst=f"{output_folder}/{path.basename(f)}")

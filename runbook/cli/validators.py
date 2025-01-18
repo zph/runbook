@@ -4,6 +4,8 @@ from os import path
 from pathlib import Path
 
 import click
+
+# TODO: use click prompt lib instead of questionary to avoid dependency
 import questionary
 
 
@@ -26,8 +28,10 @@ def validate_template(ctx, param, value):
 def validate_create_language(ctx, param, value):
     if value == "./runbooks/binder/_template-python.ipynb":
         return value
+    if value == "./runbooks/binder/_template-deno.ipynb":
+        return value
     if value in ["python", "deno"]:
-        return f"./runbooks/binder/_template-{value}"
+        return f"./runbooks/binder/_template-{value}.ipynb"
     else:
         raise click.BadOptionUsage("--language", "options are python or deno")
 
