@@ -36,6 +36,10 @@ def validate_plan_params(ctx, param, value):
     if isinstance(value, dict):
         return value
 
+    # We allow this for the auto-plan case
+    if value == "" or value == None:
+        return {}
+
     try:
         v = json.loads(value)
         if isinstance(v, dict):

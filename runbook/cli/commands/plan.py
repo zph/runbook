@@ -1,3 +1,4 @@
+import json
 import os
 from datetime import datetime
 from os import path
@@ -5,6 +6,7 @@ from pathlib import Path
 
 import click
 from runbook.cli.validators import validate_plan_params, validate_runbook_file_path
+from runbook.constants import RUNBOOK_METADATA
 
 import papermill as pm
 
@@ -39,7 +41,7 @@ def plan(ctx, input, embed, identifier="", params={}):
     full_output = f"{output_folder}/{output_basename_without_ext}.ipynb"
 
     runbook_param_injection = {
-        "__RUNBOOK_METADATA__": {
+        RUNBOOK_METADATA: {
             "RUNBOOK_FOLDER": output_folder,
             "RUNBOOK_FILE": full_output,
             "RUNBOOK_SOURCE": input,
@@ -47,6 +49,28 @@ def plan(ctx, input, embed, identifier="", params={}):
             "CREATED_BY": os.environ["USER"],
         }
     }
+
+    if len(params) == 0:
+        inferred_params = pm.inspect_notebook(input)
+        # Inferred_type_name is language specific
+        # we make the simplifying assumption to show user and then treat inputs as potentially json
+        for key, value in inferred_params.items():
+            if key != RUNBOOK_METADATA:
+                default = value["default"].strip(";")
+                typing = value["inferred_type_name"]
+                type_hint = ""
+                help_hint = ""
+                if typing:
+                    type_hint = f" ({typing})"
+                if value["help"]:
+                    help_hint = f"(hint: {value['help']})"
+
+                raw_value = click.prompt(
+                    f"""Enter value for {key}{type_hint}{help_hint}""",
+                    default=default,
+                    value_proc=json.loads,
+                )
+                params[key] = raw_value
 
     injection_params = {**runbook_param_injection, **params}
 
