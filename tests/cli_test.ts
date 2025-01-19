@@ -22,18 +22,18 @@ const init = async (dir: string) => {
 const setup = async () => {
   const dir = await Deno.makeTempDir();
   await init(dir);
-  return dir;
+  return {runbook: (args: string[]) => runbook(args, { cwd: dir }), dir};
 }
 
 Deno.test("check", async (t) => {
-  const dir = await setup();
-  const cmd = await runbook(["check", "runbooks/binder/_template-deno.ipynb"], { cwd: dir });
+  const {runbook } = await setup();
+  const cmd = await runbook(["check", "runbooks/binder/_template-deno.ipynb"]);
   assertSnapshot(t, { exitCode: cmd.code, stdoutEndsWith: cmd.stdout.trim().endsWith("runbooks/binder/_template-deno.ipynb"), stderrEndsWith: cmd.stderr.trim().endsWith(".ts") });
 });
 
 Deno.test("convert", async (t) => {
-  const dir = await setup();
-  const cmd = await runbook(["convert", "runbooks/binder/_template-deno.ipynb", "_template-deno.ts"], { cwd: dir });
+  const {runbook, dir} = await setup();
+  const cmd = await runbook(["convert", "runbooks/binder/_template-deno.ipynb", "_template-deno.ts"]);
   assertSnapshot(t, { stderr: cmd.stderr, exitCode: cmd.code });
   const txt = await Deno.readTextFile([dir, "_template-deno.ts"].join("/"));
   assertSnapshot(t, txt);
@@ -41,8 +41,8 @@ Deno.test("convert", async (t) => {
 
 // create
 Deno.test("create", async (t) => {
-  const dir = await setup();
-  const cmd = await runbook(["create", "create-test.ipynb"], { cwd: dir });
+  const {runbook, dir} = await setup();
+  const cmd = await runbook(["create", "create-test.ipynb"]);
   assertSnapshot(t, { stderr: cmd.stderr, exitCode: cmd.code });
   const exists = await Deno.stat([dir, "runbooks/binder/create-test.ipynb"].join("/")).then(() => true).catch(() => false);
   assertEquals(exists, true);
@@ -50,7 +50,7 @@ Deno.test("create", async (t) => {
 
 // diff
 Deno.test.ignore("diff", async (t) => {
-  const dir = await setup();
+  const {runbook, dir} = await setup();
 
   // Create two notebooks with different content
   await Deno.writeTextFile(
@@ -75,27 +75,27 @@ Deno.test.ignore("diff", async (t) => {
     })
   );
 
-  const cmd = await runbook(["diff", "notebook1.ipynb", "notebook2.ipynb"], { cwd: dir });
+  const cmd = await runbook(["diff", "notebook1.ipynb", "notebook2.ipynb"]);
   assertSnapshot(t, { stdout: cmd.stdout, stderr: cmd.stderr, exitCode: cmd.code });
 });
 
 Deno.test("init", async (t) => {
-  const dir = await setup();
+  const {dir} = await setup();
   const files = await Array.fromAsync(Deno.readDir(dir));
   const filenames = files.map(f => f.name).sort();
   assertSnapshot(t, filenames);
 });
 
 Deno.test("list", async (t) => {
-  const dir = await setup();
-  const cmd = await runbook(["list"], { cwd: dir });
+  const {runbook } = await setup();
+  const cmd = await runbook(["list"]);
   assertSnapshot(t, { stdout: cmd.stdout, stderr: cmd.stderr, exitCode: cmd.code });
 });
 
 // show
 Deno.test("show", async (t) => {
-  const dir = await setup();
-  const cmd = await runbook(["show", "runbooks/binder/_template-deno.ipynb"], { cwd: dir });
+  const {runbook } = await setup();
+  const cmd = await runbook(["show", "runbooks/binder/_template-deno.ipynb"]);
   assertSnapshot(t, { stdout: cmd.stdout, stderr: cmd.stderr, exitCode: cmd.code });
 });
 
@@ -108,8 +108,8 @@ Error: Exited with code: 128
     at eventLoopTick (ext:core/01_core.js:175:7)
 */
 Deno.test.ignore("run", async (t) => {
-  const dir = await setup();
-  const cmd = await runbook(["run", "--no-interactive", "runbooks/binder/_template-deno.ipynb", "--output", "output.ipynb"], { cwd: dir });
+  const {runbook, dir} = await setup();
+  const cmd = await runbook(["run", "--no-interactive", "runbooks/binder/_template-deno.ipynb", "--output", "output.ipynb"]);
   assertSnapshot(t, { stdout: cmd.stdout, stderr: cmd.stderr, exitCode: cmd.code });
   const output = await Deno.readTextFile([dir, "output.ipynb"].join("/"));
   assertSnapshot(t, output);
@@ -117,7 +117,8 @@ Deno.test.ignore("run", async (t) => {
 
 // version
 Deno.test("version", async (t) => {
-  const dir = await setup();
-  const cmd = await runbook(["version"], { cwd: dir });
+  const {runbook } = await setup();
+  const cmd = await runbook(["version"]);
   assertSnapshot(t, { stdout: cmd.stdout.split(":")[0], stderr: cmd.stderr, exitCode: cmd.code });
 });
+
