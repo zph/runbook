@@ -9,20 +9,6 @@ snapshot[`check 1`] = `
 }
 `;
 
-snapshot[`list 1`] = `
-{
-  exitCode: 0,
-  stderr: "",
-  stdout: "
-Templates:
-📔 runbooks/binder/_template-deno.ipynb
-📔 runbooks/binder/_template-python.ipynb
-
-Runs:
-",
-}
-`;
-
 snapshot[`convert 1`] = `
 {
   exitCode: 0,
@@ -96,4 +82,561 @@ await \$\`git log\`.text();
 // + [markdown] editable=true slideshow={\\"slide_type\\": \\"\\"}
 // ## Action Items / Learnings
 "
+`;
+
+snapshot[`create 1`] = `
+{
+  exitCode: 0,
+  stderr: "",
+}
+`;
+
+snapshot[`diff 1`] = `
+{
+  exitCode: 0,
+  stderr: "[E convert:26] Notebook JSON is not valid v3: 'input' is a required property
+
+Failed validating 'required' in code_cell:
+
+On instance['worksheets'][0]['cells'][0]:
+{'cell_type': 'code',
+ 'collapsed': False,
+ 'language': 'python',
+ 'metadata': {},
+ 'outputs': ['...0 outputs...']}
+[E convert:26] Notebook JSON is not valid v3: 'input' is a required property
+
+Failed validating 'required' in code_cell:
+
+On instance['worksheets'][0]['cells'][0]:
+{'cell_type': 'code',
+ 'collapsed': False,
+ 'language': 'python',
+ 'metadata': {},
+ 'outputs': ['...0 outputs...']}
+",
+  stdout: "nbdiff /private/var/folders/3j/2s7slhwx7n3f0hm6m3q0_2r40000gn/T/a8c376ed4006f628/notebook1.ipynb /private/var/folders/3j/2s7slhwx7n3f0hm6m3q0_2r40000gn/T/a8c376ed4006f628/notebook2.ipynb
+--- /private/var/folders/3j/2s7slhwx7n3f0hm6m3q0_2r40000gn/T/a8c376ed4006f628/notebook1.ipynb  2025-01-19 13:18:25.607766
++++ /private/var/folders/3j/2s7slhwx7n3f0hm6m3q0_2r40000gn/T/a8c376ed4006f628/notebook2.ipynb  2025-01-19 13:18:25.607964
+[34m[1m## replaced /cells/0/id:[0m
+[31m-  00d0e517
+[32m+  f1d2b1c0
+
+[0m",
+}
+`;
+
+snapshot[`init 1`] = `
+[
+  "runbooks",
+]
+`;
+
+snapshot[`list 1`] = `
+{
+  exitCode: 0,
+  stderr: "",
+  stdout: "
+Templates:
+📔 runbooks/binder/_template-deno.ipynb
+📔 runbooks/binder/_template-python.ipynb
+
+Runs:
+",
+}
+`;
+
+snapshot[`show 1`] = `
+{
+  exitCode: 0,
+  stderr: "",
+  stdout: '
+Runbook: runbooks/binder/_template-deno.ipynb
+Language: typescript
+
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Parameter            ┃ Default Value   ┃ Type     ┃ Help           ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ server               │ "main.xargs.io" │ string   │                │
+│ arg                  │ 1               │ number   │                │
+│ anArray              │ ["a", "b"]      │ string[] │ normally a / b │
+│ __RUNBOOK_METADATA__ │ {}              │ None     │                │
+└──────────────────────┴─────────────────┴──────────┴────────────────┘
+',
+}
+`;
+
+snapshot[`run 1`] = `
+{
+  exitCode: 1,
+  stderr: '\\rExecuting:   0%|          | 0/15 [00:00<?, ?cell/s][0m[33mWarning[0m "deno jupyter" is unstable and might change in the future.
+\\rExecuting:   7%|▋         | 1/15 [00:00<00:10,  1.39cell/s]\\rExecuting:  33%|███▎      | 5/15 [00:00<00:01,  5.39cell/s]
+Traceback (most recent call last):
+  File "/Users/zph/src/runbook/main/.venv/bin/runbook", line 10, in <module>
+    sys.exit(cli())
+             ~~~^^
+  File "/Users/zph/src/runbook/main/.venv/lib/python3.13/site-packages/click/core.py", line 1161, in __call__
+    return self.main(*args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/zph/src/runbook/main/.venv/lib/python3.13/site-packages/click/core.py", line 1082, in main
+    rv = self.invoke(ctx)
+  File "/Users/zph/src/runbook/main/.venv/lib/python3.13/site-packages/click/core.py", line 1697, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+                           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/zph/src/runbook/main/.venv/lib/python3.13/site-packages/click/core.py", line 1443, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zph/src/runbook/main/.venv/lib/python3.13/site-packages/click/core.py", line 788, in invoke
+    return __callback(*args, **kwargs)
+  File "/Users/zph/src/runbook/main/.venv/lib/python3.13/site-packages/click/decorators.py", line 33, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File "/Users/zph/src/runbook/main/runbook/cli/commands/run.py", line 34, in run
+    pm.execute_notebook(
+    ~~~~~~~~~~~~~~~~~~~^
+        input_path=filename,
+        ^^^^^^^^^^^^^^^^^^^^
+        output_path=output,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/zph/src/runbook/main/.venv/lib/python3.13/site-packages/papermill/execute.py", line 131, in execute_notebook
+    raise_for_execution_errors(nb, output_path)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/zph/src/runbook/main/.venv/lib/python3.13/site-packages/papermill/execute.py", line 234, in raise_for_execution_errors
+    raise error
+papermill.exceptions.PapermillExecutionError: 
+---------------------------------------------------------------------------
+Exception encountered at "In [3]":
+Stack trace:
+Error: Exited with code: 128
+    at CommandChild.pipedStdoutBuffer (https://deno.land/x/dax@0.39.2/src/command.ts:758:19)
+    at eventLoopTick (ext:core/01_core.js:175:7)
+
+',
+  stdout: "",
+}
+`;
+
+snapshot[`run 2`] = `
+"{
+ \\"cells\\": [
+  {
+   \\"cell_type\\": \\"markdown\\",
+   \\"id\\": \\"b1a26193\\",
+   \\"metadata\\": {
+    \\"tags\\": [
+     \\"papermill-error-cell-tag\\"
+    ]
+   },
+   \\"source\\": [
+    \\"<span style=\\\\\\"color:red; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; font-size:2em;\\\\\\">An Exception was encountered at '<a href=\\\\\\"#papermill-error-cell\\\\\\">In [3]</a>'.</span>\\"
+   ]
+  },
+  {
+   \\"cell_type\\": \\"markdown\\",
+   \\"id\\": \\"6ff80734-8906-4f85-9aab-6ceace7ba425\\",
+   \\"metadata\\": {
+    \\"editable\\": true,
+    \\"papermill\\": {
+     \\"duration\\": 0.003316,
+     \\"end_time\\": \\"2025-01-19T21:18:29.269234\\",
+     \\"exception\\": false,
+     \\"start_time\\": \\"2025-01-19T21:18:29.265918\\",
+     \\"status\\": \\"completed\\"
+    },
+    \\"slideshow\\": {
+     \\"slide_type\\": \\"\\"
+    },
+    \\"tags\\": []
+   },
+   \\"source\\": [
+    \\"# TITLE\\\\n\\",
+    \\"\\\\n\\",
+    \\"## DESCRIPTION\\"
+   ]
+  },
+  {
+   \\"cell_type\\": \\"markdown\\",
+   \\"id\\": \\"05b3e880-8601-4107-9895-d792ba1dcd30\\",
+   \\"metadata\\": {
+    \\"editable\\": true,
+    \\"papermill\\": {
+     \\"duration\\": 0.001091,
+     \\"end_time\\": \\"2025-01-19T21:18:29.271814\\",
+     \\"exception\\": false,
+     \\"start_time\\": \\"2025-01-19T21:18:29.270723\\",
+     \\"status\\": \\"completed\\"
+    },
+    \\"slideshow\\": {
+     \\"slide_type\\": \\"\\"
+    },
+    \\"tags\\": []
+   },
+   \\"source\\": [
+    \\"## Setup\\"
+   ]
+  },
+  {
+   \\"cell_type\\": \\"code\\",
+   \\"execution_count\\": 1,
+   \\"id\\": \\"117307e4-e66f-4044-b7e7-914dc0292821\\",
+   \\"metadata\\": {
+    \\"execution\\": {
+     \\"iopub.execute_input\\": \\"2025-01-19T21:18:29.274168Z\\",
+     \\"iopub.status.busy\\": \\"2025-01-19T21:18:29.274131Z\\",
+     \\"iopub.status.idle\\": \\"2025-01-19T21:18:29.281712Z\\",
+     \\"shell.execute_reply\\": \\"2025-01-19T21:18:29.274825Z\\"
+    },
+    \\"papermill\\": {
+     \\"duration\\": 0.009297,
+     \\"end_time\\": \\"2025-01-19T21:18:29.282154\\",
+     \\"exception\\": false,
+     \\"start_time\\": \\"2025-01-19T21:18:29.272857\\",
+     \\"status\\": \\"completed\\"
+    },
+    \\"tags\\": [
+     \\"parameters\\"
+    ]
+   },
+   \\"outputs\\": [],
+   \\"source\\": [
+    \\"// Default Params\\\\n\\",
+    \\"let server: string = \\\\\\"main.xargs.io\\\\\\";\\\\n\\",
+    \\"let arg: number = 1;\\\\n\\",
+    \\"let anArray: string[] = [\\\\\\"a\\\\\\", \\\\\\"b\\\\\\"]; // normally a / b\\\\n\\",
+    \\"let __RUNBOOK_METADATA__ = {};\\"
+   ]
+  },
+  {
+   \\"cell_type\\": \\"code\\",
+   \\"execution_count\\": 2,
+   \\"id\\": \\"4b3058da\\",
+   \\"metadata\\": {
+    \\"execution\\": {
+     \\"iopub.execute_input\\": \\"2025-01-19T21:18:29.284534Z\\",
+     \\"iopub.status.busy\\": \\"2025-01-19T21:18:29.284501Z\\",
+     \\"iopub.status.idle\\": \\"2025-01-19T21:18:29.331664Z\\",
+     \\"shell.execute_reply\\": \\"2025-01-19T21:18:29.324788Z\\"
+    },
+    \\"papermill\\": {
+     \\"duration\\": 0.048873,
+     \\"end_time\\": \\"2025-01-19T21:18:29.332158\\",
+     \\"exception\\": false,
+     \\"start_time\\": \\"2025-01-19T21:18:29.283285\\",
+     \\"status\\": \\"completed\\"
+    },
+    \\"tags\\": []
+   },
+   \\"outputs\\": [],
+   \\"source\\": [
+    \\"import { \$, sh } from \\\\\\"https://raw.githubusercontent.com/zph/runbook/main/ext/deno/runbook/mod.ts\\\\\\";\\"
+   ]
+  },
+  {
+   \\"cell_type\\": \\"markdown\\",
+   \\"id\\": \\"09478229\\",
+   \\"metadata\\": {
+    \\"tags\\": [
+     \\"papermill-error-cell-tag\\"
+    ]
+   },
+   \\"source\\": [
+    \\"<span id=\\\\\\"papermill-error-cell\\\\\\" style=\\\\\\"color:red; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; font-size:2em;\\\\\\">Execution using papermill encountered an exception here and stopped:</span>\\"
+   ]
+  },
+  {
+   \\"cell_type\\": \\"code\\",
+   \\"execution_count\\": 3,
+   \\"id\\": \\"b27def56-0219-4389-82c7-44c77bab6b19\\",
+   \\"metadata\\": {
+    \\"execution\\": {
+     \\"iopub.execute_input\\": \\"2025-01-19T21:18:29.334715Z\\",
+     \\"iopub.status.busy\\": \\"2025-01-19T21:18:29.334685Z\\",
+     \\"iopub.status.idle\\": \\"2025-01-19T21:18:29.359953Z\\",
+     \\"shell.execute_reply\\": \\"2025-01-19T21:18:29.359924Z\\"
+    },
+    \\"papermill\\": {
+     \\"duration\\": 0.027561,
+     \\"end_time\\": \\"2025-01-19T21:18:29.361033\\",
+     \\"exception\\": true,
+     \\"start_time\\": \\"2025-01-19T21:18:29.333472\\",
+     \\"status\\": \\"failed\\"
+    },
+    \\"tags\\": []
+   },
+   \\"outputs\\": [
+    {
+     \\"name\\": \\"stderr\\",
+     \\"output_type\\": \\"stream\\",
+     \\"text\\": [
+      \\"\\\\u001b[37m>\\\\u001b[39m \\\\u001b[34mgit log\\\\u001b[39m\\\\n\\"
+     ]
+    },
+    {
+     \\"ename\\": \\"Error\\",
+     \\"evalue\\": \\"Exited with code: 128\\",
+     \\"output_type\\": \\"error\\",
+     \\"traceback\\": [
+      \\"Stack trace:\\",
+      \\"Error: Exited with code: 128\\",
+      \\"    at CommandChild.pipedStdoutBuffer (https://deno.land/x/dax@0.39.2/src/command.ts:758:19)\\",
+      \\"    at eventLoopTick (ext:core/01_core.js:175:7)\\"
+     ]
+    }
+   ],
+   \\"source\\": [
+    \\"await sh(\\\\\\"git log\\\\\\");\\"
+   ]
+  },
+  {
+   \\"cell_type\\": \\"code\\",
+   \\"execution_count\\": null,
+   \\"id\\": \\"9ae59b65\\",
+   \\"metadata\\": {
+    \\"papermill\\": {
+     \\"duration\\": null,
+     \\"end_time\\": null,
+     \\"exception\\": null,
+     \\"start_time\\": null,
+     \\"status\\": \\"pending\\"
+    },
+    \\"tags\\": []
+   },
+   \\"outputs\\": [],
+   \\"source\\": [
+    \\"prompt(\\\\\\"AAAAAAAAAAAA\\\\\\")\\"
+   ]
+  },
+  {
+   \\"cell_type\\": \\"code\\",
+   \\"execution_count\\": null,
+   \\"id\\": \\"02a9b324\\",
+   \\"metadata\\": {
+    \\"papermill\\": {
+     \\"duration\\": null,
+     \\"end_time\\": null,
+     \\"exception\\": null,
+     \\"start_time\\": null,
+     \\"status\\": \\"pending\\"
+    },
+    \\"tags\\": []
+   },
+   \\"outputs\\": [],
+   \\"source\\": [
+    \\"console.log(\\\\\\"AAAAAAAAAA\\\\\\")\\\\n\\",
+    \\"\\\\n\\",
+    \\"console.log(\\\\\\"BBBBBBBBBBBB\\\\\\")\\"
+   ]
+  },
+  {
+   \\"cell_type\\": \\"markdown\\",
+   \\"id\\": \\"b7f15098-d540-4c24-83bc-73f8b81688c7\\",
+   \\"metadata\\": {
+    \\"editable\\": true,
+    \\"papermill\\": {
+     \\"duration\\": null,
+     \\"end_time\\": null,
+     \\"exception\\": null,
+     \\"start_time\\": null,
+     \\"status\\": \\"pending\\"
+    },
+    \\"slideshow\\": {
+     \\"slide_type\\": \\"\\"
+    },
+    \\"tags\\": []
+   },
+   \\"source\\": [
+    \\"## Operation\\"
+   ]
+  },
+  {
+   \\"cell_type\\": \\"markdown\\",
+   \\"id\\": \\"a5f85ddd-65e8-4d04-9692-e50724f3a697\\",
+   \\"metadata\\": {
+    \\"editable\\": true,
+    \\"papermill\\": {
+     \\"duration\\": null,
+     \\"end_time\\": null,
+     \\"exception\\": null,
+     \\"start_time\\": null,
+     \\"status\\": \\"pending\\"
+    },
+    \\"slideshow\\": {
+     \\"slide_type\\": \\"\\"
+    },
+    \\"tags\\": []
+   },
+   \\"source\\": [
+    \\"### Step 1. Echo JSON\\"
+   ]
+  },
+  {
+   \\"cell_type\\": \\"code\\",
+   \\"execution_count\\": null,
+   \\"id\\": \\"e774e7ca\\",
+   \\"metadata\\": {
+    \\"papermill\\": {
+     \\"duration\\": null,
+     \\"end_time\\": null,
+     \\"exception\\": null,
+     \\"start_time\\": null,
+     \\"status\\": \\"pending\\"
+    },
+    \\"tags\\": []
+   },
+   \\"outputs\\": [],
+   \\"source\\": [
+    \\"await \$\`echo '{\\\\\\"a\\\\\\": 1}'\`.json();\\"
+   ]
+  },
+  {
+   \\"cell_type\\": \\"markdown\\",
+   \\"id\\": \\"c97a321e-dbe7-4eda-929b-87fc6aa29052\\",
+   \\"metadata\\": {
+    \\"editable\\": true,
+    \\"papermill\\": {
+     \\"duration\\": null,
+     \\"end_time\\": null,
+     \\"exception\\": null,
+     \\"start_time\\": null,
+     \\"status\\": \\"pending\\"
+    },
+    \\"slideshow\\": {
+     \\"slide_type\\": \\"\\"
+    },
+    \\"tags\\": []
+   },
+   \\"source\\": [
+    \\"### Step 2 Get Git Log\\"
+   ]
+  },
+  {
+   \\"cell_type\\": \\"code\\",
+   \\"execution_count\\": null,
+   \\"id\\": \\"6eed6e46\\",
+   \\"metadata\\": {
+    \\"papermill\\": {
+     \\"duration\\": null,
+     \\"end_time\\": null,
+     \\"exception\\": null,
+     \\"start_time\\": null,
+     \\"status\\": \\"pending\\"
+    },
+    \\"tags\\": []
+   },
+   \\"outputs\\": [],
+   \\"source\\": [
+    \\"await \$\`git log\`.text();\\"
+   ]
+  },
+  {
+   \\"cell_type\\": \\"markdown\\",
+   \\"id\\": \\"eca30de0-ba65-43c6-b220-cab0dae363ff\\",
+   \\"metadata\\": {
+    \\"editable\\": true,
+    \\"papermill\\": {
+     \\"duration\\": null,
+     \\"end_time\\": null,
+     \\"exception\\": null,
+     \\"start_time\\": null,
+     \\"status\\": \\"pending\\"
+    },
+    \\"slideshow\\": {
+     \\"slide_type\\": \\"\\"
+    },
+    \\"tags\\": []
+   },
+   \\"source\\": [
+    \\"## Rollback\\"
+   ]
+  },
+  {
+   \\"cell_type\\": \\"markdown\\",
+   \\"id\\": \\"fce08404-4eb1-45d3-8f9c-2e5601662962\\",
+   \\"metadata\\": {
+    \\"editable\\": true,
+    \\"papermill\\": {
+     \\"duration\\": null,
+     \\"end_time\\": null,
+     \\"exception\\": null,
+     \\"start_time\\": null,
+     \\"status\\": \\"pending\\"
+    },
+    \\"slideshow\\": {
+     \\"slide_type\\": \\"\\"
+    },
+    \\"tags\\": []
+   },
+   \\"source\\": [
+    \\"## Cleanup\\"
+   ]
+  },
+  {
+   \\"cell_type\\": \\"markdown\\",
+   \\"id\\": \\"36cfe462-e424-459b-957a-0e06d231c928\\",
+   \\"metadata\\": {
+    \\"editable\\": true,
+    \\"papermill\\": {
+     \\"duration\\": null,
+     \\"end_time\\": null,
+     \\"exception\\": null,
+     \\"start_time\\": null,
+     \\"status\\": \\"pending\\"
+    },
+    \\"slideshow\\": {
+     \\"slide_type\\": \\"\\"
+    },
+    \\"tags\\": []
+   },
+   \\"source\\": [
+    \\"## Action Items / Learnings\\"
+   ]
+  }
+ ],
+ \\"metadata\\": {
+  \\"kernelspec\\": {
+   \\"display_name\\": \\"Deno\\",
+   \\"language\\": \\"typescript\\",
+   \\"name\\": \\"deno\\"
+  },
+  \\"language_info\\": {
+   \\"codemirror_mode\\": \\"typescript\\",
+   \\"file_extension\\": \\".ts\\",
+   \\"mimetype\\": \\"text/x.typescript\\",
+   \\"name\\": \\"typescript\\",
+   \\"nbconvert_exporter\\": \\"script\\",
+   \\"pygments_lexer\\": \\"typescript\\",
+   \\"version\\": \\"5.6.2\\"
+  },
+  \\"papermill\\": {
+   \\"default_parameters\\": {},
+   \\"duration\\": 0.927728,
+   \\"end_time\\": \\"2025-01-19T21:18:29.476327\\",
+   \\"environment_variables\\": {},
+   \\"exception\\": true,
+   \\"input_path\\": \\"runbooks/binder/_template-deno.ipynb\\",
+   \\"output_path\\": \\"output.ipynb\\",
+   \\"parameters\\": {},
+   \\"start_time\\": \\"2025-01-19T21:18:28.548599\\",
+   \\"version\\": \\"2.5.0\\"
+  },
+  \\"widgets\\": {
+   \\"application/vnd.jupyter.widget-state+json\\": {
+    \\"state\\": {},
+    \\"version_major\\": 2,
+    \\"version_minor\\": 0
+   }
+  }
+ },
+ \\"nbformat\\": 4,
+ \\"nbformat_minor\\": 5
+}"
+`;
+
+snapshot[`version 1`] = `
+{
+  exitCode: 0,
+  stderr: "",
+  stdout: "Runbook version",
+}
 `;
