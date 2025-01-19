@@ -19,14 +19,20 @@ const init = async (dir: string) => {
   const _cmd = await runbook(["init", "--skip-confirmation=true"], { cwd: dir });
 };
 
+const setup = async () => {
+  const dir = await Deno.makeTempDir();
+  await init(dir);
+  return dir;
+}
+
 Deno.test("check", async (t) => {
-  const cmd = await runbook(["check", "runbooks/binder/_template-deno.ipynb"], { cwd: Deno.cwd() });
-  assertSnapshot(t, { exitCode: cmd.code, stdout: cmd.stdout, stderrEndsWith: cmd.stderr.trim().endsWith(".ts") });
+  const dir = await setup();
+  const cmd = await runbook(["check", "runbooks/binder/_template-deno.ipynb"], { cwd: dir });
+  assertSnapshot(t, { exitCode: cmd.code, stdoutEndsWith: cmd.stdout.trim().endsWith("runbooks/binder/_template-deno.ipynb"), stderrEndsWith: cmd.stderr.trim().endsWith(".ts") });
 });
 
 Deno.test("convert", async (t) => {
-  const dir = await Deno.makeTempDir();
-  await init(dir);
+  const dir = await setup();
   const cmd = await runbook(["convert", "runbooks/binder/_template-deno.ipynb", "_template-deno.ts"], { cwd: dir });
   assertSnapshot(t, { stderr: cmd.stderr, exitCode: cmd.code });
   const txt = await Deno.readTextFile([dir, "_template-deno.ts"].join("/"));
@@ -35,8 +41,7 @@ Deno.test("convert", async (t) => {
 
 // create
 Deno.test("create", async (t) => {
-  const dir = await Deno.makeTempDir();
-  await init(dir);
+  const dir = await setup();
   const cmd = await runbook(["create", "create-test.ipynb"], { cwd: dir });
   assertSnapshot(t, { stderr: cmd.stderr, exitCode: cmd.code });
   const exists = await Deno.stat([dir, "runbooks/binder/create-test.ipynb"].join("/")).then(() => true).catch(() => false);
@@ -45,8 +50,7 @@ Deno.test("create", async (t) => {
 
 // diff
 Deno.test.ignore("diff", async (t) => {
-  const dir = await Deno.makeTempDir();
-  await init(dir);
+  const dir = await setup();
 
   // Create two notebooks with different content
   await Deno.writeTextFile(
@@ -76,24 +80,21 @@ Deno.test.ignore("diff", async (t) => {
 });
 
 Deno.test("init", async (t) => {
-  const dir = await Deno.makeTempDir();
-  await init(dir);
+  const dir = await setup();
   const files = await Array.fromAsync(Deno.readDir(dir));
   const filenames = files.map(f => f.name).sort();
   assertSnapshot(t, filenames);
 });
 
 Deno.test("list", async (t) => {
-  const dir = await Deno.makeTempDir();
-  await init(dir);
+  const dir = await setup();
   const cmd = await runbook(["list"], { cwd: dir });
   assertSnapshot(t, { stdout: cmd.stdout, stderr: cmd.stderr, exitCode: cmd.code });
 });
 
 // show
 Deno.test("show", async (t) => {
-  const dir = await Deno.makeTempDir();
-  await init(dir);
+  const dir = await setup();
   const cmd = await runbook(["show", "runbooks/binder/_template-deno.ipynb"], { cwd: dir });
   assertSnapshot(t, { stdout: cmd.stdout, stderr: cmd.stderr, exitCode: cmd.code });
 });
@@ -107,8 +108,7 @@ Error: Exited with code: 128
     at eventLoopTick (ext:core/01_core.js:175:7)
 */
 Deno.test.ignore("run", async (t) => {
-  const dir = await Deno.makeTempDir();
-  await init(dir);
+  const dir = await setup();
   const cmd = await runbook(["run", "--no-interactive", "runbooks/binder/_template-deno.ipynb", "--output", "output.ipynb"], { cwd: dir });
   assertSnapshot(t, { stdout: cmd.stdout, stderr: cmd.stderr, exitCode: cmd.code });
   const output = await Deno.readTextFile([dir, "output.ipynb"].join("/"));
@@ -117,8 +117,7 @@ Deno.test.ignore("run", async (t) => {
 
 // version
 Deno.test("version", async (t) => {
-  const dir = await Deno.makeTempDir();
-  await init(dir);
+  const dir = await setup();
   const cmd = await runbook(["version"], { cwd: dir });
   assertSnapshot(t, { stdout: cmd.stdout.split(":")[0], stderr: cmd.stderr, exitCode: cmd.code });
 });
