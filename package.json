@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-rc1",
+  "version": "1.0.0-rc2",
   "devDependencies": {
     "@release-it/bumper": "^6.0.1",
     "release-it": "^17.0.3"
