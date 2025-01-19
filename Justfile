@@ -1,9 +1,9 @@
 test:
   uv run pytest --disable-warnings -s
-  deno test -A tests/cli_test.ts
+  deno test -A --parallel tests/cli_test.ts
 
 test-watch:
-  watchexec -- uv run pytest --disable-warnings -s && deno test -A tests/cli_test.ts
+  watchexec -- uv run pytest --disable-warnings -s && deno test -A --parallel tests/cli_test.ts
 
 open NOTEBOOK:
   uv run runbook edit {{NOTEBOOK}}
