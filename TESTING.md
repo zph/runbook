@@ -18,8 +18,10 @@
 | version | Display version information about runbook                  | ✅                     | ❌                      |
 
 Commands marked with "Manual Testing Required: Yes" should be tested manually as
-they cannot be easily automation tested. Key areas to verify:
+they cannot be easily automation tested.
 
-- `edit`: `runbook edit _template-deno.ipynb`
-- `run`: `runbook run _template-deno.ipynb`
-- `run`: `runbook run --no-interactive _template-deno.ipynb`
+## Manual Testing
+
+See `tests/manual` for manual testing.
+
+It involves running the shell scripts in `tests/manual` and auditing behavior.

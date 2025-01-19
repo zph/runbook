@@ -24,7 +24,7 @@ profile:
   uv run python3 -m cProfile runbook/cli/__init__.py
 
 release:
-  release-it
+  deno run -A npm:release-it
 
 clean:
   rm -rf ./dist
