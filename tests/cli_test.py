@@ -6,10 +6,28 @@ from click.testing import CliRunner
 
 from runbook import cli
 
+python_template = "./runbooks/binder/_template-python.ipynb"
+deno_template = "./runbooks/binder/_template-deno.ipynb"
+new_template = "./runbooks/binder/new-template.ipynb"
+
+base_paths = [
+    "./runbooks",
+    "./runbooks/binder",
+    "./runbooks/runs",
+    "./runbooks/.runbook.json",
+    python_template,
+    deno_template,
+]
+
 
 def invoker(runner, argv, working_dir, prog_name="runbook"):
     return runner.invoke(
-        cli, argv, env={"RUNBOOK_WORKING_DIR": working_dir}, prog_name=prog_name
+        cli,
+        argv,
+        env={
+            "RUNBOOK_WORKING_DIR": working_dir,
+        },
+        prog_name=prog_name,
     )
 
 
@@ -48,15 +66,7 @@ def test_cli_init():
     with runner.isolated_filesystem() as dir:
         result = invoker(runner, ["init"], dir)
         assert result.exit_code == 0
-        paths = [
-            "./runbooks",
-            "./runbooks/binder",
-            "./runbooks/runs",
-            "./runbooks/.runbook.json",
-            "./runbooks/binder/_template-python.ipynb",
-            "./runbooks/binder/_template-deno.ipynb",
-        ]
-        for p in paths:
+        for p in base_paths:
             assert Path(p).exists()
 
 
@@ -66,29 +76,21 @@ def test_cli_create():
         result = invoker(runner, ["init"], dir)
         result = invoker(runner, ["create", "new-template"], dir)
         assert result.exit_code == 0
-        paths = [
-            "./runbooks",
-            "./runbooks/binder",
-            "./runbooks/runs",
-            "./runbooks/.runbook.json",
-            "./runbooks/binder/_template-python.ipynb",
-            "./runbooks/binder/_template-deno.ipynb",
-            "./runbooks/binder/new-template.ipynb",
-        ]
+        paths = [*base_paths, new_template]
         for p in paths:
             assert Path(p).exists()
 
-        with open("./runbooks/binder/_template-python.ipynb", encoding="utf8") as f:
+        with open(python_template, encoding="utf8") as f:
             nb = nbformat.read(f, 4)
             c = nb.cells[2]
             assert "parameters" in c.metadata.tags
 
-        with open("./runbooks/binder/_template-deno.ipynb", encoding="utf8") as f:
+        with open(deno_template, encoding="utf8") as f:
             nb = nbformat.read(f, 4)
             c = nb.cells[2]
             assert "parameters" in c.metadata.tags
 
-        with open("./runbooks/binder/new-template.ipynb", encoding="utf8") as f:
+        with open(new_template, encoding="utf8") as f:
             nb = nbformat.read(f, 4)
             c = nb.cells[2]
             assert "parameters" in c.metadata.tags
@@ -101,29 +103,21 @@ def test_cli_lifecycle_to_plan():
         assert result.exit_code == 0
         result = invoker(runner, ["create", "new-template"], dir)
         assert result.exit_code == 0
-        paths = [
-            "./runbooks",
-            "./runbooks/binder",
-            "./runbooks/runs",
-            "./runbooks/.runbook.json",
-            "./runbooks/binder/_template-python.ipynb",
-            "./runbooks/binder/_template-deno.ipynb",
-            "./runbooks/binder/new-template.ipynb",
-        ]
+        paths = [*base_paths, new_template]
         for p in paths:
             assert Path(p).exists()
 
-        with open("./runbooks/binder/_template-python.ipynb", encoding="utf8") as f:
+        with open(python_template, encoding="utf8") as f:
             nb = nbformat.read(f, 4)
             c = nb.cells[2]
             assert "parameters" in c.metadata.tags
 
-        with open("./runbooks/binder/_template-deno.ipynb", encoding="utf8") as f:
+        with open(deno_template, encoding="utf8") as f:
             nb = nbformat.read(f, 4)
             c = nb.cells[2]
             assert "parameters" in c.metadata.tags
 
-        with open("./runbooks/binder/new-template.ipynb", encoding="utf8") as f:
+        with open(new_template, encoding="utf8") as f:
             nb = nbformat.read(f, 4)
             c = nb.cells[2]
             assert "parameters" in c.metadata.tags
@@ -149,34 +143,20 @@ def test_cli_lifecycle_to_run():
         assert result.exit_code == 0
         result = invoker(runner, ["create", "new-template"], dir)
         assert result.exit_code == 0
-        paths = [
-            "./runbooks",
-            "./runbooks/binder",
-            "./runbooks/runs",
-            "./runbooks/.runbook.json",
-            "./runbooks/binder/_template-python.ipynb",
-            "./runbooks/binder/_template-deno.ipynb",
-            "./runbooks/binder/new-template.ipynb",
-        ]
+        paths = [*base_paths, new_template]
         for p in paths:
             assert Path(p).exists()
 
-        with open("./runbooks/binder/_template-python.ipynb", encoding="utf8") as f:
+        with open(python_template, encoding="utf8") as f:
             nb = nbformat.read(f, 4)
             c = nb.cells[2]
             assert "parameters" in c.metadata.tags
 
-        with open("./runbooks/binder/_template-deno.ipynb", encoding="utf8") as f:
+        with open(deno_template, encoding="utf8") as f:
             nb = nbformat.read(f, 4)
             c = nb.cells[2]
             assert "parameters" in c.metadata.tags
-
-        # TODO: fix tags being not present for parameters despite being there in _template
-        # with open("./runbooks/binder/new-template.ipynb", encoding="utf8") as f:
-        #     nb = nbformat.read(f, 4)
-        #     c = nb.cells[2]
-        #     assert "parameters" in c.metadata.tags
 
         # TODO: fix multiple singletons of ServerApp
-        # result = invoker(runner, ["run", "./runbooks/binder/new-template.ipynb"], dir)
+        # result = invoker(runner, ["run", deno_template], dir)
         # assert result.exit_code == 0
