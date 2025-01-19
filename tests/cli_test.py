@@ -56,6 +56,7 @@ Commands:
   plan     Prepares the runbook for execution by injecting parameters.
   review   [Unimplemented] Entrypoint for reviewing runbook
   run      Run a notebook
+  show     Show runbook parameters and metadata
   version  Display version information about runbook
 """
         assert result.output == output
@@ -160,3 +161,28 @@ def test_cli_lifecycle_to_run():
         # TODO: fix multiple singletons of ServerApp
         # result = invoker(runner, ["run", deno_template], dir)
         # assert result.exit_code == 0
+
+
+def test_cli_lifecycle_to_show():
+    runner = CliRunner()
+    with runner.isolated_filesystem() as dir:
+        result = invoker(runner, ["init"], dir)
+        assert result.exit_code == 0
+        result = invoker(runner, ["show", deno_template], dir)
+        assert result.exit_code == 0
+        assert (
+            result.output
+            == """
+Runbook: ./runbooks/binder/_template-deno.ipynb
+Language: typescript
+
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Parameter            ┃ Default Value   ┃ Type     ┃ Help           ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ server               │ "main.xargs.io" │ string   │                │
+│ arg                  │ 1               │ number   │                │
+│ anArray              │ ["a", "b"]      │ string[] │ normally a / b │
+│ __RUNBOOK_METADATA__ │ {}              │ None     │                │
+└──────────────────────┴─────────────────┴──────────┴────────────────┘
+"""
+        )

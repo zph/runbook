@@ -8,4 +8,5 @@ from runbook.cli.commands.list import list
 from runbook.cli.commands.plan import plan
 from runbook.cli.commands.review import review
 from runbook.cli.commands.run import run
+from runbook.cli.commands.show import show
 from runbook.cli.commands.version import version

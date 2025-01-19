@@ -68,6 +68,7 @@ Commands:
   plan     Prepares the runbook for execution by injecting parameters.
   review   [Unimplemented] Entrypoint for reviewing runbook
   run      Run a notebook
+  show     Show runbook parameters and metadata
   version  Display version information about runbook
 ```
 

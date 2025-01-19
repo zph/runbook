@@ -13,6 +13,7 @@ from runbook.cli.commands import (
     plan,
     review,
     run,
+    show,
     version,
 )
 
@@ -45,6 +46,7 @@ cli.add_command(run)
 cli.add_command(review)
 cli.add_command(version)
 cli.add_command(list)
+cli.add_command(show)
 # cli.add_command(export)
 cli.name = "runbook"
 cli
