@@ -98,20 +98,15 @@ def plan(ctx, input, embed, identifier="", params={}):
         for key, value in inferred_params.items():
             if key != RUNBOOK_METADATA:
                 default = value["default"].rstrip(";")
-                typing = value["inferred_type_name"]
-                type_hint = ""
-                help_hint = ""
-                if typing:
-                    type_hint = f" ({typing})"
-                if value["help"]:
-                    help_hint = f"(hint: {value['help']})"
+                typing = value["inferred_type_name"] or ""
+                help_hint = value["help"] or ""
 
-                raw_value = click.prompt(
-                    f"""Enter value for {key}{type_hint}{help_hint}""",
+                parsed_value = click.prompt(
+                    f"""Enter value for {key} {typing} {help_hint}""",
                     default=default,
                     value_proc=value_parser,
                 )
-                params[key] = raw_value
+                params[key] = parsed_value
 
     injection_params = {**runbook_param_injection, **params}
 
