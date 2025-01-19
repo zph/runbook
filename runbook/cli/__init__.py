@@ -15,14 +15,13 @@ from runbook.cli.commands import (
     version,
 )
 
-# TODO: not working, needs a custom underlying class to handle the auto-env
 CONTEXT_SETTINGS = dict(auto_envvar_prefix="RUNBOOK")
 
 
-@click.group(context_settings=CONTEXT_SETTINGS)
+@click.group()
 @click.option(
     "--cwd",
-    envvar="WORKING_DIR",
+    envvar=["RUNBOOK_WORKING_DIR", "WORKING_DIR"],
     default=os.curdir,
     type=click.Path(exists=True, resolve_path=True, dir_okay=True),
     help="Directory for operations (normally at root above runbooks, ie ../.runbook.yaml)",
