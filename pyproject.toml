@@ -13,6 +13,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 shx = "^0.4.2"
+rich = "^13.9.4"
 # papermill = "^2.5.0"
 # Used until upstreaming typescript into papermill
 papermill = { git = "https://github.com/zph/papermill", branch = "main" }

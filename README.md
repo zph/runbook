@@ -53,7 +53,8 @@ Usage: runbook [OPTIONS] COMMAND [ARGS]...
 
 Options:
   --cwd PATH  Directory for operations (normally at root above runbooks, ie
-              ../.runbook.yaml)
+              ../.runbook.yaml) and can be set with RUNBOOK_WORKING_DIR or
+              WORKING_DIR environment variables
   --help      Show this message and exit.
 
 Commands:
@@ -63,6 +64,7 @@ Commands:
   diff     Diff two notebooks
   edit     Edit an existing runbook
   init     Initialize a folder as a runbook repository
+  list     list runbooks
   plan     Prepares the runbook for execution by injecting parameters.
   review   [Unimplemented] Entrypoint for reviewing runbook
   run      Run a notebook

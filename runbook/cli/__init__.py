@@ -9,6 +9,7 @@ from runbook.cli.commands import (
     edit,
     export,
     init,
+    list,
     plan,
     review,
     run,
@@ -24,7 +25,7 @@ CONTEXT_SETTINGS = dict(auto_envvar_prefix="RUNBOOK")
     envvar=["RUNBOOK_WORKING_DIR", "WORKING_DIR"],
     default=os.curdir,
     type=click.Path(exists=True, resolve_path=True, dir_okay=True),
-    help="Directory for operations (normally at root above runbooks, ie ../.runbook.yaml)",
+    help="Directory for operations (normally at root above runbooks, ie ../.runbook.yaml) and can be set with RUNBOOK_WORKING_DIR or WORKING_DIR environment variables",
 )
 @click.pass_context
 def cli(ctx, cwd):
@@ -43,6 +44,7 @@ cli.add_command(diff)
 cli.add_command(run)
 cli.add_command(review)
 cli.add_command(version)
+cli.add_command(list)
 # cli.add_command(export)
 cli.name = "runbook"
 cli
