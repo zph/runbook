@@ -8,9 +8,14 @@ from runbook.cli.validators import validate_planned_runbook_file_path
     type=click.Path(file_okay=True),
     callback=validate_planned_runbook_file_path,
 )
-@click.option("--interactive/--no-interactive", default=True)
+@click.option("--output", type=click.Path(file_okay=True), default=None)
+@click.option(
+    "--interactive/--no-interactive",
+    default=True,
+    help="Run the notebook in interactive mode or EXPERIMENTAL non-interactive mode",
+)
 @click.pass_context
-def run(ctx, filename, interactive):
+def run(ctx, filename, output, interactive):
     """Run a notebook"""
     if interactive:
         argv = [filename]
@@ -20,4 +25,14 @@ def run(ctx, filename, interactive):
 
         JupyterNotebookApp.launch_instance(argv=argv)
     else:
-        raise RuntimeError("Not Implemented but will do with papermill")
+        if not output:
+            raise click.BadOptionUsage(
+                "--output", "--output is required when --interactive is false"
+            )
+        import papermill as pm
+
+        pm.execute_notebook(
+            input_path=filename,
+            output_path=output,
+        )
+        print(f"Output written to {output}")
