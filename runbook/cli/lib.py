@@ -2,7 +2,6 @@ import hashlib
 import sys
 from io import StringIO
 
-from nbconvert.nbconvertapp import NbConvertApp
 from ulid import ULID
 
 
@@ -21,6 +20,9 @@ def ts_id(length=10):
 
 # Suppresses nbconvert output
 def nbconvert_launch_instance(argv, clear_output=True):
+    # Imported here to avoid performance hit of importing it
+    from nbconvert.nbconvertapp import NbConvertApp
+
     if clear_output:
         argv.insert(0, "--ClearOutputPreprocessor.enabled=True")
     stdout = sys.stdout

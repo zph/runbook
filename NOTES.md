@@ -1,21 +1,20 @@
 # TODO
 
 ## Triage
-- [ ] Consider how to set off the 'proceed' output as a dedicated code block in jupyter
-- [ ] Read `runbook plan ...` support reading params from file
+- [x] Read `runbook plan ...` support reading params from file
 - [ ] Re-export confirm(style) and gather from sh lib
 - [ ] Make sure we can run directly fully through cli
 - [ ] If no argument included for RUNBOOK TITLE in edit/plan/run then prompt with options
-- [ ] Include field 'embeds' in the metadata to help with referencing them
+- [x] Include field 'embeds' in the metadata to help with referencing them
 - [ ] --- Add helper for referencing the embeds?
 - [ ] Use execute and upload output to S3 for non-interactive: https://github.com/nteract/papermill/tree/main?tab=readme-ov-file#execute-via-cli
 
 ## P0
+- [ ] Install pre-commit.yml or git integration during `init` for secure linting and talisman
 - [x] Setup versioning and bumper (using versioner from npm ecosystem @release-it and @release-it/bumper)
 - [x] Fix tag key getting stripped out of planned runbooks b/c it breaks papermill
-- [ ] Setup a watcher for auto-exporting html or other formats
 - [x] Setup tagging in the notebooks to auto-set those values
-- [ ] Setup git to autoclear cell outputs for a given folder's notebooks (ie templates) https://stackoverflow.com/a/58004619
+- [ ] Security: Setup git to autoclear cell outputs for a given folder's notebooks (ie templates) https://stackoverflow.com/a/58004619
 - [x] Assess if we need shell completions
    - [x] Yes, very nice and use https://click.palletsprojects.com/en/8.1.x/shell-completion/#custom-type-completion to define for custom types, ie only find ipynb files for edit, create, etc
 - [ ] Integrate mechanisms to read Grafana or other data sources and package "pre/post check" helpers
@@ -25,8 +24,8 @@
 - [ ] Include safe way to retry when APIs fail but with confirmation
     - for handling the case when infrastructure API calls fail when made in large async batch
 - [ ] Immutably store everything with bookstore https://github.com/nteract/bookstore
+- [ ] Setup a watcher for auto-exporting html or other formats
 - [x] Use slack notify for posting execution steps: https://github.com/keitakurita/jupyter-slack-notify
-- [ ] Install pre-commit.yml or git integration during `init`
 
 ## P2
 - [x] Setup different folder from runbooks for execution files?

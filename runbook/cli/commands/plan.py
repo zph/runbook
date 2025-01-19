@@ -118,9 +118,6 @@ def plan(ctx, input, embed, identifier="", params={}):
     if not Path(output_folder).exists():
         os.makedirs(output_folder, exist_ok=True)
 
-    # TODO: safety check if we already have one with this SHA in folder, in which case prompt
-    # and offer to skip.
-
     pm.execute_notebook(
         input_path=input,
         output_path=full_output,
@@ -132,8 +129,6 @@ def plan(ctx, input, embed, identifier="", params={}):
         "--inplace",
         full_output,
     ]
-
-    # TODO: join the unified logic of create and plan
 
     nbconvert_launch_instance(argv, clear_output=True)
 

@@ -8,9 +8,6 @@ repos:
       additional_dependencies:
         - black==23.3.0 # Matches hook
 
-    # - id: jupytext
-    #   args: [--sync]
-
 -   repo: https://github.com/psf/black
     rev: 23.3.0
     hooks:
