@@ -5,9 +5,6 @@ from pathlib import Path
 
 import click
 
-# TODO: use click prompt lib instead of questionary to avoid dependency
-import questionary
-
 
 # TODO: ensure no duplicate extension here
 def validate_template(ctx, param, value):
@@ -76,7 +73,7 @@ def process_glob_matches(options):
     if len(options) == 1:
         return options[0]
     elif len(options) > 1:
-        return questionary.select("Which file?", choices=options).ask()
+        return click.prompt("Which file?", type=click.Choice(options))
     else:
         raise click.BadOptionUsage("FILENAME", f"unable to find {value} file")
 
