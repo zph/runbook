@@ -1,7 +1,7 @@
 // Mod.ts for runbook-deno helpers
 // Default Setup
 // See deno dax module for capabilities, including $.request, retry, etc
-import {CommandBuilder, build$} from "https://deno.land/x/dax/mod.ts";
+import {CommandBuilder, build$} from "jsr:@david/dax";
 
 const commandBuilder = new CommandBuilder()
   .stdout("inheritPiped")
