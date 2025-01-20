@@ -60,7 +60,13 @@ def get_parser_by_language(language: str):
     "-p", "--params", default={}, type=click.UNPROCESSED, callback=validate_plan_params
 )
 @click.option("-i", "--identifier", default="", type=click.STRING)
-@click.option("-p", "--prompter", default="", type=click.Path(file_okay=True))
+@click.option(
+    "-p",
+    "--prompter",
+    default="",
+    type=click.Path(file_okay=True),
+    help="[Experimental] Path to a prompter script that will be used to gather parameters from the user",
+)
 @click.pass_context
 def plan(ctx, input, embed, identifier="", params={}, prompter=""):
     """Prepares the runbook for execution by injecting parameters. Doesn't run runbook."""
