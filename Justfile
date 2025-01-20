@@ -53,7 +53,6 @@ template-update:
 
 readme:
   .config/templating.sh
-  cp README.md docs/
 
 docs:
   uvx --with sphinx-click --with myst_parser --with . --from sphinx sphinx-build -b html docs/ site
