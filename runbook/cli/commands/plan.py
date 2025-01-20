@@ -52,14 +52,33 @@ def get_parser_by_language(language: str):
 
 @click.command()
 @click.argument(
-    "input", type=click.Path(file_okay=True), callback=validate_runbook_file_path
+    "input",
+    type=click.Path(file_okay=True),
+    callback=validate_runbook_file_path,
 )
 # TODO allow for specifying output filename to allow for easier naming
-@click.option("-e", "--embed", type=click.Path(exists=True), multiple=True)
 @click.option(
-    "-p", "--params", default={}, type=click.UNPROCESSED, callback=validate_plan_params
+    "-e",
+    "--embed",
+    type=click.Path(exists=True),
+    multiple=True,
+    help="Path to file(s) to embed in the runbook output directory",
 )
-@click.option("-i", "--identifier", default="", type=click.STRING)
+@click.option(
+    "-p",
+    "--params",
+    default={},
+    type=click.UNPROCESSED,
+    callback=validate_plan_params,
+    help="Parameters to inject into the runbook in json object format where the key is the parameter name and the value is the parameter value",
+)
+@click.option(
+    "-i",
+    "--identifier",
+    default="",
+    type=click.STRING,
+    help="Optional identifier to append to the output filename",
+)
 @click.option(
     "-p",
     "--prompter",

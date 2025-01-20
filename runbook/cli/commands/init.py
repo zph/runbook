@@ -17,6 +17,7 @@ RUNBOOK_CONFIG = {"version": 1, "library_version": VERSION, "directory": None}
     envvar="DIRECTORY",
     default="runbooks",
     type=click.Path(exists=False, dir_okay=True),
+    help="Path to the runbook directory",
 )
 @click.option(
     "-s",
@@ -24,6 +25,7 @@ RUNBOOK_CONFIG = {"version": 1, "library_version": VERSION, "directory": None}
     envvar="SKIP_CONFIRMATION",
     default=False,
     type=click.BOOL,
+    help="Skip confirmation prompt",
 )
 @click.pass_context
 def init(ctx, directory, skip_confirmation):

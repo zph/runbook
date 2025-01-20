@@ -25,7 +25,24 @@ from runbook.cli.validators import validate_runbook_file_path
 )
 @click.pass_context
 def check(ctx, filename, command):
-    """Check language validity and formatting of a notebook."""
+    """Check the language validity and formatting of a runbook.
+
+    This command validates the syntax and formatting of runbook cells based on the kernel
+    specified in the notebook's metadata. By default:
+    - For Python kernels: uses 'black' to check code formatting
+    - For Deno kernels: uses 'deno check' to validate TypeScript/JavaScript
+
+    FILENAME: Path to the runbook file to check.
+
+    Options:
+        --command, -c: Specify a custom validation command. Use {} as a placeholder for the
+                      filename (e.g., 'mycheck {} --strict'). This overrides the default
+                      checker for the kernel.
+
+    Exit codes:
+        0: Check passed successfully
+        Non-zero: Check failed, see error output for details
+    """
     full_path = path.abspath(filename)
     content = None
     with open(full_path, "r") as f:

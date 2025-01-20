@@ -4,7 +4,7 @@ import click
 @click.command()
 @click.pass_context
 def list(ctx):
-    """list runbooks"""
+    """List runbooks"""
     import glob
 
     from rich import print as rprint

@@ -8,7 +8,12 @@ from runbook.cli.validators import validate_planned_runbook_file_path
     type=click.Path(file_okay=True),
     callback=validate_planned_runbook_file_path,
 )
-@click.option("--output", type=click.Path(file_okay=True), default=None)
+@click.option(
+    "--output",
+    type=click.Path(file_okay=True),
+    default=None,
+    help="Path to the output file",
+)
 @click.option(
     "--interactive/--no-interactive",
     default=True,
@@ -16,7 +21,7 @@ from runbook.cli.validators import validate_planned_runbook_file_path
 )
 @click.pass_context
 def run(ctx, filename, output, interactive):
-    """Run a notebook"""
+    """Run a runbook"""
     if interactive:
         argv = [filename]
 

@@ -17,7 +17,27 @@ from runbook.cli.validators import validate_runbook_file_path
 )
 @click.pass_context
 def convert(ctx, filename, output):
-    """Convert an existing runbook to different format"""
+    """Convert a runbook between different formats
+
+    This command converts notebooks between various formats using jupytext.
+    Supported conversions include:
+    - .ipynb to .py (Python script)
+    - .ipynb to .ts (Deno notebook)
+    - .ipynb to .md (Markdown)
+    - And other formats supported by jupytext
+
+    FILENAME: Path to the source notebook file to convert.
+    OUTPUT: Destination path for the converted file. The format is determined
+           by the file extension.
+
+    Examples:
+        runbook convert notebook.ipynb script.py   # Convert to Python script
+        runbook convert notebook.ipynb notebook.ts   # Convert to Deno notebook
+        runbook convert notebook.ipynb notebook.md   # Convert to Markdown
+
+    The conversion preserves cell metadata, notebook metadata, and execution outputs
+    where applicable.
+    """
     # Must override argv because it's used in launch instance and there isn't a way
     # to pass via argument in ExtensionApp.lauch_instance
     # TODO:
