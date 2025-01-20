@@ -33,7 +33,7 @@ build:
   uv build
 
 benchmark:
-  hyperfine --export-markdown=PERFORMANCE.md -- runbook
+  hyperfine --export-markdown=docs/PERFORMANCE.md -- runbook
 
 template-update:
   #!/usr/bin/env bash
