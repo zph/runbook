@@ -1,5 +1,7 @@
+import ast
 import json
 import os
+import subprocess
 from datetime import datetime
 from os import path
 from pathlib import Path
@@ -38,9 +40,6 @@ def get_notebook_language(notebook_path: str) -> str:
     return "unknown"
 
 
-import ast
-
-
 def get_parser_by_language(language: str):
     if language == "typescript":
         return json.loads
@@ -61,8 +60,9 @@ def get_parser_by_language(language: str):
     "-p", "--params", default={}, type=click.UNPROCESSED, callback=validate_plan_params
 )
 @click.option("-i", "--identifier", default="", type=click.STRING)
+@click.option("-p", "--prompter", default="", type=click.Path(file_okay=True))
 @click.pass_context
-def plan(ctx, input, embed, identifier="", params={}):
+def plan(ctx, input, embed, identifier="", params={}, prompter=""):
     """Prepares the runbook for execution by injecting parameters. Doesn't run runbook."""
     import shutil
 
@@ -90,23 +90,42 @@ def plan(ctx, input, embed, identifier="", params={}):
 
     # TODO: add test cases for auto-planning
     # As of 2025 Jan it's manual regression testing
-    if len(params) == 0:
+    if len(params) == 0 or prompter:
         inferred_params = pm.inspect_notebook(input)
         notebook_language = get_notebook_language(input)
         value_parser = get_parser_by_language(notebook_language)
         # Inferred_type_name is language specific
+        formatted_params = {}
         for key, value in inferred_params.items():
-            if key != RUNBOOK_METADATA:
+            if key != "__RUNBOOK_METADATA__":
                 default = value["default"].rstrip(";")
                 typing = value["inferred_type_name"] or ""
-                help_hint = value["help"] or ""
+                help = value["help"] or ""
+                formatted_params[key] = {
+                    "default": default,
+                    "typing": typing,
+                    "help": help,
+                }
 
+        if prompter:
+            # Input format: params: {'server': {'default': '"main.xargs.io"', 'typing': 'string', 'help': ''}, 'arg': {'default': '1', 'typing': 'number', 'help': ''}, 'anArray': {'default': '["a", "b"]', 'typing': 'string[]', 'help': 'normally a / b'}, '__RUNBOOK_METADATA__': {'default': '{}', 'typing': 'None', 'help': ''}}
+            # Run prompter with inferred params passed via stdin
+            result = subprocess.run(
+                [prompter],
+                input=json.dumps(formatted_params),
+                capture_output=True,
+                text=True,
+            )
+            # Response format: params: {'server': '"main.xargs.io"', 'arg': '1', 'anArray': '["a", "b"]'}
+            params = json.loads(result.stdout.strip())
+        else:
+            for key, value in formatted_params.items():
                 parsed_value = click.prompt(
-                    f"""Enter value for {key} {typing} {help_hint}""",
-                    default=default,
+                    f"""Enter value for {key} {value["typing"]} {value["help"]}""",
+                    default=value["default"],
                     value_proc=value_parser,
                 )
-                params[key] = parsed_value
+            params[key] = parsed_value
 
     injection_params = {**runbook_param_injection, **params}
 
