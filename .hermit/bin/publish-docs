@@ -8,6 +8,8 @@ set -x
 DOCS_DIR="site"
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
 TEMP_DIR=$(mktemp -d)
+TEMP_GIT_DIR=$(mktemp -d)
+ORIGINAL_GIT_DIR=$(git rev-parse --show-toplevel)
 
 # Check if git working directory is clean
 if [ -n "$(git status --porcelain)" ]; then
@@ -15,45 +17,26 @@ if [ -n "$(git status --porcelain)" ]; then
     exit 1
 fi
 
-# Ensure docs directory exists
-if [ ! -d "$DOCS_DIR" ]; then
-  echo "Error: Documentation directory '$DOCS_DIR' does not exist."
-  exit 1
-fi
-
-# Build the docs (optional, depending on your generator)
-# Uncomment if your docs need to be built before publishing
-# echo "Building documentation..."
 just docs
-
-# Save the current branch
-echo "Current branch is $BRANCH_NAME"
-
 # Copy the docs to the temporary directory
 cp -r "$DOCS_DIR"/* "$TEMP_DIR/"
 
-# Switch to the gh-pages branch (create it if it doesn't exist)
-if git show-ref --verify --quiet refs/heads/gh-pages; then
+(
+  cd "$TEMP_GIT_DIR"
+  git clone "$ORIGINAL_GIT_DIR" .
   git checkout gh-pages
-else
-  git checkout --orphan gh-pages
-  git rm -rf .
-fi
+  if [ ! -d "$DOCS_DIR" ]; then
+    echo "Error: Documentation directory '$DOCS_DIR' does not exist."
+    exit 1
+  fi
+  rm -rf ./*
+  cp -r "$TEMP_DIR"/* .
+  ls *
+  #git add -A
+  #git commit -m "Publish documentation [$(date)]"
+  #git push origin gh-pages
+)
 
-# Clear existing content and copy new docs
-echo "Publishing documentation to gh-pages..."
-rm -rf *
-cp -r "$TEMP_DIR"/* .
-
-# Add and commit changes
-git add -A
-git commit -m "Publish documentation [$(date)]"
-
-# Push to GitHub
-git push origin gh-pages
-
-# Clean up and return to the original branch
-git checkout "$BRANCH_NAME"
-rm -rf "$TEMP_DIR"
+# TODO: clean up
 
 echo "Documentation published to gh-pages branch."
