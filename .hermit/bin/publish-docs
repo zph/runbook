@@ -12,10 +12,10 @@ TEMP_GIT_DIR=$(mktemp -d)
 ORIGINAL_GIT_DIR=$(git rev-parse --show-toplevel)
 
 # Check if git working directory is clean
-if [ -n "$(git status --porcelain)" ]; then
-    echo "Error: Git working directory is not clean. Please commit or stash changes first."
-    exit 1
-fi
+# if [ -n "$(git status --porcelain)" ]; then
+#     echo "Error: Git working directory is not clean. Please commit or stash changes first."
+#     exit 1
+# fi
 
 just docs
 # Copy the docs to the temporary directory
@@ -25,18 +25,12 @@ cp -r "$DOCS_DIR"/* "$TEMP_DIR/"
   cd "$TEMP_GIT_DIR"
   git clone "$ORIGINAL_GIT_DIR" .
   git checkout gh-pages
-  if [ ! -d "$DOCS_DIR" ]; then
-    echo "Error: Documentation directory '$DOCS_DIR' does not exist."
-    exit 1
-  fi
+
   rm -rf ./*
   cp -r "$TEMP_DIR"/* .
-  ls *
-  #git add -A
-  #git commit -m "Publish documentation [$(date)]"
-  #git push origin gh-pages
+  git add -A
+  git commit -m "Publish documentation [$(date)]"
+  git push origin gh-pages
 )
-
-# TODO: clean up
 
 echo "Documentation published to gh-pages branch."
