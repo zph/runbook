@@ -1,8 +1,9 @@
 test:
   uv run pytest --disable-warnings -s
+  deno test -A --parallel tests/cli_test.ts
 
 test-watch:
-  watchexec -- pytest --disable-warnings -s
+  watchexec -- uv run pytest --disable-warnings -s && deno test -A --parallel tests/cli_test.ts
 
 open NOTEBOOK:
   uv run runbook edit {{NOTEBOOK}}
@@ -23,7 +24,7 @@ profile:
   uv run python3 -m cProfile runbook/cli/__init__.py
 
 release:
-  release-it
+  deno run -A npm:release-it
 
 clean:
   rm -rf ./dist

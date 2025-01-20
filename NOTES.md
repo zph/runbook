@@ -10,6 +10,7 @@
 - [ ] Use execute and upload output to S3 for non-interactive: https://github.com/nteract/papermill/tree/main?tab=readme-ov-file#execute-via-cli
 
 ## P0
+- [ ] Add `runbook init` suggestion or automation to add `export RUNBOOK_WORKING_DIR=...` to shell initializations
 - [ ] Install pre-commit.yml or git integration during `init` for secure linting and talisman
 - [x] Setup versioning and bumper (using versioner from npm ecosystem @release-it and @release-it/bumper)
 - [x] Fix tag key getting stripped out of planned runbooks b/c it breaks papermill

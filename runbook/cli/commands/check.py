@@ -1,6 +1,9 @@
 # metadata.kernelspec.name = deno || python3
 
+import io
 import json
+import sys
+from contextlib import redirect_stderr, redirect_stdout
 from os import path
 
 import click
@@ -42,4 +45,20 @@ def check(ctx, filename, command):
     # Lazily loaded for performance
     from jupytext.cli import jupytext as jupytext_main
 
-    jupytext_main(args=argv)
+    stdout = io.StringIO()
+    stderr = io.StringIO()
+
+    result = None
+    with redirect_stdout(stdout), redirect_stderr(stderr):
+        result = jupytext_main(args=argv)
+
+    stdout_content = stdout.getvalue()
+    stderr_content = stderr.getvalue()
+
+    click.echo(f"Checked {full_path}")
+    if result is not None and result != 0:
+        if stderr_content:
+            click.echo(f"Error: {stderr_content}", err=True)
+        if stdout_content:
+            click.echo(f"Output: {stdout_content}")
+        sys.exit(result)

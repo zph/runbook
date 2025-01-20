@@ -1,0 +1,139 @@
+export const snapshot = {};
+
+snapshot[`check 1`] = `
+{
+  exitCode: 0,
+  stderrEndsWith: true,
+  stdoutEndsWith: true,
+}
+`;
+
+snapshot[`convert 1`] = `
+{
+  exitCode: 0,
+  stderr: "",
+}
+`;
+
+snapshot[`convert 2`] = `
+"// ---
+// jupyter:
+//   jupytext:
+//     text_representation:
+//       extension: .ts
+//       format_name: light
+//       format_version: '1.5'
+//       jupytext_version: 1.16.6
+//   kernelspec:
+//     display_name: Deno
+//     language: typescript
+//     name: deno
+// ---
+
+// + [markdown] editable=true slideshow={\\"slide_type\\": \\"\\"}
+// # TITLE
+//
+// ## DESCRIPTION
+
+// + [markdown] editable=true slideshow={\\"slide_type\\": \\"\\"}
+// ## Setup
+
+// + tags=[\\"parameters\\"]
+// Default Params
+let server: string = \\"main.xargs.io\\";
+let arg: number = 1;
+let anArray: string[] = [\\"a\\", \\"b\\"]; // normally a / b
+let __RUNBOOK_METADATA__ = {};
+// -
+
+import { \$, sh } from \\"https://raw.githubusercontent.com/zph/runbook/main/ext/deno/runbook/mod.ts\\";
+
+await sh(\\"git log\\");
+
+prompt(\\"AAAAAAAAAAAA\\")
+
+// +
+console.log(\\"AAAAAAAAAA\\")
+
+console.log(\\"BBBBBBBBBBBB\\")
+
+// + [markdown] editable=true slideshow={\\"slide_type\\": \\"\\"}
+// ## Operation
+
+// + [markdown] editable=true slideshow={\\"slide_type\\": \\"\\"}
+// ### Step 1. Echo JSON
+// -
+
+await \$\`echo '{\\"a\\": 1}'\`.json();
+
+// + [markdown] editable=true slideshow={\\"slide_type\\": \\"\\"}
+// ### Step 2 Get Git Log
+// -
+
+await \$\`git log\`.text();
+
+// + [markdown] editable=true slideshow={\\"slide_type\\": \\"\\"}
+// ## Rollback
+
+// + [markdown] editable=true slideshow={\\"slide_type\\": \\"\\"}
+// ## Cleanup
+
+// + [markdown] editable=true slideshow={\\"slide_type\\": \\"\\"}
+// ## Action Items / Learnings
+"
+`;
+
+snapshot[`create 1`] = `
+{
+  exitCode: 0,
+  stderr: "",
+}
+`;
+
+snapshot[`init 1`] = `
+[
+  "runbooks",
+]
+`;
+
+snapshot[`list 1`] = `
+{
+  exitCode: 0,
+  stderr: "",
+  stdout: "
+Templates:
+📔 runbooks/binder/_template-deno.ipynb
+📔 runbooks/binder/_template-python.ipynb
+
+Runs:
+",
+}
+`;
+
+snapshot[`show 1`] = `
+{
+  exitCode: 0,
+  stderr: "",
+  stdout: '
+Runbook: runbooks/binder/_template-deno.ipynb
+Language: typescript
+
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Parameter            ┃ Default Value   ┃ Type     ┃ Help           ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ server               │ "main.xargs.io" │ string   │                │
+│ arg                  │ 1               │ number   │                │
+│ anArray              │ ["a", "b"]      │ string[] │ normally a / b │
+│ __RUNBOOK_METADATA__ │ {}              │ None     │                │
+└──────────────────────┴─────────────────┴──────────┴────────────────┘
+',
+}
+`;
+
+snapshot[`version 1`] = `
+{
+  exitCode: 0,
+  stderr: "",
+  stdout: "Runbook version",
+}
+`;

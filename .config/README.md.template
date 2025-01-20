@@ -2,48 +2,88 @@
 
 ## Summary
 
-Runbook is a commandline tool that guides users in an opinionated approach to creating dynamic runbooks.
+Runbook is a powerful CLI tool that transforms your operational procedures into interactive, executable notebooks. It combines the best of documentation and automation by letting you create dynamic runbooks using Markdown, Deno, or Python.
 
-In this context, a runbook is a mixture of markdown and executable code that contains the steps needed for successful operational executions such as server maintenance, database management, or creating a weekly report.
+Think of it as "infrastructure as code" meets "documentation as code" - perfect for DevOps teams who want both flexibility and reliability.
 
-### When would you use this?
-1. When you want quick to write tools that can't be entirely automated, but want the safey of auditable tools.
-2. When your tooling needs to adjust rapidly and contain prepared rollback procedures.
-3. When this is a semi-custom situation that doesn't warrant building dedicated and expensive tooling
-4. When you've grown out of shell scripts but aren't ready to build it in Golang or Rust
+**At work, it empowered us to move 300 Mysql Clusters to TiDB with a small team [recording](https://www.youtube.com/watch?app=desktop&v=-_JoqZthrI8) over the course of 18 months.**
+
+# Quick Start
+
+```sh
+uv tool install git+https://github.com/zph/runbook.git@$RUNBOOK_VERSION
+
+# Initialize a new runbook project in a repo of your choosing
+runbook init
+
+# Create a new runbook
+runbook create -l deno runbook-name.ipynb
+
+# Edit the runbook
+runbook edit runbook-name.ipynb
+
+# Plan the runbook
+runbook plan runbook-name.ipynb --embed file.json --parameters '{"arg": 1, "foo": "baz"}'
+
+# Run the runbook
+runbook run runbook-name.ipynb
+```
+
+# Background
+
+### What is a Runbook?
+A runbook is an executable document that combines:
+- Clear markdown documentation
+- Runnable code blocks
+- Parameterized inputs for reusability
+- Built-in safety checks
+
+It's ideal for operations like encoding your Disaster Recovery Operations, spinning up a new cluster, or restoring from snapshots.
+
+### When Should You Use This?
+- ✅ When you need **semi-automated tools** with audit trails and safety checks
+- ✅ When you want **rapid iteration** on operational procedures with built-in rollback steps
+- ✅ When you need something more powerful than shell scripts but don't want to build a full application
+- ✅ When you want to make complex operations both **safe and repeatable**
 
 ### Runbook Best Practices
-1. Include a Summary/Purpose, Step descriptions, Warning signs, Verification Steps and Execution Steps in their natural order
-2. Non-mutative actions can be included anyhere
-3. Mutative actions (destroy a server or force a failover) must use the `confirm` flag
-4. Write pre-check steps before mutation steps in order to increase safety of the procedure
-5. Runbooks for critical operations should be run by pairs of staff members
-   1. One to execute the book
-   2. A second to validate and perform safety checks
+1. Structure your runbooks with:
+   - Clear purpose and summary
+   - Step-by-step descriptions
+   - Warning signs and precautions
+   - Verification steps
+   - Execution steps in logical order
+   - Rollback and cleanup steps
+2. Keep read-only operations flexible
+3. Require explicit confirmation for destructive actions using the `confirm` flag
+4. Include pre-flight checks before any system modifications
+5. For critical operations, use pair execution:
+   - One person to run the procedure
+   - Another to verify and validate safety checks
 
 ## Workflow
 
 1. Initialize a new folder project with `runbook init...`
 1. Create a new runbook with `runbook create -l deno runbook-name.ipynb`
+1. Edit the runbook with `runbook edit runbook-name.ipynb` (or using editor of choice) and add your title, description, steps
+1. For complex runbooks, offload the coding details into an SDK that you build beside the runbooks that can be reused across multiple runbooks
 1. Plan that runbook for a specific run `runbook plan runbook-name.ipynb --embed file.json --parameters '{"arg": 1, "foo": "baz"}'
-1. Run the instance of a runbook with either `runbook run runbook-name.ipynb` or use VSCode to run it `code runbooks/run/runbook-name.ipynb`
+1. Run the instance of a runbook with either `runbook run runbook-name.ipynb` or use VSCode to run it `code runbooks/runs/runbook-name.ipynb`
+1. Depending on auditing needs, you can either commit the "runs" folder to your repo or only keep the "binder" folder committed.
+   1. In case of strict auditing needs, we recommend you add auditing of commands in the local SDK as well as in your cloud provider
 
 ## Installation
 
-We recommend using [uv](https://docs.astral.sh/uv/) or [pipx](https://pypi.org/project/pipx/) for installing runbook as a cli tool.
+We recommend using [uv](https://docs.astral.sh/uv/) for installing runbook as a cli tool. If you already use pipx, you can use that instead.
 
 ```sh
 uv tool install git+https://github.com/zph/runbook.git
-# or
-pipx install git+https://github.com/zph/runbook.git
 ```
 
 Or pin to a version
 
 ```sh
-uv tool install git+https://github.com/zph/runbook.git@v0.0.1
-
-pipx install git+https://github.com/zph/runbook.git@v0.0.1
+uv tool install git+https://github.com/zph/runbook.git@$RUNBOOK_VERSION
 ```
 
 ## CLI
@@ -72,12 +112,10 @@ For advanced completion setup see [docs](https://click.palletsprojects.com/en/8.
 
 # Principles
 
-- Prefer deno for better package management and developer ergonomics
+- Prefer deno for better package management and developer ergonomics with typing
     - But allow for other kernels (python) as secondary option, via compatible libraries
 - Make `runbook` batteries included for interfacing with shell commands and common runbook
-operations (ie grafana and notifications)
-- Sets up necessary requirements to ensure cell executions are timed and displayed as
-long as executions run through `runbook run ...` command
+operations
 
 # Caveats
 
@@ -85,18 +123,18 @@ long as executions run through `runbook run ...` command
    1. Recommendation: if auditable runs are needed, use jupyter via browser `runbook run TITLE`
 1. Notebooks have different structured ids per cell depending on run environment
    1. Recommendation: if requiring consistency, write your own pre-processor to standardize on an id format
-1. Builting shell package requires a shell environment and is only expected to run on Linux or Mac not Windows.
-   1. Recommendation: suggest fixes in PR or Issues on Github
+1. Built-in shell package requires a shell environment and is only expected to run on Linux or Mac not Windows.
+   1. Recommendation: Windows support is out of scope for now but we'll review PRs
 
 ## Deno / Typescript
-1. Parameter cells should use `let` declarations to allow for param overriding
-    - This is required to correctly support executing the ts version of notebooks.
+1. Parameter cells must use `let` declarations to allow for param overriding
+   - `var` or `let` work in Deno notebooks but only `let` works if using `runbook convert a.ipynb a.ts` and running the ts version
 
 # Developing runbook cli
 
-We use [hermit](https://hermit.dev/) to manage developement dependencies.
-
-Use [uv](https://docs.astral.sh/uv/) as the package manager/execution environment.
+For development we use the following tools:
+- [hermit](https://hermit.dev/) to manage developement tool dependencies (see .hermit/bin)
+- [uv](https://docs.astral.sh/uv/) python package manager and cli runner (see pyproject.toml)
 
 Necessary deps can be seen in [pyproject.toml](pyproject.toml) and .hermit/bin
 
