@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Runbook &#8212; Runbook 1.0.0-rc2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=b645073f"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Runbook CLI" href="cli.html" />
+    <link rel="prev" title="Runbook documentation" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="runbook">
+<h1>Runbook<a class="headerlink" href="#runbook" title="Link to this heading">¶</a></h1>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">¶</a></h2>
+<p>Runbook is a powerful CLI tool that transforms your operational procedures into interactive, executable notebooks. It combines the best of documentation and automation by letting you create dynamic runbooks using Markdown, Deno, or Python.</p>
+<p>Think of it as “infrastructure as code” meets “documentation as code” - perfect for DevOps teams who want both flexibility and reliability.</p>
+<p><strong>At work, it empowered us to move 300 Mysql Clusters to TiDB with a small team <a class="reference external" href="https://www.youtube.com/watch?app=desktop&amp;amp;v=-_JoqZthrI8">recording</a> over the course of 18 months.</strong></p>
+</section>
+</section>
+<section id="quick-start">
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">¶</a></h1>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>tool<span class="w"> </span>install<span class="w"> </span>git+https://github.com/zph/runbook.git@1.0.0-rc2
+
+<span class="c1"># Initialize a new runbook project in a repo of your choosing</span>
+runbook<span class="w"> </span>init
+
+<span class="c1"># Create a new runbook</span>
+runbook<span class="w"> </span>create<span class="w"> </span>-l<span class="w"> </span>deno<span class="w"> </span>runbook-name.ipynb
+
+<span class="c1"># Edit the runbook</span>
+runbook<span class="w"> </span>edit<span class="w"> </span>runbook-name.ipynb
+
+<span class="c1"># Plan the runbook</span>
+runbook<span class="w"> </span>plan<span class="w"> </span>runbook-name.ipynb<span class="w"> </span>--embed<span class="w"> </span>file.json<span class="w"> </span>--parameters<span class="w"> </span><span class="s1">&#39;{&quot;arg&quot;: 1, &quot;foo&quot;: &quot;baz&quot;}&#39;</span>
+
+<span class="c1"># Run the runbook</span>
+runbook<span class="w"> </span>run<span class="w"> </span>runbook-name.ipynb
+</pre></div>
+</div>
+</section>
+<section id="background">
+<h1>Background<a class="headerlink" href="#background" title="Link to this heading">¶</a></h1>
+<section id="what-is-a-runbook">
+<h2>What is a Runbook?<a class="headerlink" href="#what-is-a-runbook" title="Link to this heading">¶</a></h2>
+<p>A runbook is an executable document that combines:</p>
+<ul class="simple">
+<li><p>Clear markdown documentation</p></li>
+<li><p>Runnable code blocks</p></li>
+<li><p>Parameterized inputs for reusability</p></li>
+<li><p>Built-in safety checks</p></li>
+</ul>
+<p>It’s ideal for operations like encoding your Disaster Recovery Operations, spinning up a new cluster, or restoring from snapshots.</p>
+</section>
+<section id="when-should-you-use-this">
+<h2>When Should You Use This?<a class="headerlink" href="#when-should-you-use-this" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>✅ When you need <strong>semi-automated tools</strong> with audit trails and safety checks</p></li>
+<li><p>✅ When you want <strong>rapid iteration</strong> on operational procedures with built-in rollback steps</p></li>
+<li><p>✅ When you need something more powerful than shell scripts but don’t want to build a full application</p></li>
+<li><p>✅ When you want to make complex operations both <strong>safe and repeatable</strong></p></li>
+</ul>
+</section>
+<section id="runbook-best-practices">
+<h2>Runbook Best Practices<a class="headerlink" href="#runbook-best-practices" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Structure your runbooks with:</p>
+<ul class="simple">
+<li><p>Clear purpose and summary</p></li>
+<li><p>Step-by-step descriptions</p></li>
+<li><p>Warning signs and precautions</p></li>
+<li><p>Verification steps</p></li>
+<li><p>Execution steps in logical order</p></li>
+<li><p>Rollback and cleanup steps</p></li>
+</ul>
+</li>
+<li><p>Keep read-only operations flexible</p></li>
+<li><p>Require explicit confirmation for destructive actions using the <code class="docutils literal notranslate"><span class="pre">confirm</span></code> flag</p></li>
+<li><p>Include pre-flight checks before any system modifications</p></li>
+<li><p>For critical operations, use pair execution:</p>
+<ul class="simple">
+<li><p>One person to run the procedure</p></li>
+<li><p>Another to verify and validate safety checks</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="workflow">
+<h2>Workflow<a class="headerlink" href="#workflow" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Initialize a new folder project with <code class="docutils literal notranslate"><span class="pre">runbook</span> <span class="pre">init...</span></code></p></li>
+<li><p>Create a new runbook with <code class="docutils literal notranslate"><span class="pre">runbook</span> <span class="pre">create</span> <span class="pre">-l</span> <span class="pre">deno</span> <span class="pre">runbook-name.ipynb</span></code></p></li>
+<li><p>Edit the runbook with <code class="docutils literal notranslate"><span class="pre">runbook</span> <span class="pre">edit</span> <span class="pre">runbook-name.ipynb</span></code> (or using editor of choice) and add your title, description, steps</p></li>
+<li><p>For complex runbooks, offload the coding details into an SDK that you build beside the runbooks that can be reused across multiple runbooks</p></li>
+<li><p>Plan that runbook for a specific run `runbook plan runbook-name.ipynb –embed file.json –parameters ‘{“arg”: 1, “foo”: “baz”}’</p></li>
+<li><p>Run the instance of a runbook with either <code class="docutils literal notranslate"><span class="pre">runbook</span> <span class="pre">run</span> <span class="pre">runbook-name.ipynb</span></code> or use VSCode to run it <code class="docutils literal notranslate"><span class="pre">code</span> <span class="pre">runbooks/runs/runbook-name.ipynb</span></code></p></li>
+<li><p>Depending on auditing needs, you can either commit the “runs” folder to your repo or only keep the “binder” folder committed.</p>
+<ol class="arabic simple">
+<li><p>In case of strict auditing needs, we recommend you add auditing of commands in the local SDK as well as in your cloud provider</p></li>
+</ol>
+</li>
+</ol>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
+<p>We recommend using <a class="reference external" href="https://docs.astral.sh/uv/">uv</a> for installing runbook as a cli tool. If you already use pipx, you can use that instead.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>tool<span class="w"> </span>install<span class="w"> </span>git+https://github.com/zph/runbook.git
+</pre></div>
+</div>
+<p>Or pin to a version</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>tool<span class="w"> </span>install<span class="w"> </span>git+https://github.com/zph/runbook.git@1.0.0-rc2
+</pre></div>
+</div>
+</section>
+<section id="cli">
+<h2>CLI<a class="headerlink" href="#cli" title="Link to this heading">¶</a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>Usage:<span class="w"> </span>runbook<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
+
+Options:
+<span class="w">  </span>--cwd<span class="w"> </span>PATH<span class="w">  </span>Directory<span class="w"> </span><span class="k">for</span><span class="w"> </span>operations<span class="w"> </span><span class="o">(</span>normally<span class="w"> </span>at<span class="w"> </span>root<span class="w"> </span>above<span class="w"> </span>runbooks,<span class="w"> </span>ie
+<span class="w">              </span>../.runbook.yaml<span class="o">)</span><span class="w"> </span>and<span class="w"> </span>can<span class="w"> </span>be<span class="w"> </span><span class="nb">set</span><span class="w"> </span>with<span class="w"> </span>RUNBOOK_WORKING_DIR<span class="w"> </span>or
+<span class="w">              </span>WORKING_DIR<span class="w"> </span>environment<span class="w"> </span>variables
+<span class="w">  </span>--help<span class="w">      </span>Show<span class="w"> </span>this<span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span>exit.
+
+Commands:
+<span class="w">  </span>check<span class="w">    </span>Check<span class="w"> </span>language<span class="w"> </span>validity<span class="w"> </span>and<span class="w"> </span>formatting<span class="w"> </span>of<span class="w"> </span>a<span class="w"> </span>notebook.
+<span class="w">  </span>convert<span class="w">  </span>Convert<span class="w"> </span>an<span class="w"> </span>existing<span class="w"> </span>runbook<span class="w"> </span>to<span class="w"> </span>different<span class="w"> </span>format
+<span class="w">  </span>create<span class="w">   </span>Create<span class="w"> </span>a<span class="w"> </span>new<span class="w"> </span>runbook<span class="w"> </span>from<span class="w"> </span><span class="o">[</span>template<span class="o">]</span>
+<span class="w">  </span>diff<span class="w">     </span>Diff<span class="w"> </span>two<span class="w"> </span>notebooks
+<span class="w">  </span>edit<span class="w">     </span>Edit<span class="w"> </span>an<span class="w"> </span>existing<span class="w"> </span>runbook
+<span class="w">  </span>init<span class="w">     </span>Initialize<span class="w"> </span>a<span class="w"> </span>folder<span class="w"> </span>as<span class="w"> </span>a<span class="w"> </span>runbook<span class="w"> </span>repository
+<span class="w">  </span>list<span class="w">     </span>list<span class="w"> </span>runbooks
+<span class="w">  </span>plan<span class="w">     </span>Prepares<span class="w"> </span>the<span class="w"> </span>runbook<span class="w"> </span><span class="k">for</span><span class="w"> </span>execution<span class="w"> </span>by<span class="w"> </span>injecting<span class="w"> </span>parameters.
+<span class="w">  </span>review<span class="w">   </span><span class="o">[</span>Unimplemented<span class="o">]</span><span class="w"> </span>Entrypoint<span class="w"> </span><span class="k">for</span><span class="w"> </span>reviewing<span class="w"> </span>runbook
+<span class="w">  </span>run<span class="w">      </span>Run<span class="w"> </span>a<span class="w"> </span>notebook
+<span class="w">  </span>show<span class="w">     </span>Show<span class="w"> </span>runbook<span class="w"> </span>parameters<span class="w"> </span>and<span class="w"> </span>metadata
+<span class="w">  </span>version<span class="w">  </span>Display<span class="w"> </span>version<span class="w"> </span>information<span class="w"> </span>about<span class="w"> </span>runbook
+</pre></div>
+</div>
+<p>Shell completion is included via click library and enabled as follows <a class="reference external" href="https://click.palletsprojects.com/en/8.1.x/shell-completion/#enabling-completion">link</a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Bash</span>
+<span class="c1"># Add this to ~/.bashrc:</span>
+<span class="nb">eval</span> <span class="s2">&quot;$(_RUNBOOK_COMPLETE=bash_source runbook)&quot;</span>
+
+<span class="c1"># Zsh</span>
+<span class="c1"># Add this to ~/.zshrc:</span>
+<span class="nb">eval</span> <span class="s2">&quot;$(_RUNBOOK_COMPLETE=zsh_source runbook)&quot;</span>
+
+<span class="c1"># Fish</span>
+<span class="c1"># Add this to ~/.config/fish/completions/foo-bar.fish:</span>
+<span class="n">_RUNBOOK_COMPLETE</span><span class="o">=</span><span class="n">fish_source</span> <span class="n">runbook</span> <span class="o">|</span> <span class="n">source</span>
+</pre></div>
+</div>
+<p>For advanced completion setup see <a class="reference external" href="https://click.palletsprojects.com/en/8.1.x/shell-completion/#enabling-completion">docs</a></p>
+</section>
+</section>
+<section id="principles">
+<h1>Principles<a class="headerlink" href="#principles" title="Link to this heading">¶</a></h1>
+<ul class="simple">
+<li><p>Prefer deno for better package management and developer ergonomics with typing</p>
+<ul>
+<li><p>But allow for other kernels (python) as secondary option, via compatible libraries</p></li>
+</ul>
+</li>
+<li><p>Make <code class="docutils literal notranslate"><span class="pre">runbook</span></code> batteries included for interfacing with shell commands and common runbook
+operations</p></li>
+</ul>
+</section>
+<section id="caveats">
+<h1>Caveats<a class="headerlink" href="#caveats" title="Link to this heading">¶</a></h1>
+<ol class="arabic simple">
+<li><p>Running notebook in VScode does not set the timings necessary in notebook for being auditable and exported later</p>
+<ol class="arabic simple">
+<li><p>Recommendation: if auditable runs are needed, use jupyter via browser <code class="docutils literal notranslate"><span class="pre">runbook</span> <span class="pre">run</span> <span class="pre">TITLE</span></code></p></li>
+</ol>
+</li>
+<li><p>Notebooks have different structured ids per cell depending on run environment</p>
+<ol class="arabic simple">
+<li><p>Recommendation: if requiring consistency, write your own pre-processor to standardize on an id format</p></li>
+</ol>
+</li>
+<li><p>Built-in shell package requires a shell environment and is only expected to run on Linux or Mac not Windows.</p>
+<ol class="arabic simple">
+<li><p>Recommendation: Windows support is out of scope for now but we’ll review PRs</p></li>
+</ol>
+</li>
+</ol>
+<section id="deno-typescript">
+<h2>Deno / Typescript<a class="headerlink" href="#deno-typescript" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Parameter cells must use <code class="docutils literal notranslate"><span class="pre">let</span></code> declarations to allow for param overriding</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">var</span></code> or <code class="docutils literal notranslate"><span class="pre">let</span></code> work in Deno notebooks but only <code class="docutils literal notranslate"><span class="pre">let</span></code> works if using <code class="docutils literal notranslate"><span class="pre">runbook</span> <span class="pre">convert</span> <span class="pre">a.ipynb</span> <span class="pre">a.ts</span></code> and running the ts version</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="developing-runbook-cli">
+<h1>Developing runbook cli<a class="headerlink" href="#developing-runbook-cli" title="Link to this heading">¶</a></h1>
+<p>For development we use the following tools:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://hermit.dev/">hermit</a> to manage developement tool dependencies (see .hermit/bin)</p></li>
+<li><p><a class="reference external" href="https://docs.astral.sh/uv/">uv</a> python package manager and cli runner (see pyproject.toml)</p></li>
+</ul>
+<p>Necessary deps can be seen in <a class="reference internal" href="#pyproject.toml"><span class="xref myst">pyproject.toml</span></a> and .hermit/bin</p>
+<p>Use .hermit/bin/activate-hermit to activate the environment.</p>
+</section>
+<section id="readme-changes">
+<h1>Readme Changes<a class="headerlink" href="#readme-changes" title="Link to this heading">¶</a></h1>
+<p>README.md is generated from .config/README.md.template and should be updated there.</p>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Runbook</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Runbook</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#quick-start">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#background">Background</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-a-runbook">What is a Runbook?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#when-should-you-use-this">When Should You Use This?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#runbook-best-practices">Runbook Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#workflow">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cli">CLI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#principles">Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#caveats">Caveats</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#deno-typescript">Deno / Typescript</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#developing-runbook-cli">Developing runbook cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#readme-changes">Readme Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">CLI Documentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Runbook documentation</a></li>
+      <li>Next: <a href="cli.html" title="next chapter">Runbook CLI</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Zander Hill.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/README.md.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
