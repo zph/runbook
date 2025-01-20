@@ -53,3 +53,9 @@ template-update:
 
 readme:
   .config/templating.sh
+
+docs:
+  uvx --with mkdocs-click --with . mkdocs serve
+
+docs-release:
+  uvx --with mkdocs-click --with . mkdocs gh-deploy

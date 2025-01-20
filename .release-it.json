@@ -8,7 +8,7 @@
   "hooks": {
     "after:bump": "npx auto-changelog -p && git add CHANGELOG.md",
     "before:init": "just clean",
-    "after:github:release": "just clean",
+    "after:github:release": "just docs-release && just clean",
     "before:release": "just build"
   },
   "npm": {
