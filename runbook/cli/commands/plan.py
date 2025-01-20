@@ -97,7 +97,7 @@ def plan(ctx, input, embed, identifier="", params={}, prompter=""):
         # Inferred_type_name is language specific
         formatted_params = {}
         for key, value in inferred_params.items():
-            if key != "__RUNBOOK_METADATA__":
+            if key != RUNBOOK_METADATA:
                 default = value["default"].rstrip(";")
                 typing = value["inferred_type_name"] or ""
                 help = value["help"] or ""
