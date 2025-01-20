@@ -36,9 +36,9 @@ repos:
         language: system
         files: '.*$'
         pass_filenames: false
-    -   id: update-readme
-        name: Runs readme templating
-        entry: just readme
-        language: system
-        files: '.*$'
-        pass_filenames: false
+#     -   id: update-readme
+#         name: Runs readme templating
+#         entry: just readme
+#         language: system
+#         files: '.*$'
+#         pass_filenames: false
