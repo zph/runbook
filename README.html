@@ -125,8 +125,9 @@ runbook<span class="w"> </span>run<span class="w"> </span>runbook-name.ipynb
 </li>
 </ol>
 </section>
+</section>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
 <p>We recommend using <a class="reference external" href="https://docs.astral.sh/uv/">uv</a> for installing runbook as a cli tool. If you already use pipx, you can use that instead.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>tool<span class="w"> </span>install<span class="w"> </span>git+https://github.com/zph/runbook.git
 </pre></div>
@@ -137,7 +138,7 @@ runbook<span class="w"> </span>run<span class="w"> </span>runbook-name.ipynb
 </div>
 </section>
 <section id="cli">
-<h2>CLI<a class="headerlink" href="#cli" title="Link to this heading">¶</a></h2>
+<h1>CLI<a class="headerlink" href="#cli" title="Link to this heading">¶</a></h1>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>Usage:<span class="w"> </span>runbook<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 
 Options:
@@ -147,10 +148,10 @@ Options:
 <span class="w">  </span>--help<span class="w">      </span>Show<span class="w"> </span>this<span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span>exit.
 
 Commands:
-<span class="w">  </span>check<span class="w">    </span>Check<span class="w"> </span>language<span class="w"> </span>validity<span class="w"> </span>and<span class="w"> </span>formatting<span class="w"> </span>of<span class="w"> </span>a<span class="w"> </span>notebook.
-<span class="w">  </span>convert<span class="w">  </span>Convert<span class="w"> </span>an<span class="w"> </span>existing<span class="w"> </span>runbook<span class="w"> </span>to<span class="w"> </span>different<span class="w"> </span>format
-<span class="w">  </span>create<span class="w">   </span>Create<span class="w"> </span>a<span class="w"> </span>new<span class="w"> </span>runbook<span class="w"> </span>from<span class="w"> </span><span class="o">[</span>template<span class="o">]</span>
-<span class="w">  </span>diff<span class="w">     </span>Diff<span class="w"> </span>two<span class="w"> </span>notebooks
+<span class="w">  </span>check<span class="w">    </span>Check<span class="w"> </span>the<span class="w"> </span>language<span class="w"> </span>validity<span class="w"> </span>and<span class="w"> </span>formatting<span class="w"> </span>of<span class="w"> </span>a<span class="w"> </span>Jupyter<span class="w"> </span>notebook.
+<span class="w">  </span>convert<span class="w">  </span>Convert<span class="w"> </span>a<span class="w"> </span>Jupyter<span class="w"> </span>notebook<span class="w"> </span>between<span class="w"> </span>different<span class="w"> </span>formats.
+<span class="w">  </span>create<span class="w">   </span>Create<span class="w"> </span>a<span class="w"> </span>new<span class="w"> </span>runbook<span class="w"> </span>from<span class="w"> </span>a<span class="w"> </span>template.
+<span class="w">  </span>diff<span class="w">     </span>Compare<span class="w"> </span>two<span class="w"> </span>Jupyter<span class="w"> </span>notebooks<span class="w"> </span>and<span class="w"> </span>show<span class="w"> </span>their<span class="w"> </span>differences.
 <span class="w">  </span>edit<span class="w">     </span>Edit<span class="w"> </span>an<span class="w"> </span>existing<span class="w"> </span>runbook
 <span class="w">  </span>init<span class="w">     </span>Initialize<span class="w"> </span>a<span class="w"> </span>folder<span class="w"> </span>as<span class="w"> </span>a<span class="w"> </span>runbook<span class="w"> </span>repository
 <span class="w">  </span>list<span class="w">     </span>list<span class="w"> </span>runbooks
@@ -176,7 +177,6 @@ Commands:
 </pre></div>
 </div>
 <p>For advanced completion setup see <a class="reference external" href="https://click.palletsprojects.com/en/8.1.x/shell-completion/#enabling-completion">docs</a></p>
-</section>
 </section>
 <section id="principles">
 <h1>Principles<a class="headerlink" href="#principles" title="Link to this heading">¶</a></h1>
@@ -227,7 +227,7 @@ operations</p></li>
 <li><p><a class="reference external" href="https://hermit.dev/">hermit</a> to manage developement tool dependencies (see .hermit/bin)</p></li>
 <li><p><a class="reference external" href="https://docs.astral.sh/uv/">uv</a> python package manager and cli runner (see pyproject.toml)</p></li>
 </ul>
-<p>Necessary deps can be seen in <a class="reference internal" href="#pyproject.toml"><span class="xref myst">pyproject.toml</span></a> and .hermit/bin</p>
+<p>Necessary deps can be seen in pyproject.toml and .hermit/bin</p>
 <p>Use .hermit/bin/activate-hermit to activate the environment.</p>
 </section>
 <section id="readme-changes">
@@ -273,10 +273,10 @@ operations</p></li>
 <li class="toctree-l2"><a class="reference internal" href="#when-should-you-use-this">When Should You Use This?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#runbook-best-practices">Runbook Best Practices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#workflow">Workflow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#cli">CLI</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#cli">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#principles">Principles</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#caveats">Caveats</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#deno-typescript">Deno / Typescript</a></li>
@@ -285,6 +285,7 @@ operations</p></li>
 <li class="toctree-l1"><a class="reference internal" href="#developing-runbook-cli">Developing runbook cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#readme-changes">Readme Changes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NOTES.html">Roadmap and Notes</a></li>
 </ul>
 
 <div class="relations">

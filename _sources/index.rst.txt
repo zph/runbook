@@ -6,10 +6,9 @@
 Runbook documentation
 =====================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
-
+CLI for dynamic runbooks: a structured and auditable approach
+to creating and executing operational procedures, bridging the
+gap between simple shell scripts and more complex tooling.
 
 .. toctree::
    :maxdepth: 2
@@ -17,3 +16,4 @@ documentation for details.
 
    README <README.md>
    CLI Documentation <cli>
+   Roadmap and Notes <NOTES.md>

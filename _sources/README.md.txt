@@ -31,7 +31,7 @@ runbook run runbook-name.ipynb
 
 # Background
 
-### What is a Runbook?
+## What is a Runbook?
 A runbook is an executable document that combines:
 - Clear markdown documentation
 - Runnable code blocks
@@ -40,13 +40,13 @@ A runbook is an executable document that combines:
 
 It's ideal for operations like encoding your Disaster Recovery Operations, spinning up a new cluster, or restoring from snapshots.
 
-### When Should You Use This?
+## When Should You Use This?
 - ✅ When you need **semi-automated tools** with audit trails and safety checks
 - ✅ When you want **rapid iteration** on operational procedures with built-in rollback steps
 - ✅ When you need something more powerful than shell scripts but don't want to build a full application
 - ✅ When you want to make complex operations both **safe and repeatable**
 
-### Runbook Best Practices
+## Runbook Best Practices
 1. Structure your runbooks with:
    - Clear purpose and summary
    - Step-by-step descriptions
@@ -72,7 +72,7 @@ It's ideal for operations like encoding your Disaster Recovery Operations, spinn
 1. Depending on auditing needs, you can either commit the "runs" folder to your repo or only keep the "binder" folder committed.
    1. In case of strict auditing needs, we recommend you add auditing of commands in the local SDK as well as in your cloud provider
 
-## Installation
+# Installation
 
 We recommend using [uv](https://docs.astral.sh/uv/) for installing runbook as a cli tool. If you already use pipx, you can use that instead.
 
@@ -86,7 +86,7 @@ Or pin to a version
 uv tool install git+https://github.com/zph/runbook.git@1.0.0-rc2
 ```
 
-## CLI
+# CLI
 
 ```sh
 Usage: runbook [OPTIONS] COMMAND [ARGS]...
@@ -98,10 +98,10 @@ Options:
   --help      Show this message and exit.
 
 Commands:
-  check    Check language validity and formatting of a notebook.
-  convert  Convert an existing runbook to different format
-  create   Create a new runbook from [template]
-  diff     Diff two notebooks
+  check    Check the language validity and formatting of a Jupyter notebook.
+  convert  Convert a Jupyter notebook between different formats.
+  create   Create a new runbook from a template.
+  diff     Compare two Jupyter notebooks and show their differences.
   edit     Edit an existing runbook
   init     Initialize a folder as a runbook repository
   list     list runbooks
@@ -156,7 +156,7 @@ For development we use the following tools:
 - [hermit](https://hermit.dev/) to manage developement tool dependencies (see .hermit/bin)
 - [uv](https://docs.astral.sh/uv/) python package manager and cli runner (see pyproject.toml)
 
-Necessary deps can be seen in [pyproject.toml](pyproject.toml) and .hermit/bin
+Necessary deps can be seen in pyproject.toml and .hermit/bin
 
 Use .hermit/bin/activate-hermit to activate the environment.
 
