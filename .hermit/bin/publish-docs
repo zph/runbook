@@ -30,7 +30,11 @@ cp -r "$DOCS_DIR"/* "$TEMP_DIR/"
   cp -r "$TEMP_DIR"/* .
   git add -A
   git commit -m "Publish documentation [$(date)]"
+  # Push to local original repo
   git push origin gh-pages
 )
+
+# Push to remote
+git push origin gh-pages
 
 echo "Documentation published to gh-pages branch."
