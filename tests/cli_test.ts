@@ -3,7 +3,7 @@
 // review
 // run
 
-import { assertEquals } from "jsr:@std/assert";
+import { assertEquals, assertArrayIncludes } from "jsr:@std/assert";
 import { assertSnapshot } from "jsr:@std/testing/snapshot";
 import { $ } from "jsr:@david/dax"
 
@@ -81,9 +81,12 @@ Deno.test.ignore("diff", async (t) => {
 
 Deno.test("init", async (t) => {
   const {dir} = await setup();
-  const files = await Array.fromAsync(Deno.readDir(dir));
-  const filenames = files.map(f => f.name).sort();
-  assertSnapshot(t, filenames);
+  const files = (await getAllFiles(dir)).map(f => f.replace(dir, ""));
+  assertEquals(files, [
+    "/runbooks/binder/_template-deno.ipynb",
+    "/runbooks/binder/_template-python.ipynb",
+    "/runbooks/.runbook.json",
+  ])
 });
 
 Deno.test("list", async (t) => {
@@ -97,6 +100,27 @@ Deno.test("show", async (t) => {
   const {runbook } = await setup();
   const cmd = await runbook(["show", "runbooks/binder/_template-deno.ipynb"]);
   assertSnapshot(t, { stdout: cmd.stdout, stderr: cmd.stderr, exitCode: cmd.code });
+});
+
+// plan
+Deno.test("plan: prompter interface", async (t) => {
+  const cwd = Deno.cwd();
+  const {runbook, dir } = await setup();
+  const cmd = await runbook(["plan", "runbooks/binder/_template-deno.ipynb", "--prompter", [cwd, "tests/fixtures/prompters/echoer"].join("/")]);
+  assertEquals(cmd.code, 0);
+
+  const files = await getAllFiles($.path(dir).join("runbooks/runs").toString());
+  const planFile = files.find(f => f.endsWith("_template-deno/_template-deno.ipynb"));
+  if(!planFile) {
+    throw new Error("Plan file not found");
+  }
+  const json = await Deno.readTextFile(planFile);
+  const plan = JSON.parse(json);
+  const maybeParamCells = plan.cells.filter((c: any) => c.cell_type === "code" && c.metadata?.tags?.includes("injected-parameters"));
+  assertEquals(maybeParamCells.length, 1);
+  const paramCell = maybeParamCells[0];
+  assertArrayIncludes(paramCell.source, [`server = "main.xargs.io";\n`, `arg = 1;\n`, `anArray = ["a", "b"];\n`]);
+  // assertSnapshot(t, { stdout: cmd.stdout, stderr: cmd.stderr, exitCode: cmd.code });
 });
 
 // run
@@ -121,4 +145,23 @@ Deno.test("version", async (t) => {
   const cmd = await runbook(["version"]);
   assertSnapshot(t, { stdout: cmd.stdout.split(":")[0], stderr: cmd.stderr, exitCode: cmd.code });
 });
+
+async function* walkFiles(dir: string): AsyncGenerator<string> {
+  for await (const entry of Deno.readDir(dir)) {
+    const path = `${dir}/${entry.name}`;
+    if (entry.isDirectory) {
+      yield* walkFiles(path);
+    } else {
+      yield path;
+    }
+  }
+}
+
+async function getAllFiles(dir: string): Promise<string[]> {
+  const files = [];
+  for await (const file of walkFiles(dir)) {
+    files.push(file);
+  }
+  return files;
+}
 

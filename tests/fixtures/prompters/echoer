@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo '{"server": "main.xargs.io", "arg": 1, "anArray": ["a", "b"]}'
+# cat /dev/stdin
