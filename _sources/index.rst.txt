@@ -17,3 +17,4 @@ gap between simple shell scripts and more complex tooling.
    README <README.md>
    CLI Documentation <cli>
    Roadmap and Notes <NOTES.md>
+   Performance <PERFORMANCE.md>
