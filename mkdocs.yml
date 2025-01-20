@@ -1,5 +1,0 @@
-site_name: Runbook
-theme: readthedocs
-
-markdown_extensions:
-    - mkdocs-click
