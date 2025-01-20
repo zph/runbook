@@ -1,15 +1,14 @@
-# TODO
+# Roadmap and Notes
 
 ## Triage
 - [x] Read `runbook plan ...` support reading params from file
-- [ ] Re-export confirm(style) and gather from sh lib
-- [ ] Make sure we can run directly fully through cli
 - [ ] If no argument included for RUNBOOK TITLE in edit/plan/run then prompt with options
 - [x] Include field 'embeds' in the metadata to help with referencing them
 - [ ] --- Add helper for referencing the embeds?
 - [ ] Use execute and upload output to S3 for non-interactive: https://github.com/nteract/papermill/tree/main?tab=readme-ov-file#execute-via-cli
 
 ## P0
+- [ ] Add linter for runbooks (using `runbook lint`) that checks for presence of title, desc, rollback, cleanup, etc
 - [ ] Add `runbook init` suggestion or automation to add `export RUNBOOK_WORKING_DIR=...` to shell initializations
 - [ ] Install pre-commit.yml or git integration during `init` for secure linting and talisman
 - [x] Setup versioning and bumper (using versioner from npm ecosystem @release-it and @release-it/bumper)
@@ -34,10 +33,7 @@
 - [x] Should I follow the tf convention of `plan | apply`
 - [x] Setup decorator to embed dry_run into shell command
 - [ ] (won't do yet) Allow for executing cell by cell from commandline in a repl?
-- [ ] Running cell by cell: https://github.com/odewahn/ipynb-examples/blob/master/Importing%20Notebooks.ipynb
-- [ ] figure out how to store and replay individual cells
-- [ ] ~~Textualize gui for tui?~~
-- [ ] ~~is euphorie's tui for notebooks helpful?~~
+   - [ ] Running cell by cell: https://github.com/odewahn/ipynb-examples/blob/master/Importing%20Notebooks.ipynb
 - [ ] Build auditability through a custom runner interface
   -- Or a custom kernel wrapper?
   -- https://ipython.readthedocs.io/en/stable/config/options/kernel.html
