@@ -1,10 +1,32 @@
 import click
+import nbformat
 from rich.console import Console
 from rich.table import Table
 from runbook.cli.commands.plan import get_notebook_language
 from runbook.cli.validators import validate_runbook_file_path
+from runbook.constants import RUNBOOK_METADATA
 
 import papermill as pm
+
+
+def get_notebook_header(notebook_path):
+    """Get the title (H1) and description (H2) from the notebook's markdown cells.
+
+    Args:
+        notebook_path (str): Path to the notebook file
+
+    Returns:
+        str: The header of the first markdown cell, or None if not found
+    """
+    nb = nbformat.read(notebook_path, as_version=4)
+    header = None
+
+    for cell in nb.cells:
+        if cell.cell_type == "markdown":
+            header = cell.source
+            break
+
+    return header
 
 
 @click.command()
@@ -22,8 +44,13 @@ def show(ctx, runbook):
     console.print(f"\n[bold blue]Runbook:[/] {runbook}")
     console.print(f"[bold blue]Language:[/] {notebook_language}\n")
 
+    # Get and print title and description if available
+    header = get_notebook_header(runbook)
+    if header:
+        console.print(f"[bold blue]Header:\n[/]{header}\n")
+
     # Create and populate parameters table
-    table = Table(show_header=True, header_style="bold magenta")
+    table = Table(show_header=True, header_style="bold blue")
     table.add_column("Parameter")
     table.add_column("Default Value")
     table.add_column("Type")
@@ -33,6 +60,7 @@ def show(ctx, runbook):
         default = value["default"].rstrip(";")
         typing = value["inferred_type_name"] or ""
         help_text = value["help"] or ""
-        table.add_row(param, default, typing, help_text)
+        if param != RUNBOOK_METADATA:
+            table.add_row(param, default, typing, help_text)
 
     console.print(table)
