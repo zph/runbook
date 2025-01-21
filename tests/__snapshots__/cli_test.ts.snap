@@ -34,6 +34,8 @@ snapshot[`convert 2`] = `
 // # TITLE
 //
 // ## DESCRIPTION
+//
+// Description continues in narrative form
 
 // + [markdown] editable=true slideshow={\\"slide_type\\": \\"\\"}
 // ## Setup
@@ -116,6 +118,8 @@ Header:
 # TITLE
 
 ## DESCRIPTION
+
+Description continues in narrative form
 
 ┏━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
 ┃ Parameter ┃ Default Value   ┃ Type     ┃ Help           ┃
