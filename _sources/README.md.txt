@@ -98,16 +98,16 @@ Options:
   --help      Show this message and exit.
 
 Commands:
-  check    Check the language validity and formatting of a Jupyter notebook.
-  convert  Convert a Jupyter notebook between different formats.
-  create   Create a new runbook from a template.
-  diff     Compare two Jupyter notebooks and show their differences.
+  check    Check the language validity and formatting of a runbook.
+  convert  Convert a runbook between different formats
+  create   Create a new runbook from a template
+  diff     Compare two runbooks and show their differences
   edit     Edit an existing runbook
   init     Initialize a folder as a runbook repository
-  list     list runbooks
+  list     List runbooks
   plan     Prepares the runbook for execution by injecting parameters.
   review   [Unimplemented] Entrypoint for reviewing runbook
-  run      Run a notebook
+  run      Run a runbook
   show     Show runbook parameters and metadata
   version  Display version information about runbook
 ```
