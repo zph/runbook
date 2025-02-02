@@ -1,9 +1,9 @@
 test:
   uv run pytest --disable-warnings -s
-  deno test -A --parallel tests/cli_test.ts
+  deno test -A --reload https://raw.githubusercontent.com/zph/runbook/main/ext/deno/runbook/mod.ts --parallel tests/cli_test.ts
 
 test-watch:
-  watchexec -- uv run pytest --disable-warnings -s && deno test -A --parallel tests/cli_test.ts
+  watchexec -- just test
 
 open NOTEBOOK:
   uv run runbook edit {{NOTEBOOK}}
