@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "dax": "jsr:@david/dax@^0.42.0",
+    "@std/assert": "jsr:@std/assert@1"
+  }
+}
