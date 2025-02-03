@@ -3,7 +3,7 @@
 // review
 // run
 
-import { assertEquals, assertArrayIncludes } from "jsr:@std/assert";
+import { assertEquals, assertArrayIncludes, assertMatch } from "jsr:@std/assert";
 import { assertSnapshot } from "jsr:@std/testing/snapshot";
 import { $ } from "jsr:@david/dax"
 
@@ -28,7 +28,9 @@ const setup = async () => {
 Deno.test("check", async (t) => {
   const {runbook } = await setup();
   const cmd = await runbook(["check", "runbooks/binder/_template-deno.ipynb"]);
-  assertSnapshot(t, { exitCode: cmd.code, stdoutEndsWith: cmd.stdout.trim().endsWith("runbooks/binder/_template-deno.ipynb"), stderrEndsWith: cmd.stderr.trim().endsWith(".ts") });
+  assertMatch(cmd.stdout.trim(), /Checked .*\/runbooks\/binder\/_template-deno\.ipynb/);
+  assertMatch(cmd.stderr.trim(), /.*Check.*runbooks\/binder\/_template-deno-.*\.ts/);
+  assertEquals(cmd.code, 0);
 });
 
 Deno.test("convert", async (t) => {

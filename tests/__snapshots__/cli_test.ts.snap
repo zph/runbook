@@ -1,13 +1,5 @@
 export const snapshot = {};
 
-snapshot[`check 1`] = `
-{
-  exitCode: 0,
-  stderrEndsWith: true,
-  stdoutEndsWith: true,
-}
-`;
-
 snapshot[`convert 1`] = `
 {
   exitCode: 0,
