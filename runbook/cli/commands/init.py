@@ -1,4 +1,3 @@
-import base64
 import json
 from pathlib import Path
 
@@ -55,11 +54,7 @@ def init(ctx, directory, skip_confirmation):
     with open(f"./{directory}/.runbook.json", "w") as f:
         f.write(json.dumps(cfg))
     with open(f"./{directory}/binder/_template-python.ipynb", "w") as f:
-        fmt = "python"
-        js = base64.b64decode(TEMPLATES[fmt]).decode("utf-8")
-        f.write(js)
+        f.write(TEMPLATES["python"])
 
     with open(f"./{directory}/binder/_template-deno.ipynb", "w") as f:
-        fmt = "deno"
-        js = base64.b64decode(TEMPLATES[fmt]).decode("utf-8")
-        f.write(js)
+        f.write(TEMPLATES["deno"])

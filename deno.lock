@@ -2524,7 +2524,7 @@
     "https://deno.land/x/dax@0.39.2/src/shell.ts": "b95677094cc553c987f0f113a95a45d72f2896ef82754f9831029efbbafea5d5",
     "https://deno.land/x/dax@0.39.2/src/vendor/outdent.ts": "4d0283726579688c50b20c4b779e068acd3fa159a8784a4549e5e21bbef0ae64",
     "https://deno.land/x/which@0.3.0/mod.ts": "3e10d07953c14e4ddc809742a3447cef14202cdfe9be6678a1dfc8769c4487e6",
-    "https://raw.githubusercontent.com/zph/runbook/main/ext/deno/runbook/mod.ts": "c17001414d99137caad6caa2d0684f1bd38f5b703122f81e8c818fc256036fe6"
+    "https://raw.githubusercontent.com/zph/runbook/main/ext/deno/runbook/mod.ts": "137399cc4134f32c70c018316d1149781f8a5d1eaf078d81422d408b33e93364"
   },
   "workspace": {
     "dependencies": [
