@@ -11,7 +11,7 @@ const runbook = async (args: string[], config: { cwd: string }) => {
   const env = {
     WORKING_DIR: config.cwd,
   };
-  const cmd = await $`WORKING_DIR=${config.cwd} runbook ${args}`.env(env).stdout("piped").stderr("piped").noThrow();
+  const cmd = await $`runbook ${args}`.env(env).stdout("piped").stderr("piped").noThrow();
   return cmd;
 };
 
@@ -83,12 +83,12 @@ Deno.test.ignore("diff", async (t) => {
 
 Deno.test("init", async (t) => {
   const {dir} = await setup();
-  const files = (await getAllFiles(dir)).map(f => f.replace(dir, ""));
+  const files = (await getAllFiles(dir)).map(f => f.replace(dir, "")).sort();
   assertEquals(files, [
     "/runbooks/binder/_template-deno.ipynb",
     "/runbooks/binder/_template-python.ipynb",
     "/runbooks/.runbook.json",
-  ])
+  ].sort());
 });
 
 Deno.test("list", async (t) => {
