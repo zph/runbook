@@ -1,6 +1,7 @@
 import os
 
 import click
+
 from runbook.cli.commands import (
     check,
     convert,

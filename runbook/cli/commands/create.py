@@ -1,6 +1,7 @@
 from os import path
 
 import click
+
 from runbook.cli.lib import nbconvert_launch_instance
 from runbook.cli.validators import validate_create_language, validate_template
 
@@ -16,7 +17,6 @@ from runbook.cli.validators import validate_create_language, validate_template
     callback=validate_template,
     help="Path to the template file to use",
 )
-
 # TODO: switch to language and template defaulting to Deno
 # based on operational experience at work
 @click.option(

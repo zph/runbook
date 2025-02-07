@@ -1,13 +1,4 @@
 repos:
--   repo: https://github.com/mwouts/jupytext
-    rev: v1.14.7  # CURRENT_TAG/COMMIT_HASH
-    hooks:
-    - id: jupytext
-      args: [--pipe, black]
-      exclude: runbook/data/_template-deno.ipynb|.*\.md|tests/.*
-      additional_dependencies:
-        - black==23.3.0 # Matches hook
-
 - repo: https://github.com/astral-sh/ruff-pre-commit
   rev: "d7f0995" # 2025-02-07
   hooks:

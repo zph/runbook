@@ -61,3 +61,14 @@ source = "init"
 # https://github.com/python-poetry/poetry/issues/927
 # [tool.poetry.plugins."papermill.translators"]
 # "typescript" = "translators:runbook.translators.TypescriptTranslator"
+
+[tool.ruff]
+line-length = 88  # Same default as Black (adjust if needed)
+
+[tool.ruff.format]
+quote-style = "double"  # Choose "single" or "double"
+indent-style = "space"
+line-ending = "lf"
+
+[tool.ruff.lint]
+select = ["I"]

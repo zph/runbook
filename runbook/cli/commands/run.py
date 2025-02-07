@@ -1,4 +1,5 @@
 import click
+
 from runbook.cli.validators import validate_planned_runbook_file_path
 
 
