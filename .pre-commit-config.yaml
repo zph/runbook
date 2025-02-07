@@ -1,32 +1,12 @@
 repos:
--   repo: https://github.com/mwouts/jupytext
-    rev: v1.14.7  # CURRENT_TAG/COMMIT_HASH
-    hooks:
-    - id: jupytext
-      args: [--pipe, black]
-      exclude: runbook/data/_template-deno.ipynb|.*\.md|tests/.*
-      additional_dependencies:
-        - black==23.3.0 # Matches hook
-
--   repo: https://github.com/psf/black
-    rev: 23.3.0
-    hooks:
-    - id: black
-      language_version: python3
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: "d7f0995" # 2025-02-07
+  hooks:
+    - id: ruff
+      args: [--fix]
       exclude: runbooks/binder/_template-deno.ipynb
-
-- repo: https://github.com/pycqa/isort
-  rev: 5.13.2
-  hooks:
-    - id: isort
-      name: isort (python)
-      args: ["--profile", "black", "--filter-files"]
-
-- repo: https://github.com/PyCQA/autoflake
-  rev: v2.2.1
-  hooks:
-    - id: autoflake
-      args: ['--in-place', '--remove-all-unused-imports', '--remove-unused-variables', '--ignore-init-module-imports']
+    - id: ruff-format
+      exclude: runbooks/binder/_template-deno.ipynb
 
 -   repo: local
     hooks:

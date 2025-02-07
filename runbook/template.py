@@ -17,9 +17,11 @@ def read_embedded_file(package: str, filename: str) -> str:
     """
     if sys.version_info >= (3, 7):
         # Use importlib.resources (Python 3.7+)
-        with importlib_resources.files(package).joinpath(filename).open(
-            "r", encoding="utf-8"
-        ) as f:
+        with (
+            importlib_resources.files(package)
+            .joinpath(filename)
+            .open("r", encoding="utf-8") as f
+        ):
             return f.read()
     else:
         # Use pkgutil.get_data() for older versions

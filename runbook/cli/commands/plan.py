@@ -8,11 +8,11 @@ from pathlib import Path
 
 import click
 import nbformat
+import papermill as pm
+
 from runbook.cli.lib import nbconvert_launch_instance
 from runbook.cli.validators import validate_plan_params, validate_runbook_file_path
 from runbook.constants import RUNBOOK_METADATA
-
-import papermill as pm
 
 
 def get_notebook_language(notebook_path: str) -> str:

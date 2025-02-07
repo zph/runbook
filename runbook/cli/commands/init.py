@@ -2,9 +2,9 @@ import json
 from pathlib import Path
 
 import click
-from runbook.template import TEMPLATES
 
 from runbook import __version__ as VERSION
+from runbook.template import TEMPLATES
 
 RUNBOOK_CONFIG = {"version": 1, "library_version": VERSION, "directory": None}
 

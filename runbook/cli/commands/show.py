@@ -1,12 +1,12 @@
 import click
 import nbformat
+import papermill as pm
 from rich.console import Console
 from rich.table import Table
+
 from runbook.cli.commands.plan import get_notebook_language
 from runbook.cli.validators import validate_runbook_file_path
 from runbook.constants import RUNBOOK_METADATA
-
-import papermill as pm
 
 
 def get_notebook_header(notebook_path):
