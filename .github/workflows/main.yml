@@ -18,13 +18,9 @@ jobs:
       - name: initialize folders
         # Runbook command comes from .hermit/bin/runbook
         run: runbook init --skip-confirmation=true
-      - name: Black formatting
-        run: pre-commit run black
-      - name: jupytext hook
-        run: pre-commit run jupytext
-      - name: isort hook
-        run: pre-commit run isort
-      - name: autoflake hook
-        run: pre-commit run autoflake
+      - name: Ruff formatting
+        run: pre-commit run ruff-format
+      - name: Ruff linting
+        run: pre-commit run ruff
       - run: just test
       - run: echo "🍏 This job's status is ${{ job.status }}."
