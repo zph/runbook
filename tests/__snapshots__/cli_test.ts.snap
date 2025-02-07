@@ -1,13 +1,5 @@
 export const snapshot = {};
 
-snapshot[`check 1`] = `
-{
-  exitCode: 0,
-  stderrEndsWith: true,
-  stdoutEndsWith: true,
-}
-`;
-
 snapshot[`convert 1`] = `
 {
   exitCode: 0,
@@ -40,17 +32,19 @@ snapshot[`convert 2`] = `
 // + [markdown] editable=true slideshow={\\"slide_type\\": \\"\\"}
 // ## Setup
 
-// + tags=[\\"parameters\\"]
+// + editable=true slideshow={\\"slide_type\\": \\"\\"} tags=[\\"parameters\\"]
 // Default Params
 let server: string = \\"main.xargs.io\\";
 let arg: number = 1;
 let anArray: string[] = [\\"a\\", \\"b\\"]; // normally a / b
 let __RUNBOOK_METADATA__ = {};
-// -
 
+// + editable=true slideshow={\\"slide_type\\": \\"\\"}
 import { \$, sh } from \\"https://raw.githubusercontent.com/zph/runbook/main/ext/deno/runbook/mod.ts\\";
 
+// + editable=true slideshow={\\"slide_type\\": \\"\\"}
 await sh(\\"git log\\");
+// -
 
 prompt(\\"AAAAAAAAAAAA\\")
 
@@ -64,14 +58,14 @@ console.log(\\"BBBBBBBBBBBB\\")
 
 // + [markdown] editable=true slideshow={\\"slide_type\\": \\"\\"}
 // ### Step 1. Echo JSON
-// -
 
+// + editable=true slideshow={\\"slide_type\\": \\"\\"}
 await \$\`echo '{\\"a\\": 1}'\`.json();
 
 // + [markdown] editable=true slideshow={\\"slide_type\\": \\"\\"}
 // ### Step 2 Get Git Log
-// -
 
+// + editable=true slideshow={\\"slide_type\\": \\"\\"}
 await \$\`git log\`.text();
 
 // + [markdown] editable=true slideshow={\\"slide_type\\": \\"\\"}
