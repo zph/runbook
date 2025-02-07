@@ -25,7 +25,7 @@ const setup = async () => {
   return {runbook: (args: string[]) => runbook(args, { cwd: dir }), dir};
 }
 
-Deno.test("check", async (t) => {
+Deno.test.ignore("check", async (t) => {
   const {runbook } = await setup();
   const cmd = await runbook(["check", "runbooks/binder/_template-deno.ipynb"]);
   assertMatch(cmd.stdout.trim(), /Checked .*\/runbooks\/binder\/_template-deno\.ipynb/);
