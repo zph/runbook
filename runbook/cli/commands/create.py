@@ -3,11 +3,19 @@ from os import path
 import click
 
 from runbook.cli.lib import nbconvert_launch_instance
-from runbook.cli.validators import validate_create_language, validate_template
+from runbook.cli.validators import (
+    validate_create_language,
+    validate_has_notebook_extension,
+    validate_template,
+)
 
 
 @click.command()
-@click.argument("filename", type=click.Path(exists=False, file_okay=True))
+@click.argument(
+    "filename",
+    type=click.Path(exists=False, file_okay=True),
+    callback=validate_has_notebook_extension,
+)
 @click.option(
     "-t",
     "--template",
@@ -76,6 +84,6 @@ def create(ctx, filename, template, language):
 
     click.echo(
         click.style(
-            f"$> runbook edit ./runbooks/binder/{filename}.ipynb", fg="green", bold=True
+            f"$> runbook edit ./runbooks/binder/{filename}", fg="green", bold=True
         )
     )

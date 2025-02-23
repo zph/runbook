@@ -78,11 +78,14 @@ def process_glob_matches(options):
         raise click.BadOptionUsage("FILENAME", f"unable to find {value} file")
 
 
-def validate_planned_runbook_file_path(ctx, param, value):
-    ext = path.splitext(value)[-1].lower()
-    if not ext == ".ipynb":
-        ext = ".ipynb"
+def validate_has_notebook_extension(ctx, param, value):
+    if not value.lower().endswith(".ipynb"):
         value = value + ".ipynb"
+    return value
+
+
+def validate_planned_runbook_file_path(ctx, param, value):
+    value = validate_has_notebook_extension(ctx, param, value)
     base_name = path.basename(value)
     try:
         if Path(value).exists():
