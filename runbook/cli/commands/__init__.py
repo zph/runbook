@@ -1,4 +1,5 @@
 from runbook.cli.commands.check import check
+from runbook.cli.commands.clear_output import clear_output
 from runbook.cli.commands.convert import convert
 from runbook.cli.commands.create import create
 from runbook.cli.commands.diff import diff

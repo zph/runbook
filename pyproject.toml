@@ -1,6 +1,5 @@
 [project]
 name = "runbook"
-# Managed via runbook.__version__ and https://pypi.org/project/poetry-version-plugin/
 version = "0"
 description = "Runbook lib and cli"
 requires-python = ">=3.11"
@@ -9,40 +8,32 @@ authors = [
 ]
 license = "MIT"
 readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.11"
-shx = "^0.4.2"
-rich = "^13.9.4"
-# papermill = "^2.5.0"
-# Used until upstreaming typescript into papermill
-papermill = { git = "https://github.com/zph/papermill", branch = "main" }
-jupyter = "^1.0.0"
-click = "^8.1.7"
-bash-kernel = "^0.9.3"
-jupyterlab-execute-time = "^3.1.0"
-jupytext = "^1.16.1"
-nbformat = "^5.9.2"
-nbconvert = "^7.14.1"
-pyyaml = "^6.0.1"
-traitlets = "^5.14.1"
-ipywidgets = "^8.1.1"
-pre-commit = "^3.6.0"
-python-ulid = "^2.2.0"
-slack-sdk = "^3.26.2"
-jupyterlab = "^4.1.5"
-nbdime = "^4.0.1"
-
-
-[tool.poetry.group.dev.dependencies]
-pandas = "^2.1.4"
-pyarrow = "^14.0.2"
-matplotlib = "^3.8.2"
-pytest = "^7.4.4"
+dependencies = [
+    "shx>=0.4.2",
+    "rich>=13.9.4",
+    "papermill @ git+https://github.com/zph/papermill@main",
+    "jupyter>=1.0.0",
+    "click>=8.1.7",
+    "bash-kernel>=0.9.3",
+    "jupyterlab-execute-time>=3.1.0",
+    "jupytext==1.16.6",
+    "nbformat>=5.9.2",
+    "pyyaml>=6.0.1",
+    "traitlets>=5.14.1",
+    "ipywidgets>=8.1.1",
+    "pre-commit>=3.6.0",
+    "python-ulid>=2.2.0",
+    "slack-sdk>=3.26.2",
+    "jupyterlab>=4.1.5",
+    "nbdime>=4.0.1",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [dependency-groups]
 dev = [
@@ -50,17 +41,16 @@ dev = [
     "ruff>=0.9.5",
 ]
 
-[tool.poetry.scripts]
+[project.scripts]
 runbook = "runbook.cli:cli"
 # For the sake of installation accessibility for deno notebooks
 jupyter = "jupyter_core.command:main"
 
-[tool.poetry-version-plugin]
-source = "init"
-
-# https://github.com/python-poetry/poetry/issues/927
-# [tool.poetry.plugins."papermill.translators"]
-# "typescript" = "translators:runbook.translators.TypescriptTranslator"
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::DeprecationWarning:jupyter_client.connect",
+    "ignore::DeprecationWarning:papermill.parameterize",
+]
 
 [tool.ruff]
 line-length = 88  # Same default as Black (adjust if needed)

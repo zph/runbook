@@ -22,5 +22,5 @@ jobs:
         run: pre-commit run ruff-format
       - name: Ruff linting
         run: pre-commit run ruff
-      - run: just test
+      - run: make test
       - run: echo "🍏 This job's status is ${{ job.status }}."
