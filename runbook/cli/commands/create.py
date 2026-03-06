@@ -1,8 +1,10 @@
+from pathlib import Path
 from os import path
 
 import click
+import nbformat
 
-from runbook.cli.lib import nbconvert_launch_instance
+from runbook.cli.notebook_io import clear_cell_outputs
 from runbook.cli.validators import (
     validate_create_language,
     validate_has_notebook_extension,
@@ -69,18 +71,12 @@ def create(ctx, filename, template, language):
             "Supplied filename included more than a basename, should look like 'maintenance-operation.ipynb'"
         )
     # TODO: remove hardcoding of folder outer name and rely on config file
-    path.join("runbooks", "binder", filename)
-    argv = [
-        template,
-        "--to",
-        "notebook",
-        "--output",
-        filename,
-        "--output-dir",
-        path.join("runbooks", "binder"),
-    ]
-
-    nbconvert_launch_instance(argv, clear_output=True)
+    output_dir = path.join("runbooks", "binder")
+    dest = path.join(output_dir, filename)
+    nb = nbformat.read(template, as_version=4)
+    clear_cell_outputs(nb)
+    Path(output_dir).mkdir(parents=True, exist_ok=True)
+    nbformat.write(nb, dest)
 
     click.echo(
         click.style(

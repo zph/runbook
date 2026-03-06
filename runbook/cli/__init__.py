@@ -4,6 +4,7 @@ import click
 
 from runbook.cli.commands import (
     check,
+    clear_output,
     convert,
     create,
     diff,
@@ -36,6 +37,7 @@ def cli(ctx, cwd):
 
 
 cli.add_command(init)
+cli.add_command(clear_output)
 cli.add_command(plan)
 cli.add_command(edit)
 cli.add_command(create)

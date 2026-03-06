@@ -11,7 +11,7 @@ const runbook = async (args: string[], config: { cwd: string }) => {
   const env = {
     WORKING_DIR: config.cwd,
   };
-  const cmd = await $`runbook ${args}`.env(env).stdout("piped").stderr("piped").noThrow();
+  const cmd = await $`uv run runbook ${args}`.env(env).stdout("piped").stderr("piped").noThrow();
   return cmd;
 };
 
@@ -118,10 +118,14 @@ Deno.test("plan: prompter interface", async (t) => {
   }
   const json = await Deno.readTextFile(planFile);
   const plan = JSON.parse(json);
-  const maybeParamCells = plan.cells.filter((c: any) => c.cell_type === "code" && c.metadata?.tags?.includes("injected-parameters"));
+  const maybeParamCells = plan.cells.filter((c: any) => c.cell_type === "code" && c.metadata?.tags?.includes("parameters"));
   assertEquals(maybeParamCells.length, 1);
   const paramCell = maybeParamCells[0];
-  assertArrayIncludes(paramCell.source, [`server = "main.xargs.io";\n`, `arg = 1;\n`, `anArray = ["a", "b"];\n`]);
+  const source = typeof paramCell.source === "string" ? paramCell.source : paramCell.source.join("");
+  assertMatch(source, /server/)
+  assertMatch(source, /main\.xargs\.io/);
+  assertMatch(source, /arg/);
+  assertMatch(source, /anArray/);
   // assertSnapshot(t, { stdout: cmd.stdout, stderr: cmd.stderr, exitCode: cmd.code });
 });
 

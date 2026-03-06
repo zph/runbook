@@ -2,9 +2,12 @@ import json
 from pathlib import Path
 
 import nbformat
+import papermill as pm
 from click.testing import CliRunner
 
 from runbook import cli
+from runbook.cli.notebook_io import RawExpression, _inject_source_typescript
+from runbook.constants import RUNBOOK_METADATA
 
 python_template = "./runbooks/binder/_template-python.ipynb"
 deno_template = "./runbooks/binder/_template-deno.ipynb"
@@ -20,7 +23,7 @@ base_paths = [
 ]
 
 
-def invoker(runner, argv, working_dir, prog_name="runbook"):
+def invoker(runner, argv, working_dir, prog_name="runbook", **kwargs):
     return runner.invoke(
         cli,
         argv,
@@ -28,6 +31,7 @@ def invoker(runner, argv, working_dir, prog_name="runbook"):
             "RUNBOOK_WORKING_DIR": working_dir,
         },
         prog_name=prog_name,
+        **kwargs,
     )
 
 
@@ -46,18 +50,19 @@ Options:
   --help      Show this message and exit.
 
 Commands:
-  check    Check the language validity and formatting of a runbook.
-  convert  Convert a runbook between different formats
-  create   Create a new runbook from a template
-  diff     Compare two runbooks and show their differences
-  edit     Edit an existing runbook
-  init     Initialize a folder as a runbook repository
-  list     List runbooks
-  plan     Prepares the runbook for execution by injecting parameters.
-  review   [Unimplemented] Entrypoint for reviewing runbook
-  run      Run a runbook
-  show     Show runbook parameters and metadata
-  version  Display version information about runbook
+  check         Check the language validity and formatting of a runbook.
+  clear-output  Clear outputs and execution counts from one or more...
+  convert       Convert a runbook between different formats
+  create        Create a new runbook from a template
+  diff          Compare two runbooks and show their differences
+  edit          Edit an existing runbook
+  init          Initialize a folder as a runbook repository
+  list          List runbooks
+  plan          Prepares the runbook for execution by injecting parameters.
+  review        [Unimplemented] Entrypoint for reviewing runbook
+  run           Run a runbook
+  show          Show runbook parameters and metadata
+  version       Display version information about runbook
 """
         assert result.output == output
 
@@ -135,6 +140,44 @@ def test_cli_lifecycle_to_plan():
 
         # result = invoker(runner, ["run", "new-template.ipynb"], dir)
         # assert result.exit_code == 0
+
+
+def test_inject_source_typescript_raw_expression():
+    """RawExpression values (e.g. template literals) are injected verbatim, not JSON-serialized."""
+    params = {
+        "server": "main.xargs.io",
+        "taskCommand": RawExpression("`hostname`"),
+        "count": 42,
+    }
+    source = _inject_source_typescript(params)
+    assert 'var server = "main.xargs.io";' in source
+    assert "var taskCommand = `hostname`;" in source
+    assert "var count = 42;" in source
+    # Must NOT double-quote the template literal
+    assert '"`hostname`"' not in source
+
+
+def test_plan_accepts_empty_input_as_default():
+    """Regression: pressing Enter at each parameter prompt must use the default, not raise JSONDecodeError."""
+    runner = CliRunner()
+    with runner.isolated_filesystem() as dir:
+        result = invoker(runner, ["init"], dir)
+        assert result.exit_code == 0
+        result = invoker(runner, ["create", "new-template"], dir)
+        assert result.exit_code == 0
+
+        # Plan without --params: will prompt for each parameter. Send newline per prompt to accept defaults.
+        notebook_path = Path(dir) / "runbooks" / "binder" / "new-template.ipynb"
+        inferred = pm.inspect_notebook(str(notebook_path))
+        num_prompts = sum(1 for k in inferred if k != RUNBOOK_METADATA)
+        result = invoker(
+            runner,
+            ["plan", "new-template.ipynb"],
+            dir,
+            input="\n" * num_prompts,
+        )
+        assert result.exit_code == 0, result.output
+        assert "JSONDecodeError" not in result.output
 
 
 def test_cli_lifecycle_to_run():
