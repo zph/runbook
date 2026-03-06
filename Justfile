@@ -9,10 +9,10 @@ open NOTEBOOK:
   uv run runbook edit {{NOTEBOOK}}
 
 clear-binder-output:
-  jupyter nbconvert --clear-output --inplace ./runbook/data/*.ipynb
+  uv run runbook clear-output ./runbook/data/*.ipynb
 
 clear-output *FILES:
-  jupyter nbconvert --clear-output --inplace {{FILES}}
+  uv run runbook clear-output {{FILES}}
 
 lint:
   pre-commit run

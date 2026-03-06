@@ -4,7 +4,7 @@ import papermill as pm
 from rich.console import Console
 from rich.table import Table
 
-from runbook.cli.commands.plan import get_notebook_language
+from runbook.cli.notebook_io import get_notebook_language
 from runbook.cli.validators import validate_runbook_file_path
 from runbook.constants import RUNBOOK_METADATA
 

@@ -2,7 +2,7 @@ import ast
 import json
 import os
 import subprocess
-from datetime import datetime
+from datetime import datetime, timezone
 from os import path
 from pathlib import Path
 
@@ -10,34 +10,9 @@ import click
 import nbformat
 import papermill as pm
 
-from runbook.cli.lib import nbconvert_launch_instance
+from runbook.cli.notebook_io import get_notebook_language, inject_parameters_and_write
 from runbook.cli.validators import validate_plan_params, validate_runbook_file_path
 from runbook.constants import RUNBOOK_METADATA
-
-
-def get_notebook_language(notebook_path: str) -> str:
-    """
-    Determine the language of the notebook by checking the first code cell's metadata.
-    Returns 'python', 'typescript', or 'unknown'
-    """
-    nb = nbformat.read(notebook_path, as_version=4)
-    for cell in nb.cells:
-        if cell.cell_type == "code":
-            # Check kernel info
-            if "kernelspec" in nb.metadata:
-                kernel_name = nb.metadata.kernelspec.name.lower()
-                if "python" in kernel_name:
-                    return "python"
-                elif "typescript" in kernel_name or "ts" in kernel_name:
-                    return "typescript"
-            # Check language info
-            if "language_info" in nb.metadata:
-                language = nb.metadata.language_info.name.lower()
-                if "python" in language:
-                    return "python"
-                elif "typescript" in language or "ts" in language:
-                    return "typescript"
-    return "unknown"
 
 
 def get_parser_by_language(language: str):
@@ -80,7 +55,7 @@ def get_parser_by_language(language: str):
     help="Optional identifier to append to the output filename",
 )
 @click.option(
-    "-p",
+    "-r",
     "--prompter",
     default="",
     type=click.Path(file_okay=True),
@@ -108,7 +83,7 @@ def plan(ctx, input, embed, identifier="", params={}, prompter=""):
             "RUNBOOK_FOLDER": output_folder,
             "RUNBOOK_FILE": full_output,
             "RUNBOOK_SOURCE": input,
-            "CREATED_AT": str(datetime.utcnow()),
+            "CREATED_AT": str(datetime.now(timezone.utc)),
             "CREATED_BY": os.environ["USER"],
         }
     }
@@ -145,31 +120,33 @@ def plan(ctx, input, embed, identifier="", params={}, prompter=""):
             params = json.loads(result.stdout.strip())
         else:
             for key, value in formatted_params.items():
+                default_str = value["default"]
+
+                def value_proc(user_input, _default=default_str, _parser=value_parser):
+                    if user_input is None or (
+                        isinstance(user_input, str) and user_input.strip() == ""
+                    ):
+                        return _parser(_default)
+                    return _parser(user_input)
+
                 parsed_value = click.prompt(
                     f"""Enter value for {key} {value["typing"]} {value["help"]}""",
-                    default=value["default"],
-                    value_proc=value_parser,
+                    default=default_str,
+                    value_proc=value_proc,
                 )
-            params[key] = parsed_value
+                params[key] = parsed_value
 
     injection_params = {**runbook_param_injection, **params}
 
     if not Path(output_folder).exists():
         os.makedirs(output_folder, exist_ok=True)
 
-    pm.execute_notebook(
-        input_path=input,
-        output_path=full_output,
-        parameters=injection_params,
-        prepare_only=True,
-    )
-
-    argv = [
-        "--inplace",
+    inject_parameters_and_write(
+        input,
         full_output,
-    ]
-
-    nbconvert_launch_instance(argv, clear_output=True)
+        injection_params,
+        clear_output=True,
+    )
 
     for f in embed:
         shutil.copyfile(src=f, dst=f"{output_folder}/{path.basename(f)}")
