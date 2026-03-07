@@ -1,8 +1,9 @@
 # Roadmap and Notes
 
 ## Triage
+- [x] Use better way to embed files in the runbook package (ie templates)
 - [x] Read `runbook plan ...` support reading params from file
-- [ ] If no argument included for RUNBOOK TITLE in edit/plan/run then prompt with options
+- [x] If no argument included for RUNBOOK TITLE in edit/plan/run then prompt with options
 - [x] Include field 'embeds' in the metadata to help with referencing them
 - [ ] --- Add helper for referencing the embeds?
 - [ ] Use execute and upload output to S3 for non-interactive: https://github.com/nteract/papermill/tree/main?tab=readme-ov-file#execute-via-cli
